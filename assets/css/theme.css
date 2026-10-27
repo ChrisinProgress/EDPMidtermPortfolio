@@ -1,0 +1,413 @@
+/* The original white palette remains the default. Theme is set before paint. */
+html {
+  color-scheme: light;
+}
+
+.theme-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+  transition: border-color .2s, background .2s;
+}
+
+html.theme-ready .theme-toggle {
+  display: inline-flex;
+}
+
+.theme-toggle:hover {
+  border-color: var(--blue);
+  background: var(--soft);
+}
+
+.theme-toggle:focus-visible {
+  outline-offset: 4px;
+}
+
+.theme-icon-moon,
+.theme-icon-sun {
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+}
+
+.theme-icon-moon {
+  display: inline-flex;
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+.theme-toggle svg {
+  display: block;
+  width: 19px;
+  height: 19px;
+}
+
+/* The individual tools can wrap without expanding their flex parent. */
+.toolkit-items {
+  min-width: 0;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --white: #0e1524;
+  --soft: #141f33;
+  --ink: #e9eef8;
+  --muted: #abb9ce;
+  --blue: #8bb8ff;
+  --violet: #b9a2ff;
+  --line: #2c3b53;
+  --theme-surface: #172236;
+  --theme-hover: #21324d;
+}
+
+html[data-theme="dark"] .theme-icon-moon {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-icon-sun {
+  display: inline-flex;
+}
+
+html[data-theme="dark"] ::selection {
+  background: #334775;
+  color: #f6f8ff;
+}
+
+html[data-theme="dark"] .skip-link {
+  color: var(--white);
+}
+
+/* Navigation, cards and photo frames use the same raised navy surface. */
+html[data-theme="dark"] .site-header {
+  background: rgba(14, 21, 36, .96);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .navigation {
+  background: var(--white);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .icon-button,
+html[data-theme="dark"] .button-secondary,
+html[data-theme="dark"] .portrait-frame,
+html[data-theme="dark"] .floating-icon,
+html[data-theme="dark"] .visual-sticker,
+html[data-theme="dark"] .project-card,
+html[data-theme="dark"] .about-visual,
+html[data-theme="dark"] .skill-card,
+html[data-theme="dark"] .contact-form,
+html[data-theme="dark"] .lightbox {
+  background: var(--theme-surface);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .site-footer {
+  background: var(--white);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .about-section {
+  background: #111b2d;
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .toolkit-wrap,
+html[data-theme="dark"] .visual-orbit,
+html[data-theme="dark"] .project-bottom,
+html[data-theme="dark"] .education-note,
+html[data-theme="dark"] .form-heading,
+html[data-theme="dark"] .footer-top,
+html[data-theme="dark"] .back-to-top .icon {
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .portrait-frame,
+html[data-theme="dark"] .floating-icon,
+html[data-theme="dark"] .visual-sticker,
+html[data-theme="dark"] .contact-form {
+  box-shadow: 0 12px 35px #0000001f;
+}
+
+html[data-theme="dark"] .project-card:hover,
+html[data-theme="dark"] .skill-card:hover,
+html[data-theme="dark"] .skill-card:focus-visible {
+  border-color: #5372a2;
+  box-shadow: 0 12px 28px #00000029;
+}
+
+html[data-theme="dark"] .skill-card:nth-child(even):hover {
+  border-color: #8064b6;
+}
+
+html[data-theme="dark"] .icon-button:hover,
+html[data-theme="dark"] .button-secondary:hover {
+  background: var(--theme-hover);
+  border-color: #5372a2;
+  box-shadow: 0 4px 12px #0000001f;
+}
+
+html[data-theme="dark"] .button-primary {
+  background: linear-gradient(110deg, #2563eb, #6841cf);
+  color: #fff;
+  box-shadow: 0 5px 16px #00000029;
+}
+
+html[data-theme="dark"] .button-primary:hover {
+  background: linear-gradient(110deg, #1e56ce, #7550d4);
+  box-shadow: 0 7px 20px #0000003d;
+}
+
+/* Explicit colors in refinements.css also need the dark reading palette. */
+html[data-theme="dark"] .nav-link,
+html[data-theme="dark"] .eyebrow,
+html[data-theme="dark"] .hero-description,
+html[data-theme="dark"] .hero-note,
+html[data-theme="dark"] .portrait-topline,
+html[data-theme="dark"] .portrait-caption,
+html[data-theme="dark"] .portrait-caption > span:last-child,
+html[data-theme="dark"] .visual-coordinate,
+html[data-theme="dark"] .scroll-cue,
+html[data-theme="dark"] .student-label,
+html[data-theme="dark"] .toolkit-label,
+html[data-theme="dark"] .toolkit-items span,
+html[data-theme="dark"] .section-description,
+html[data-theme="dark"] .filter-button,
+html[data-theme="dark"] .results-count,
+html[data-theme="dark"] .gallery-note,
+html[data-theme="dark"] .project-category,
+html[data-theme="dark"] .project-number,
+html[data-theme="dark"] .project-description,
+html[data-theme="dark"] .preview-count,
+html[data-theme="dark"] .projects-end,
+html[data-theme="dark"] .about-photo-caption small,
+html[data-theme="dark"] .about-copy > p:not(.mini-label),
+html[data-theme="dark"] .education-note div > span,
+html[data-theme="dark"] .skills-heading > span,
+html[data-theme="dark"] .skill-card p,
+html[data-theme="dark"] .contact-description,
+html[data-theme="dark"] .contact-link small,
+html[data-theme="dark"] .contact-link strong span,
+html[data-theme="dark"] .contact-link > .icon,
+html[data-theme="dark"] .contact-signoff,
+html[data-theme="dark"] .form-heading p,
+html[data-theme="dark"] .optional-label,
+html[data-theme="dark"] .delivery-note,
+html[data-theme="dark"] .form-footnote,
+html[data-theme="dark"] .footer-top > p,
+html[data-theme="dark"] .back-to-top,
+html[data-theme="dark"] .footer-bottom p,
+html[data-theme="dark"] .footer-bottom nav,
+html[data-theme="dark"] .lightbox-top .eyebrow,
+html[data-theme="dark"] .lightbox-bottom {
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .hero-greeting,
+html[data-theme="dark"] .form-field label {
+  color: #cfdaeb;
+}
+
+html[data-theme="dark"] .preview-count:hover {
+  color: var(--blue);
+}
+
+html[data-theme="dark"] .label-dot,
+html[data-theme="dark"] .student-label span {
+  color: #8295b1;
+}
+
+html[data-theme="dark"] .mini-label,
+html[data-theme="dark"] .section-index,
+html[data-theme="dark"] .nav-link:hover,
+html[data-theme="dark"] .nav-link.is-active,
+html[data-theme="dark"] .scroll-cue:hover,
+html[data-theme="dark"] .filter-button:hover,
+html[data-theme="dark"] .filter-button.is-active,
+html[data-theme="dark"] .button-secondary .icon,
+html[data-theme="dark"] .contact-link:hover,
+html[data-theme="dark"] .contact-link:hover > .icon,
+html[data-theme="dark"] .back-to-top:hover,
+html[data-theme="dark"] .back-to-top .icon {
+  color: var(--blue);
+}
+
+html[data-theme="dark"] .name-accent::after {
+  border-color: #42689f;
+}
+
+html[data-theme="dark"] .section-index::after,
+html[data-theme="dark"] .small-rule {
+  background: #42608c;
+}
+
+html[data-theme="dark"] .status-dot {
+  background: #8bb8ff;
+}
+
+html[data-theme="dark"] .hero-note .status-dot {
+  background: #81c5a4;
+}
+
+/* Filters, tags and small icon tiles retain clear, distinct selected states. */
+html[data-theme="dark"] .project-filters,
+html[data-theme="dark"] .project-carousel,
+html[data-theme="dark"] .hero-portrait,
+html[data-theme="dark"] .lightbox-stage {
+  background: var(--soft);
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .filter-button span,
+html[data-theme="dark"] .technology-tags span {
+  background: #22314a;
+  color: #c0cee3;
+}
+
+html[data-theme="dark"] .filter-button.is-active {
+  background: var(--theme-surface);
+  box-shadow: 0 2px 6px #00000033;
+}
+
+html[data-theme="dark"] .filter-button.is-active span {
+  background: #263f63;
+  color: #afcfff;
+}
+
+html[data-theme="dark"] .about-monogram,
+html[data-theme="dark"] .education-icon,
+html[data-theme="dark"] .skill-icon,
+html[data-theme="dark"] .contact-link-icon {
+  background: #20304c;
+  border-color: #2e4366;
+  color: #a8c8ff;
+}
+
+html[data-theme="dark"] .skill-card:nth-child(even) .skill-icon {
+  background: #2c2443;
+  border-color: #44345f;
+  color: #c9b5ff;
+}
+
+html[data-theme="dark"] .skill-card:hover .skill-icon,
+html[data-theme="dark"] .skill-card:focus-visible .skill-icon {
+  background: #2c4268;
+  color: #c6ddff;
+}
+
+html[data-theme="dark"] .skill-card:nth-child(even):hover .skill-icon,
+html[data-theme="dark"] .skill-card:nth-child(even):focus-visible .skill-icon {
+  background: #41315e;
+  color: #e1d4ff;
+}
+
+html[data-theme="dark"] .form-field label > span:not(.optional-label),
+html[data-theme="dark"] .form-footnote span {
+  color: #f87171;
+}
+
+html[data-theme="dark"] .contact-signoff .icon {
+  color: var(--violet);
+}
+
+/* Media keeps its original colors; only the surrounding controls are themed. */
+html[data-theme="dark"] .preview-enlarge,
+html[data-theme="dark"] .carousel-arrow,
+html[data-theme="dark"] .carousel-dots,
+html[data-theme="dark"] .lightbox-prev,
+html[data-theme="dark"] .lightbox-next {
+  background: rgba(23, 34, 54, .96);
+  border-color: #425574;
+  color: #e9eef8;
+  box-shadow: 0 3px 8px #00000026;
+}
+
+html[data-theme="dark"] .carousel-arrow:hover,
+html[data-theme="dark"] .lightbox-prev:hover,
+html[data-theme="dark"] .lightbox-next:hover,
+html[data-theme="dark"] .lightbox-close:hover {
+  background: var(--theme-hover);
+  color: var(--blue);
+}
+
+html[data-theme="dark"] .carousel-dot span {
+  background: #8798b5;
+}
+
+html[data-theme="dark"] .carousel-dot.is-active span {
+  background: #a0c7ff;
+}
+
+html[data-theme="dark"] .lightbox-close {
+  background: var(--soft);
+}
+
+html[data-theme="dark"] .lightbox::backdrop {
+  background: #030916cc;
+}
+
+/* Forms use dark fields with visible keyboard focus, errors and delivery state. */
+html[data-theme="dark"] .form-field input,
+html[data-theme="dark"] .form-field textarea {
+  background: #101b2e;
+  border-color: #3b4d69;
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .form-field input::placeholder,
+html[data-theme="dark"] .form-field textarea::placeholder {
+  color: #9aaac3;
+}
+
+html[data-theme="dark"] .form-field input:focus,
+html[data-theme="dark"] .form-field textarea:focus {
+  background: #14223a;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px #8bb8ff26;
+}
+
+html[data-theme="dark"] .form-field [aria-invalid="true"] {
+  border-color: #f294a8;
+}
+
+html[data-theme="dark"] .field-error {
+  color: #ffb0c0;
+}
+
+html[data-theme="dark"] .form-status.is-error {
+  background: #38202e;
+  border-color: #714355;
+  color: #ffbdcb;
+}
+
+html[data-theme="dark"] .form-status.is-success {
+  background: #17352d;
+  border-color: #386653;
+  color: #a3e6c5;
+}
+
+@media (max-width: 899px) {
+  .theme-toggle {
+    margin-left: auto;
+  }
+
+  html[data-theme="dark"] .navigation {
+    box-shadow: 0 12px 20px #0000002b;
+  }
+
+  html[data-theme="dark"] .nav-link.is-active {
+    background: #20304c;
+  }
+}
+

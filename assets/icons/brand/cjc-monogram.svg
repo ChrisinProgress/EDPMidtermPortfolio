@@ -1,0 +1,15 @@
+<svg class="cjc-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 136 112" fill="none" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="brandGradient" x1="15" y1="14" x2="120" y2="105" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#7957E8"/>
+    </linearGradient>
+  </defs>
+  <path class="cjc-logo-field" d="M32 4H104C119.464 4 132 16.536 132 32V80C132 95.464 119.464 108 104 108H32C16.536 108 4 95.464 4 80V32C4 16.536 16.536 4 32 4Z" fill="url(#brandGradient)"/>
+  <path class="cjc-logo-glint" d="M16 39V30C16 22.268 22.268 16 30 16H44" stroke="white" stroke-opacity=".28" stroke-width="2" stroke-linecap="round"/>
+  <path class="cjc-logo-letter cjc-logo-first" d="M44 34H33C23.059 34 15 42.059 15 52V60C15 69.941 23.059 78 33 78H44" stroke="white" stroke-width="9" stroke-linecap="square"/>
+  <path class="cjc-logo-letter cjc-logo-middle" d="M56 34H71V63C71 71.284 64.284 78 56 78H51" stroke="white" stroke-width="9" stroke-linecap="square" stroke-linejoin="round"/>
+  <path class="cjc-logo-letter cjc-logo-last" d="M119 34H108C98.059 34 90 42.059 90 52V60C90 69.941 98.059 78 108 78H119" stroke="white" stroke-width="9" stroke-linecap="square"/>
+  <path class="cjc-logo-spark" d="M78 88H84V94H78V88Z" fill="#C3D9FF"/>
+  <path d="M94 96H106C113.732 96 120 89.732 120 82" stroke="white" stroke-opacity=".28" stroke-width="2" stroke-linecap="round"/>
+</svg>

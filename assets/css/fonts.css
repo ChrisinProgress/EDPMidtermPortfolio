@@ -1,0 +1,40 @@
+/* Poppins is bundled locally under the SIL Open Font License. */
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/poppins/poppinsRegular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/poppins/poppinsMedium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/poppins/poppinsSemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/poppins/poppinsBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../fonts/poppins/poppinsExtraBold.ttf") format("truetype");
+}

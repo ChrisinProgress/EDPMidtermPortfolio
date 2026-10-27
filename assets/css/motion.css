@@ -1,0 +1,179 @@
+/* Ambient light and motion share the same palette as the content surfaces. */
+body { isolation: isolate; }
+
+.ambient-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+  background:
+    radial-gradient(ellipse at 8% 8%, rgb(219 234 254 / 37%), transparent 54%),
+    radial-gradient(ellipse at 95% 80%, rgb(237 233 254 / 32%), transparent 48%);
+}
+
+.ambient-orb {
+  position: absolute;
+  width: clamp(280px, 46vw, 660px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: .22;
+  filter: blur(76px);
+  will-change: transform;
+}
+
+.ambient-orb-one {
+  top: -24%;
+  left: -13%;
+  background: radial-gradient(circle, #8bb9ff 0, #94b7ff70 45%, transparent 72%);
+  animation: ambientDriftOne 28s ease-in-out infinite alternate;
+}
+
+.ambient-orb-two {
+  top: 24%;
+  right: -19%;
+  background: radial-gradient(circle, #b8a3ff 0, #d5bbff70 44%, transparent 72%);
+  animation: ambientDriftTwo 35s ease-in-out infinite alternate;
+}
+
+.ambient-orb-three {
+  bottom: -34%;
+  left: 25%;
+  background: radial-gradient(circle, #9ee1ed 0, #c9e5ff50 46%, transparent 72%);
+  animation: ambientDriftThree 32s ease-in-out infinite alternate;
+}
+
+.ambient-grid, .ambient-stars { position: absolute; inset: -6%; }
+.ambient-grid {
+  background-image:
+    linear-gradient(rgb(104 135 183 / 11%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(104 135 183 / 11%) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: linear-gradient(180deg, #0005, transparent 65%);
+  opacity: .45;
+  animation: ambientGridTravel 70s linear infinite;
+}
+
+.ambient-stars {
+  opacity: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 17%, #c1dbff 95%, transparent),
+    radial-gradient(1px 1px at 35% 73%, #a8bbf7 95%, transparent),
+    radial-gradient(1px 1px at 68% 28%, #d6c5ff 95%, transparent),
+    radial-gradient(1.5px 1.5px at 89% 61%, #8ecae1 95%, transparent),
+    radial-gradient(1px 1px at 54% 92%, #a8bbf7 95%, transparent);
+  background-size: 430px 340px;
+  animation: starDrift 45s linear infinite alternate;
+}
+
+html[data-theme="dark"] .ambient-background {
+  background:
+    radial-gradient(ellipse at 10% 0, rgb(31 57 112 / 36%), transparent 62%),
+    radial-gradient(ellipse at 90% 85%, rgb(44 28 84 / 28%), transparent 55%);
+}
+html[data-theme="dark"] .ambient-orb { opacity: .42; filter: blur(88px); }
+html[data-theme="dark"] .ambient-orb-one { background: radial-gradient(circle, #315ad9, #234d7e80 42%, transparent 72%); }
+html[data-theme="dark"] .ambient-orb-two { background: radial-gradient(circle, #7154ca, #413b7c70 44%, transparent 72%); }
+html[data-theme="dark"] .ambient-orb-three { background: radial-gradient(circle, #1b7b9e, #224d7950 44%, transparent 72%); }
+html[data-theme="dark"] .ambient-stars { opacity: .3; }
+html[data-theme="dark"] .ambient-stars { animation: starDrift 45s linear infinite alternate, starPulse 9s ease-in-out infinite alternate; }
+html[data-theme="dark"] .ambient-grid { opacity: .35; }
+html[data-theme="dark"] .about-section { background: rgb(17 27 45 / 76%); }
+html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
+
+.motion-paused .ambient-orb,
+.motion-paused .ambient-grid,
+.motion-paused .ambient-stars,
+.motion-paused .floating-icon { animation-play-state: paused; }
+
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 3px;
+  z-index: 100;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--blue), var(--violet), #4cc3d7);
+  box-shadow: 0 0 10px rgb(99 102 241 / 22%);
+}
+
+/* The class is added only when the observer is ready; no-JS content stays visible. */
+.motion-ready .hero-copy, .motion-ready .hero-visual { animation: none; }
+.motion-ready .motion-reveal {
+  transition: opacity .6s ease var(--reveal-delay, 0ms), translate .6s var(--ease) var(--reveal-delay, 0ms),
+    border-color .22s ease, background-color .22s ease, box-shadow .22s ease, transform .25s var(--ease);
+}
+.motion-ready .motion-reveal:not(.is-revealed) { opacity: 0; translate: 0 18px; }
+.motion-ready .motion-reveal.is-revealed { opacity: 1; translate: 0 0; }
+
+.button .icon, .contact-link-icon, .theme-toggle { transition: transform .25s var(--ease), border-color .25s, background-color .25s; }
+.button:hover > .icon, .button:focus-visible > .icon { transform: translate(3px, -2px); }
+.contact-link:hover .contact-link-icon, .contact-link:focus-visible .contact-link-icon { transform: translateY(-2px) rotate(-4deg); }
+.theme-toggle { position: relative; overflow: visible; }
+.theme-toggle:hover { transform: translateY(-2px); }
+.theme-toggle:active { transform: scale(.94); }
+.theme-changing .theme-toggle .theme-icon-moon,
+.theme-changing .theme-toggle .theme-icon-sun { animation: themeIconArrive .42s var(--ease) both; }
+.floating-icon { animation: badgeFloat 7s ease-in-out infinite alternate; }
+.design-icon { animation-delay: -3s; }
+
+/* Bounded transitions prevent initial-paint flashes and avoid a global transition:all. */
+.theme-changing body,
+.theme-changing :where(.site-header, .navigation, .site-footer, .about-section, .portrait-frame, .floating-icon,
+  .visual-sticker, .project-card, .project-carousel, .toolkit-group, .toolkit-item, .education-card,
+  .education-entry, .skill-card, .credential-card, .credential-content, .contact-form, .lightbox,
+  .form-field input, .form-field textarea, .button-secondary, .filter-button, .icon-button,
+  .theme-toggle, .form-status, .contact-link-icon, .skill-icon, .ambient-background, .ambient-stars) {
+  transition: background-color .38s ease, color .38s ease, border-color .38s ease, box-shadow .38s ease,
+    transform .28s var(--ease), opacity .38s ease;
+}
+
+.theme-view-transition::view-transition-old(root),
+.theme-view-transition::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+.theme-view-transition::view-transition-old(root) { z-index: 1; }
+.theme-view-transition::view-transition-new(root) {
+  z-index: 2;
+  animation: themeReveal .48s cubic-bezier(.3, 0, .2, 1) both;
+}
+
+/* Snapshot the finished palette; a second CSS color fade would capture old colors. */
+.theme-view-transition.theme-changing *,
+.theme-view-transition.theme-changing *::before,
+.theme-view-transition.theme-changing *::after { transition: none !important; }
+
+@keyframes ambientDriftOne { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(18%, 18%, 0) scale(1.13); } }
+@keyframes ambientDriftTwo { from { transform: translate3d(0, 0, 0) scale(1.06); } to { transform: translate3d(-16%, -16%, 0) scale(.94); } }
+@keyframes ambientDriftThree { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-18%, -21%, 0); } }
+@keyframes starDrift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, -32px, 0); } }
+@keyframes starPulse { from { opacity: .18; } to { opacity: .36; } }
+@keyframes ambientGridTravel { to { background-position: 88px 88px; } }
+@keyframes badgeFloat { from { translate: 0 0; } to { translate: 0 -8px; } }
+@keyframes themeIconArrive { from { opacity: 0; transform: rotate(-65deg) scale(.5); } to { opacity: 1; transform: rotate(0) scale(1); } }
+@keyframes themeReveal {
+  from { clip-path: circle(0 at var(--theme-origin-x, 50%) var(--theme-origin-y, 40px)); }
+  to { clip-path: circle(var(--theme-reveal-radius, 150vmax) at var(--theme-origin-x, 50%) var(--theme-origin-y, 40px)); }
+}
+
+@media (max-width: 700px) {
+  .ambient-orb { width: 105vw; filter: blur(52px); opacity: .18; }
+  html[data-theme="dark"] .ambient-orb { opacity: .3; filter: blur(58px); }
+  .ambient-orb-one { top: -8%; left: -40%; }
+  .ambient-orb-two { top: 32%; right: -50%; }
+  .ambient-orb-three { bottom: -12%; left: -15%; }
+  .ambient-grid { background-size: 64px 64px; }
+  .ambient-stars { background-size: 330px 290px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-orb, .ambient-grid, .ambient-stars, .floating-icon,
+  .theme-changing .theme-toggle .theme-icon-moon,
+  .theme-changing .theme-toggle .theme-icon-sun { animation: none !important; }
+  .motion-ready .motion-reveal { opacity: 1 !important; translate: none !important; transition: none !important; }
+  .theme-view-transition::view-transition-old(root),
+  .theme-view-transition::view-transition-new(root) { animation: none !important; }
+  .button:hover > .icon, .button:focus-visible > .icon,
+  .contact-link:hover .contact-link-icon, .contact-link:focus-visible .contact-link-icon,
+  .theme-toggle:hover, .theme-toggle:active { transform: none; }
+}
