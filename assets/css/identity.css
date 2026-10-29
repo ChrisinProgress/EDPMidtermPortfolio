@@ -1,16 +1,22 @@
 /* A drawn CJC mark and paired portraits make each theme feel personal. */
-.cjc-logo { display: block; width: 64px; height: auto; flex: 0 0 auto; overflow: visible; }
+.cjc-logo { --brand-ink: #101010; display: block; width: 64px; height: auto; flex: 0 0 auto; overflow: visible; color: var(--brand-ink); }
+html[data-theme="dark"] .cjc-logo { --brand-ink: #fff; }
 .wordmark:has(.cjc-logo) { display: inline-flex; align-items: center; min-height: 44px; line-height: 1; }
 .wordmark .cjc-logo { width: 64px; }
 .site-footer .wordmark .cjc-logo { width: 64px; }
-.cjc-logo-field { transition: filter .35s ease; }
-.wordmark:hover .cjc-logo-field, .wordmark:focus-visible .cjc-logo-field { filter: brightness(1.12); }
-.cjc-logo-glint { stroke-dasharray: 70; stroke-dashoffset: 70; animation: logoGlint 6s ease-in-out infinite; }
-.cjc-logo-spark { transform-origin: 81px 91px; animation: logoSpark 6s ease-in-out infinite; }
+.cjc-logo-ring { opacity: .9; }
+.cjc-logo-ring-inner { opacity: .8; }
+.cjc-logo-orbit { opacity: .35; transform-origin: 64px 64px; animation: monogramOrbit 24s linear infinite; }
+.cjc-logo-letter { stroke-dasharray: 1; stroke-dashoffset: 0; animation: monogramDraw 1.1s var(--ease) both; }
+.cjc-logo-middle { animation-delay: .09s; }
+.cjc-logo-last { animation-delay: .18s; }
+.wordmark .cjc-logo { transition: transform .35s var(--ease); }
+.wordmark:hover .cjc-logo, .wordmark:focus-visible .cjc-logo { transform: rotate(-4deg); }
 .portrait-topline { min-height: 46px; gap: 16px; }
 .portrait-topline .cjc-logo { width: 49px; }
 .portrait-topline > span { max-width: 210px; line-height: 1.6; }
-.theme-portrait { position: relative; isolation: isolate; overflow: hidden; border-radius: 10px; background: #f3f6fc; }
+.theme-portrait { display: block; width: 100%; padding: 0; border: 0; cursor: pointer; position: relative; isolation: isolate; overflow: hidden; border-radius: 10px; background: #f3f6fc; }
+.theme-portrait:focus-visible { outline: 3px solid var(--blue); outline-offset: 5px; }
 .theme-portrait-hero { aspect-ratio: 1; }
 .theme-portrait-about { aspect-ratio: 3 / 4; }
 .theme-portrait .portrait-layer {
@@ -20,14 +26,17 @@
   -webkit-user-drag: none;
 }
 .theme-portrait .portrait-real { z-index: 1; opacity: 1; transform: scale(1); }
-.theme-portrait .portrait-pixel { z-index: 2; opacity: 0; transform: scale(1.035); image-rendering: pixelated; }
+.theme-portrait .portrait-pixel { z-index: 2; opacity: 0; transform: scale(1.035); image-rendering: pixelated; clip-path: inset(0 100% 0 0); transition: clip-path .6s steps(12,end), opacity .35s ease, transform .75s var(--ease); }
 .theme-portrait-hero .portrait-real { object-position: 50% 43%; }
 .theme-portrait-about .portrait-real, .theme-portrait-about .portrait-pixel { object-position: 50% 60%; }
 .portrait-pixel-grid { position: absolute; z-index: 3; inset: 0; pointer-events: none; opacity: 0; background-image: linear-gradient(#a3c2ff09 1px, transparent 1px), linear-gradient(90deg, #a3c2ff09 1px, transparent 1px); background-size: 16px 16px; transition: opacity .65s; }
 html[data-theme="dark"] .theme-portrait { background: #121d32; }
-html[data-theme="dark"] .theme-portrait .portrait-real { opacity: 0; transform: scale(1.025); }
-html[data-theme="dark"] .theme-portrait .portrait-pixel { opacity: 1; transform: scale(1); }
-html[data-theme="dark"] .portrait-pixel-grid { opacity: 1; }
+.theme-portrait.is-pixel .portrait-real { opacity: 0; transform: scale(1.025); }
+.theme-portrait.is-pixel .portrait-pixel { opacity: 1; transform: scale(1); clip-path: inset(0); }
+.theme-portrait.is-pixel .portrait-pixel-grid { opacity: 1; }
+.theme-portrait::before { content: ''; position: absolute; z-index: 5; pointer-events: none; inset: 0 auto 0 0; width: 2px; opacity: 0; background: #b8d3ff; box-shadow: 0 0 16px #8bb8ff; }
+.theme-portrait.is-pixel::before { animation: portraitScan .65s ease-out both; }
+@keyframes portraitScan { 0% { left: 0; opacity: 0; } 20%,80% { opacity: .8; } 100% { left: 100%; opacity: 0; } }
 .portrait-mode-label { display: flex; align-items: center; gap: 7px; padding: 12px 7px 3px; color: var(--muted); font-size: 10px; letter-spacing: .07em; line-height: 1.5; }
 .portrait-mode-label::before { content: ""; width: 5px; height: 5px; flex: 0 0 auto; background: #34b496; border-radius: 50%; box-shadow: 0 0 0 3px #34b49614; }
 .portrait-mode-pixel { display: none; }
@@ -38,6 +47,12 @@ html[data-theme="dark"] .portrait-mode-label::before { border-radius: 0; backgro
 .about-monogram .cjc-logo { width: 46px; }
 .about-photo-caption { padding-inline: 5px; }
 .about-visual { align-self: start; }
+.about-copy { position: relative; isolation: isolate; }
+.about-copy-watermark { position: absolute; z-index: -1; left: 50%; top: 50%; width: min(85%, 420px); opacity: .035; transform: translate(-50%, -50%) rotate(-9deg); pointer-events: none; user-select: none; animation: watermarkBreathe 22s ease-in-out infinite alternate; }
+.about-copy-watermark .cjc-logo { width: 100%; }
+.about-copy-watermark .cjc-logo-letter, .about-copy-watermark .cjc-logo-orbit { animation: none; }
+.about-copy > :not(.about-copy-watermark) { position: relative; z-index: 1; }
+html[data-theme="dark"] .about-copy-watermark { opacity: .05; }
 .about-copy h3 { margin-bottom: 20px; }
 .about-interest-label { margin: 22px 0 11px; color: var(--ink); font-size: 12px; font-weight: 500; }
 .about-interests { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
@@ -49,8 +64,12 @@ html[data-theme="dark"] .portrait-mode-label::before { border-radius: 0; backgro
 .theme-portrait::after { content: ""; position: absolute; z-index: 4; inset: 0; pointer-events: none; border: 1px solid #fff3; border-radius: inherit; }
 @keyframes logoGlint { 0%, 25%, 100% { stroke-dashoffset: 70; opacity: .3; } 40%, 75% { stroke-dashoffset: 0; opacity: .8; } }
 @keyframes logoSpark { 0%, 70%, 100% { opacity: .7; transform: scale(1); } 80% { opacity: 1; transform: scale(1.3); } }
+@keyframes monogramDraw { from { stroke-dashoffset: 1; opacity: .2; } to { stroke-dashoffset: 0; opacity: 1; } }
+@keyframes monogramOrbit { to { transform: rotate(360deg); } }
+@keyframes watermarkBreathe { from { transform: translate(-50%, -50%) rotate(-9deg) scale(1); } to { transform: translate(-50%, -48%) rotate(-5deg) scale(1.025); } }
 @keyframes pixelSignal { 0%, 85%, 100% { opacity: 1; } 90% { opacity: .4; } }
 .motion-paused .cjc-logo-glint, .motion-paused .cjc-logo-spark, .motion-paused .portrait-mode-label::before { animation-play-state: paused; }
+.motion-paused .cjc-logo-orbit, .motion-paused .cjc-logo-letter, .motion-paused .about-copy-watermark { animation-play-state: paused; }
 @media (max-width: 800px) {
   .theme-portrait-hero { aspect-ratio: 1; }
   .about-visual { width: min(100%, 398px); }
@@ -64,9 +83,12 @@ html[data-theme="dark"] .portrait-mode-label::before { border-radius: 0; backgro
   .hero-personal-note { font-size: 12px; }
   .about-interests { gap: 7px; }
   .about-interests li { padding-inline: 10px; }
+  .about-copy-watermark { width: 92%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cjc-logo-glint, .cjc-logo-spark, html[data-theme="dark"] .portrait-mode-label::before { animation: none; }
+  .cjc-logo-glint, .cjc-logo-spark, .cjc-logo-letter, .cjc-logo-orbit, .about-copy-watermark, .theme-portrait.is-pixel::before, html[data-theme="dark"] .portrait-mode-label::before { animation: none; }
   .theme-portrait .portrait-layer, .portrait-pixel-grid, .cjc-logo-field, .about-interests li { transition: none; }
   .about-interests li:hover { transform: none; }
+  .wordmark .cjc-logo { transition: none; }
+  .wordmark:hover .cjc-logo, .wordmark:focus-visible .cjc-logo { transform: none; }
 }

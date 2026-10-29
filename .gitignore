@@ -1,0 +1,17 @@
+# Local credentials and runtime output do not belong on GitHub.
+.env
+.env.*
+!.env.example
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+*.bak
+*.backup
+portfolio-mail-config.json
+config/*local*
+/tmp/
+/output/
+/node_modules/
+.DS_Store
+Thumbs.db

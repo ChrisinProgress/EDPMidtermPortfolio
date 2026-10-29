@@ -26,6 +26,12 @@ function renderIcon(string $iconName): string
         'image' => '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m21 15-6-6-12 12"/>',
         'send' => '<path d="m22 2-7 20-4-9-9-4L22 2ZM22 2 11 13"/>',
         'heart' => '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
+        'gamepad' => '<path d="M7 7h10a4 4 0 0 1 4 3l1 6a3 3 0 0 1-5 3l-3-3h-4l-3 3a3 3 0 0 1-5-3l1-6a4 4 0 0 1 4-3Z"/><path d="M6 11v4m-2-2h4m8-1h.01m3 3h.01M9 7l1-3h4"/>',
+        'anime' => '<path d="m12 3 2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2L12 3Z"/><path d="m20 16 .8 2.2L23 19l-2.2.8L20 22l-.8-2.2L17 19l2.2-.8L20 16ZM3 3v4M1 5h4"/>',
+        'bicycle' => '<circle cx="5" cy="17" r="4"/><circle cx="19" cy="17" r="4"/><path d="m5 17 5-9 5 9H5m5-9h7l2 9M8 5h4m5 3-1-4h3"/>',
+        'dice' => '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7.5 7.5h.01m9 0h.01m-9 9h.01m9 0h.01M12 12h.01" stroke-width="2.8"/>',
+        'compass' => '<circle cx="12" cy="12" r="9"/><path d="m16 8-2.5 5.5L8 16l2.5-5.5L16 8Z"/><path d="M12 1v2m0 18v2M1 12h2m18 0h2"/>',
+        'scissors' => '<circle cx="5.5" cy="6.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><path d="m8 9 13 12M8 15 21 3m-9 9h.01"/>',
     ];
     return '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . ($iconPaths[$iconName] ?? $iconPaths['sparkles']) . '</svg>';
 }
@@ -44,8 +50,8 @@ function getTechnologyIconPath(string $technology): ?string
 
     $technologyAliases = [
         'Adobe Photoshop' => 'Photoshop',
-        'Microsoft SQL Server' => 'MSSQL',
-        'SQL Server' => 'MSSQL',
+        'MSSQL' => 'Microsoft SQL Server',
+        'SQL Server' => 'Microsoft SQL Server',
     ];
     $technologyName = $technologyAliases[$technology] ?? $technology;
 

@@ -45,6 +45,11 @@ body { isolation: isolate; }
 }
 
 .ambient-grid, .ambient-stars { position: absolute; inset: -6%; }
+.ambient-waves { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: #637ba2; stroke-width: 1; opacity: .08; }
+.ambient-waves path { transform-origin: center; animation: ambientWave 20s ease-in-out infinite alternate; }
+.ambient-waves path:nth-child(2) { animation-delay: -8s; }
+.ambient-waves path:nth-child(3) { animation-delay: -14s; }
+html[data-theme="dark"] .ambient-waves { stroke: #b9cafa; opacity: .075; }
 .ambient-grid {
   background-image:
     linear-gradient(rgb(104 135 183 / 11%) 1px, transparent 1px),
@@ -84,6 +89,7 @@ html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
 
 .motion-paused .ambient-orb,
 .motion-paused .ambient-grid,
+.motion-paused .ambient-waves path,
 .motion-paused .ambient-stars,
 .motion-paused .floating-icon { animation-play-state: paused; }
 
@@ -149,6 +155,7 @@ html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
 @keyframes starDrift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, -32px, 0); } }
 @keyframes starPulse { from { opacity: .18; } to { opacity: .36; } }
 @keyframes ambientGridTravel { to { background-position: 88px 88px; } }
+@keyframes ambientWave { from { transform: translateY(-15px) scaleX(1); } to { transform: translateY(22px) scaleX(1.05); } }
 @keyframes badgeFloat { from { translate: 0 0; } to { translate: 0 -8px; } }
 @keyframes themeIconArrive { from { opacity: 0; transform: rotate(-65deg) scale(.5); } to { opacity: 1; transform: rotate(0) scale(1); } }
 @keyframes themeReveal {
@@ -167,7 +174,7 @@ html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ambient-orb, .ambient-grid, .ambient-stars, .floating-icon,
+  .ambient-orb, .ambient-grid, .ambient-stars, .ambient-waves path, .floating-icon,
   .theme-changing .theme-toggle .theme-icon-moon,
   .theme-changing .theme-toggle .theme-icon-sun { animation: none !important; }
   .motion-ready .motion-reveal { opacity: 1 !important; translate: none !important; transition: none !important; }

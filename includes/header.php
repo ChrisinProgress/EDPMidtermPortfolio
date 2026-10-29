@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#ffffff">
     <script src="assets/js/theme.js?v=<?= filemtime(__DIR__ . '/../assets/js/theme.js') ?>"></script>
     <title><?= escapeHtml($pageTitle ?? 'Christopher John Cruz — Developer & Designer') ?></title>
-    <link rel="icon" href="assets/icons/brand/cjc-monogram.svg" type="image/svg+xml">
+    <link rel="icon" href="assets/icons/brand/cjc-monogram.svg?v=<?= filemtime(__DIR__ . '/../assets/icons/brand/cjc-monogram.svg') ?>" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/style.css?v=<?= filemtime(__DIR__ . '/../assets/css/style.css') ?>">
     <link rel="stylesheet" href="assets/css/refinements.css?v=<?= filemtime(__DIR__ . '/../assets/css/refinements.css') ?>">
@@ -21,13 +21,17 @@
     <link rel="stylesheet" href="assets/css/education-timeline.css?v=<?= filemtime(__DIR__ . '/../assets/css/education-timeline.css') ?>">
     <link rel="stylesheet" href="assets/css/motion.css?v=<?= filemtime(__DIR__ . '/../assets/css/motion.css') ?>">
     <link rel="stylesheet" href="assets/css/identity.css?v=<?= filemtime(__DIR__ . '/../assets/css/identity.css') ?>">
+    <link rel="stylesheet" href="assets/css/creative-hero.css?v=<?= filemtime(__DIR__ . '/../assets/css/creative-hero.css') ?>">
+    <link rel="stylesheet" href="assets/css/interests.css?v=<?= filemtime(__DIR__ . '/../assets/css/interests.css') ?>">
     <script src="assets/js/main.js?v=<?= filemtime(__DIR__ . '/../assets/js/main.js') ?>" defer></script>
+    <script src="assets/js/portraitInteraction.js?v=<?= filemtime(__DIR__ . '/../assets/js/portraitInteraction.js') ?>" defer></script>
+    <script src="assets/js/workGallery.js?v=<?= filemtime(__DIR__ . '/../assets/js/workGallery.js') ?>" defer></script>
     <script src="assets/js/toolkitTabs.js?v=<?= filemtime(__DIR__ . '/../assets/js/toolkitTabs.js') ?>" defer></script>
     <script src="assets/js/credentialCollection.js?v=<?= filemtime(__DIR__ . '/../assets/js/credentialCollection.js') ?>" defer></script>
     <script src="assets/js/motion.js?v=<?= filemtime(__DIR__ . '/../assets/js/motion.js') ?>" defer></script>
 </head>
 <body class="<?= !empty($isProjectDetail) ? 'project-detail-page' : 'portfolio-page' ?>">
-<div class="ambient-background" aria-hidden="true"><span class="ambient-orb ambient-orb-one"></span><span class="ambient-orb ambient-orb-two"></span><span class="ambient-orb ambient-orb-three"></span><div class="ambient-grid"></div><div class="ambient-stars"></div></div>
+<div class="ambient-background" aria-hidden="true"><span class="ambient-orb ambient-orb-one"></span><span class="ambient-orb ambient-orb-two"></span><span class="ambient-orb ambient-orb-three"></span><div class="ambient-grid"></div><div class="ambient-stars"></div><svg class="ambient-waves" viewBox="0 0 1440 900" preserveAspectRatio="none"><path d="M-100 220 Q250 130 650 230 T1540 170"/><path d="M-100 580 Q350 700 770 570 T1540 650"/><path d="M-100 800 Q420 720 820 820 T1540 740"/></svg></div>
 <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header" data-site-header>

@@ -3,37 +3,69 @@
   const gallery = document.querySelector("[data-work-gallery]");
   if (!gallery) return;
   const cards = Array.from(gallery.querySelectorAll("[data-project-card]"));
-  const picker = gallery.querySelector("[data-gallery-picker]");
-  const picks = Array.from(gallery.querySelectorAll("[data-project-pick]"));
   const neighbours = Array.from(gallery.querySelectorAll("[data-project-neighbour]"));
-  const filters = Array.from(document.querySelectorAll("[data-filter]"));
-  const previous = gallery.querySelector("[data-project-prev]");
-  const next = gallery.querySelector("[data-project-next]");
-  const status = gallery.querySelector("[data-gallery-status]");
-  const position = gallery.querySelector("[data-gallery-position]");
-  const total = gallery.querySelector("[data-gallery-total]");
-  const results = document.querySelector("[data-results-count]");
+  const choice = gallery.querySelector("[data-gallery-select]");
   const stage = gallery.querySelector("[data-work-stage]");
-  if (!cards.length || !picker || !stage || picks.length !== cards.length) return;
-  let category = "all";
+  const position = gallery.querySelector("[data-gallery-position]");
+  const status = gallery.querySelector("[data-gallery-status]");
+  const results = document.querySelector("[data-results-count]");
+  const filters = Array.from(document.querySelectorAll("[data-filter]"));
+  if (!cards.length || !choice || !stage) return;
+  const options = Array.from(choice.options).map(option => option.cloneNode(true));
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const pointerHover = window.matchMedia("(hover: hover) and (pointer: fine)");
   let collection = cards;
-  let selectedId = cards[0].dataset.projectId;
-  let animation;
-
-  const showProject = (id, { animate = true, focusPick = false } = {}) => {
+  let selected = cards[0].dataset.projectId;
+  let currentAnimation;
+  const flipCard = (card, flipped, focus = false) => {
+    const front = card.querySelector(".project-flip-front");
+    const back = card.querySelector(".project-flip-back");
+    card.classList.toggle("is-flipped", flipped);
+    front.setAttribute("aria-expanded", String(flipped));
+    back.inert = !flipped;
+    front.inert = flipped;
+    if (focus) {
+      const target = flipped ? back.querySelector("a") : front;
+      const restoreFocus = () => {
+        if (!card.hidden && card.classList.contains("is-flipped") === flipped) target.focus({ preventScroll: true });
+      };
+      restoreFocus();
+      // A face can remain unfocusable until its 3D rotation has completed.
+      if (document.activeElement !== target) {
+        card.querySelector(".project-flip-inner").addEventListener("transitionend", restoreFocus, { once: true });
+        window.setTimeout(restoreFocus, reduced.matches ? 0 : 740);
+      }
+    }
+  };
+  cards.forEach(card => {
+    const flipSurface = card.querySelector(".project-flip-card");
+    flipCard(card, false);
+    card.querySelector("[data-project-flip]").addEventListener("click", () => flipCard(card, true, true));
+    card.querySelector("[data-project-unflip]").addEventListener("click", () => flipCard(card, false, true));
+    flipSurface.addEventListener("pointerenter", () => {
+      if (pointerHover.matches) flipCard(card, true);
+    });
+    flipSurface.addEventListener("pointerleave", () => {
+      if (!card.querySelector(".project-flip-back").contains(document.activeElement)) flipCard(card, false);
+    });
+    card.addEventListener("focusout", () => queueMicrotask(() => {
+      if (!card.contains(document.activeElement)) flipCard(card, false);
+    }));
+    card.addEventListener("keydown", event => {
+      if (event.key === "Escape" && card.classList.contains("is-flipped")) {
+        event.preventDefault();
+        flipCard(card, false, true);
+      }
+    });
+  });
+  const showProject = (id, animate = true) => {
     const index = collection.findIndex(card => card.dataset.projectId === id);
     if (index < 0) return;
-    selectedId = id;
+    selected = id;
     cards.forEach(card => {
       const active = card.dataset.projectId === id;
+      if (!active) flipCard(card, false);
       card.hidden = !active;
-      card.classList.toggle("is-featured", active);
-    });
-    picks.forEach(pick => {
-      const active = pick.dataset.projectPick === id;
-      pick.classList.toggle("is-selected", active);
-      pick.setAttribute("aria-pressed", String(active));
-      pick.closest("[data-gallery-item]").hidden = !collection.some(card => card.dataset.projectId === pick.dataset.projectPick);
     });
     neighbours.forEach(neighbour => {
       const neighbourIndex = collection.findIndex(card => card.dataset.projectId === neighbour.dataset.projectNeighbour);
@@ -48,71 +80,45 @@
         neighbour.style.zIndex = String(3 - Math.abs(offset));
       }
     });
-    const title = collection[index].querySelector("h3")?.textContent || "Project";
-    position.textContent = `${String(index + 1).padStart(2, "0")} / ${String(collection.length).padStart(2, "0")}`;
-    status.textContent = `${title}. Project ${index + 1} of ${collection.length}.`;
-    previous.disabled = collection.length < 2;
-    next.disabled = collection.length < 2;
-    if (animate && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      animation?.cancel();
-      animation = collection[index].animate([
-        { opacity: 0, transform: "translateY(14px) scale(.985)" },
-        { opacity: 1, transform: "translateY(0) scale(1)" },
-      ], { duration: 380, easing: "cubic-bezier(.2,.7,.2,1)" });
-    }
-    if (focusPick) {
-      const pick = picks.find(item => item.dataset.projectPick === id);
-      pick?.focus({ preventScroll: true });
-      pick?.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
-    } else {
-      const pick = picks.find(item => item.dataset.projectPick === id);
-      if (pick) picker.scrollTo({
-        left: pick.offsetLeft - picker.offsetLeft - (picker.clientWidth - pick.offsetWidth) / 2,
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
-      });
-    }
+    choice.value = id;
+    position.textContent = String(index + 1).padStart(2, "0") + " / " + String(collection.length).padStart(2, "0");
+    status.textContent = collection[index].querySelector("h3").textContent + ". Project " + (index + 1) + " of " + collection.length + ".";
+    currentAnimation?.cancel();
+    if (animate && !reduced.matches) currentAnimation = collection[index].animate(
+      [{ opacity: .2, translate: "0 12px" }, { opacity: 1, translate: "0 0" }],
+      { duration: 420, easing: "cubic-bezier(.2,.7,.2,1)" }
+    );
   };
-  const moveProject = (direction, focusPick = false) => {
-    const index = collection.findIndex(card => card.dataset.projectId === selectedId);
-    const target = collection[(index + direction + collection.length) % collection.length];
-    if (target) showProject(target.dataset.projectId, { focusPick });
-  };
-  const applyCategory = selectedCategory => {
-    category = selectedCategory;
+  const applyCategory = category => {
     collection = cards.filter(card => category === "all" || card.dataset.category === category);
+    choice.replaceChildren(...options.filter(option => category === "all" || option.dataset.optionCategory === category).map(option => option.cloneNode(true)));
     filters.forEach(filter => {
       const active = filter.dataset.filter === category;
       filter.classList.toggle("is-active", active);
       filter.setAttribute("aria-pressed", String(active));
     });
-    const label = category === "technical" ? "technical " : category === "design" ? "digital design " : "";
-    results.textContent = `${collection.length} ${label}projects`;
-    total.textContent = `${collection.length} works`;
-    const target = collection.find(card => card.dataset.projectId === selectedId) || collection[0];
-    if (target) showProject(target.dataset.projectId, { animate: false });
+    results.textContent = collection.length + (category === "technical" ? " technical projects" : category === "design" ? " digital design projects" : " projects");
+    const target = collection.find(card => card.dataset.projectId === selected) || collection[0];
+    if (target) showProject(target.dataset.projectId, false);
   };
-  previous.addEventListener("click", () => moveProject(-1));
-  next.addEventListener("click", () => moveProject(1));
-  picks.forEach(pick => pick.addEventListener("click", () => showProject(pick.dataset.projectPick)));
   neighbours.forEach(neighbour => neighbour.addEventListener("click", () => {
     showProject(neighbour.dataset.projectNeighbour);
     stage.focus({ preventScroll: true });
   }));
+  choice.addEventListener("change", () => showProject(choice.value));
   filters.forEach(filter => filter.addEventListener("click", () => applyCategory(filter.dataset.filter)));
   gallery.addEventListener("keydown", event => {
-    if (event.target.closest("[data-carousel], a, input, textarea, select")) return;
-    const inPicker = Boolean(event.target.closest("[data-gallery-picker]"));
-    const inNeighbour = Boolean(event.target.closest("[data-project-neighbour]"));
-    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-      event.preventDefault();
-      moveProject(event.key === "ArrowRight" ? 1 : -1, inPicker);
-      if (inNeighbour) stage.focus({ preventScroll: true });
-    } else if (event.key === "Home" || event.key === "End") {
-      event.preventDefault();
-      const card = event.key === "Home" ? collection[0] : collection[collection.length - 1];
-      if (card) showProject(card.dataset.projectId, { focusPick: inPicker });
-      if (inNeighbour) stage.focus({ preventScroll: true });
-    }
+    if (event.target.closest("a, select, [data-project-flip], [data-project-unflip]")) return;
+    const index = collection.findIndex(card => card.dataset.projectId === selected);
+    let targetIndex;
+    if (event.key === "ArrowRight") targetIndex = (index + 1) % collection.length;
+    else if (event.key === "ArrowLeft") targetIndex = (index + collection.length - 1) % collection.length;
+    else if (event.key === "Home") targetIndex = 0;
+    else if (event.key === "End") targetIndex = collection.length - 1;
+    else return;
+    event.preventDefault();
+    showProject(collection[targetIndex].dataset.projectId);
+    stage.focus({ preventScroll: true });
   });
   gallery.classList.add("is-enhanced");
   applyCategory("all");

@@ -1,0 +1,68 @@
+/* The cutout lives in the same space as the copy, instead of inside a photo card. */
+.hero-cutout { padding: 8px 0 30px; }
+.hero-cutout .portrait-frame,
+html[data-theme="dark"] .hero-cutout .portrait-frame {
+  background: transparent; border: 0; box-shadow: none; padding: 0;
+  animation: portraitFloat 7s ease-in-out infinite alternate;
+}
+.hero-cutout .portrait-topline { padding: 0 12px 12px; color: var(--muted); }
+.hero-cutout .portrait-topline > span { max-width: 190px; font-size: 9px; }
+.hero-cutout .theme-portrait-hero,
+html[data-theme="dark"] .hero-cutout .theme-portrait-hero {
+  background: transparent; border-radius: 0; overflow: visible;
+  mask-image: linear-gradient(#000 0%, #000 85%, transparent 100%);
+}
+.hero-cutout .theme-portrait-hero:focus-visible { outline-offset: 8px; border-radius: 45% 45% 15% 15%; }
+.hero-cutout .theme-portrait-hero::after { border: 0; }
+.hero-cutout .theme-portrait-hero .portrait-layer { object-fit: contain; object-position: center bottom; }
+.hero-cutout .theme-portrait-hero .portrait-real { filter: drop-shadow(0 10px 16px #334ca013); }
+.hero-cutout .portrait-pixel-grid { border-radius: 48% 48% 15% 15%; }
+.portrait-aura {
+  position: absolute; inset: 18% -3% 8%; pointer-events: none; z-index: 0;
+  border-radius: 44% 56% 61% 39% / 46% 38% 62% 54%;
+  background: radial-gradient(circle at 40% 35%, #b8d4ff80, #dcd0fc55 52%, transparent 75%);
+  animation: portraitAura 13s ease-in-out infinite alternate;
+}
+html[data-theme="dark"] .portrait-aura {
+  background: radial-gradient(circle at 40% 35%, #3861c755, #7462c330 52%, transparent 75%);
+}
+.hero-cutout .visual-orbit { border-style: dashed; border-color: #7c9bdb40; }
+.hero-cutout .orbit-one { animation: portraitRingPulse 7s ease-in-out infinite alternate; }
+.hero-cutout .orbit-two { animation: portraitRingPulse 9s -4s ease-in-out infinite alternate-reverse; }
+.hero-cutout .orbit-one::before,
+.hero-cutout .orbit-two::before {
+  content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--violet);
+  position: absolute; left: 50%; top: -3px; box-shadow: 0 0 14px #9b8bea66;
+}
+.hero-cutout .orbit-two::before { background: var(--blue); }
+.hero-cutout .visual-sticker { bottom: 70px; left: -20px; rotate: -4deg; transition: rotate .3s, transform .3s; }
+.hero-cutout .visual-sticker:hover { rotate: 0deg; transform: translateY(-4px); }
+.hero-cutout .code-icon { top: 23%; right: -4px; }
+.hero-cutout .design-icon { left: -16px; top: 42%; }
+.hero-portrait-hint { position: absolute; bottom: 8px; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--muted); font-size: 10px; letter-spacing: .02em; }
+.hint-pixels { width: 5px; height: 5px; background: var(--violet); box-shadow: 7px 0 var(--blue), 0 7px var(--blue); margin: 0 6px 5px 0; }
+@keyframes portraitFloat { from { transform: translateY(0); } to { transform: translateY(-7px); } }
+@keyframes portraitAura { from { transform: rotate(-7deg) scale(.98); } to { transform: rotate(7deg) scale(1.035); } }
+@keyframes portraitRingPulse { from { opacity: .35; } to { opacity: .85; } }
+.motion-paused .hero-cutout .portrait-frame, .motion-paused .portrait-aura,
+.motion-paused .hero-cutout .visual-orbit { animation-play-state: paused; }
+@media (max-width: 800px) {
+  .hero-cutout { padding-top: 0; }
+  .hero-cutout .visual-sticker { left: -8px; bottom: 75px; }
+}
+@media (max-width: 480px) {
+  .hero-cutout { width: min(92%, 365px); padding-bottom: 30px; }
+  .hero-cutout .visual-sticker { font-size: 10px; padding: 10px 12px; left: -8px; bottom: 62px; }
+  .hero-cutout .visual-sticker .icon { width: 20px; height: 20px; }
+  .hero-cutout .floating-icon { width: 40px; height: 40px; }
+  .hero-cutout .design-icon { left: -6px; }
+  .hero-cutout .code-icon { right: -6px; }
+  .hero-cutout .portrait-topline { padding-inline: 0; }
+  .hero-cutout .portrait-topline > span { font-size: 8px; max-width: 160px; }
+  .hero-portrait-hint { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-cutout .portrait-frame, .portrait-aura, .hero-cutout .visual-orbit { animation: none; }
+  .hero-cutout .visual-sticker { transition: none; }
+  .hero-cutout .visual-sticker:hover { transform: none; rotate: -4deg; }
+}

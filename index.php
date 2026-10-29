@@ -16,10 +16,10 @@ $technicalCount = count(array_filter($projects, fn($project) => $project['catego
 $designCount = count($projects) - $technicalCount;
 $contactConfig = getContactConfig();
 $profileImage = [
-    'src' => 'assets/images/profile/profilePlaceholder.jpg',
+    'src' => 'assets/images/profile/christopher-cruz-hero-cutout.png',
     'alt' => 'Christopher John Cruz',
 ];
-$pixelProfileImage = 'assets/images/profile/christopher-cruz-pixel-avatar.png';
+$pixelProfileImage = 'assets/images/profile/christopher-cruz-pixel-hero-cutout.png';
 $aboutProfileImage = 'assets/images/profile/christopher-cruz-campus-portrait.png';
 $aboutPixelProfileImage = 'assets/images/profile/christopher-cruz-pixel-campus-portrait.png';
 
@@ -37,17 +37,18 @@ require __DIR__ . '/includes/header.php';
                 <a class="button button-secondary" href="#about">About Me</a>
             </div>
         </div>
-        <div class="hero-visual">
+        <div class="hero-visual hero-cutout">
+            <div class="portrait-aura" aria-hidden="true"></div>
             <div class="visual-orbit orbit-one" aria-hidden="true"></div>
             <div class="visual-orbit orbit-two" aria-hidden="true"></div>
             <div class="portrait-frame">
                 <div class="portrait-topline"><span>THE PERSON BEHIND THE WORK</span><?= renderBrandLogo('portrait') ?></div>
-                <?= renderThemePortrait('hero', $profileImage['src'], $pixelProfileImage, 'Christopher John Cruz, shown as a photograph in light mode and a pixel-art character in dark mode.', true) ?>
-                <div class="portrait-mode-label" aria-hidden="true"><span class="portrait-mode-real">REAL LIFE, CREATIVE MIND</span><span class="portrait-mode-pixel">SAME ME, A PIXEL PERSPECTIVE</span></div>
+                <?= renderThemePortrait('hero', $profileImage['src'], $pixelProfileImage, 'Christopher John Cruz. Hover or activate to reveal my pixel-art portrait.', true) ?>
             </div>
             <span class="floating-icon code-icon" aria-hidden="true"><?= renderIcon('code') ?></span>
             <span class="floating-icon design-icon" aria-hidden="true"><?= renderIcon('penTool') ?></span>
             <div class="visual-sticker"><?= renderIcon('sparkles') ?><span>A little code.<br><strong>A lot of curiosity.</strong></span></div>
+            <span class="hero-portrait-hint" aria-hidden="true"><span class="hint-pixels"></span> Hover or tap for my pixel side</span>
         </div>
         <div class="hero-bottom">
             <a class="scroll-cue" href="#projects"><span class="scroll-icon"><?= renderIcon('arrowDown') ?></span> SCROLL TO EXPLORE</a>

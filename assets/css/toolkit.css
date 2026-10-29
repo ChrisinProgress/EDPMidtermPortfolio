@@ -1,254 +1,54 @@
-/* JavaScript selects one category; without it, every group stays available. */
-.toolkit-section {
-  position: relative;
-  margin-top: 20px;
-  padding-block: 36px 48px;
-}
-
+/* One continuous ribbon: every tool is equally visible, without category controls. */
+.toolkit-section { position: relative; margin-top: 20px; padding-block: 36px 48px; }
 .toolkit-shell { min-width: 0; }
-.toolkit-heading-row { margin-bottom: 24px; }
-.toolkit-heading-row h2 {
-  font-size: clamp(24px, 2.5vw, 30px);
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: -.035em;
-}
-
-.toolkit-tabs { display: none; }
-.is-tabbed .toolkit-tabs {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-  width: fit-content;
-  max-width: 100%;
-  margin-bottom: 18px;
-  padding: 5px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--soft);
-}
-.toolkit-tab {
-  min-height: 44px;
-  padding: 10px 22px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color .2s, background-color .2s, border-color .2s, box-shadow .2s;
-}
-.toolkit-tab:hover { color: var(--ink); background: color-mix(in srgb, var(--white) 65%, transparent); }
-.toolkit-tab[aria-selected="true"] {
-  border-color: color-mix(in srgb, var(--blue) 25%, var(--line));
-  background: var(--white);
-  color: var(--blue);
-  box-shadow: 0 2px 8px #274e850a;
-}
-.toolkit-tab:focus-visible,
-.toolkit-group:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
-
-.toolkit-groups {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-.is-tabbed .toolkit-groups { display: block; }
-
-.toolkit-group {
-  --group-accent: var(--blue);
-  position: relative;
-  min-width: 0;
-  padding: 24px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: var(--white);
-  background: color-mix(in srgb, var(--white) 92%, transparent);
-  box-shadow: 0 5px 25px #274e8505;
-  transition: border-color .25s, background-color .35s, box-shadow .25s;
-}
-
-.toolkit-group-design { --group-accent: var(--violet); }
-.toolkit-group-databases { --group-accent: #169780; }
-.toolkit-group-hosting { --group-accent: #be792b; }
-.toolkit-group:hover {
-  border-color: color-mix(in srgb, var(--group-accent) 45%, var(--line));
-  box-shadow: 0 12px 32px #274e850c;
-}
-
-.toolkit-group-heading {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  margin-bottom: 21px;
-}
-.toolkit-group-heading h3 {
-  min-width: 0;
-  color: var(--ink);
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.5;
-}
-.toolkit-group-icon {
-  display: grid;
-  place-items: center;
-  flex: 0 0 34px;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  color: var(--group-accent);
-  background: color-mix(in srgb, var(--group-accent) 10%, transparent);
-}
-.toolkit-group-icon .icon { width: 18px; height: 18px; }
-.toolkit-group-number {
-  margin-left: auto;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .015em;
-  color: var(--muted);
-  opacity: .7;
-}
-.toolkit-group-copy { max-width: 38ch; margin-bottom: 20px; }
-.toolkit-group-intro {
-  margin: 0 0 10px;
-  color: var(--ink);
-  font-size: clamp(20px, 2.2vw, 26px);
-  font-weight: 500;
-  line-height: 1.35;
-  letter-spacing: -.025em;
-}
-.toolkit-group-description { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.85; }
-.is-tabbed .toolkit-group-body {
-  display: grid;
-  grid-template-columns: minmax(220px, .8fr) minmax(0, 1.5fr);
-  align-items: center;
-  gap: 32px;
-}
-.is-tabbed .toolkit-group-copy { max-width: 32ch; margin-bottom: 0; }
-
-.toolkit-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.toolkit-group-programming .toolkit-list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.is-tabbed .toolkit-list {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.is-tabbed .toolkit-group-programming .toolkit-list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.is-tabbed .toolkit-group:not([hidden]) .toolkit-list { animation: toolkit-panel-enter .28s var(--ease); }
-.toolkit-group[hidden] { display: none; }
-.toolkit-item {
-  display: flex;
-  min-width: 0;
-  min-height: 105px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 14px 7px;
-  border: 1px solid transparent;
-  border-radius: 14px;
-  background: var(--soft);
-  background: color-mix(in srgb, var(--soft) 72%, transparent);
-  transition: transform .25s var(--ease), border-color .25s, background-color .35s;
-}
-.toolkit-item:hover {
-  transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--group-accent) 30%, var(--line));
-  background: color-mix(in srgb, var(--group-accent) 7%, var(--white));
-}
-.toolkit-icon-wrap {
-  display: grid;
-  place-items: center;
-  width: 50px;
-  height: 50px;
-  flex: 0 0 50px;
-  padding: 8px;
-  border-radius: 13px;
-  background: #fff;
-  box-shadow: 0 3px 9px #10294e0c;
-  transition: transform .3s var(--ease), box-shadow .3s;
-}
-.toolkit-icon-wrap img {
-  display: block;
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-.toolkit-item:hover .toolkit-icon-wrap { transform: translateY(-1px) rotate(-4deg); box-shadow: 0 5px 12px #10294e12; }
-.toolkit-item-label {
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.5;
-  text-align: center;
-  overflow-wrap: anywhere;
-}
-
-html[data-theme="dark"] .toolkit-group {
-  background: var(--theme-surface);
-  background: color-mix(in srgb, var(--theme-surface) 90%, transparent);
-  box-shadow: 0 8px 30px #00000012;
-}
-html[data-theme="dark"] .toolkit-group-databases { --group-accent: #6edbc5; }
-html[data-theme="dark"] .toolkit-group-hosting { --group-accent: #e7b46e; }
+.toolkit-heading-row { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
+.toolkit-heading-row .mini-label { margin-bottom: 7px; }
+.toolkit-heading-row h2 { font-size: clamp(24px, 2.5vw, 30px); font-weight: 600; line-height: 1.35; letter-spacing: -.035em; }
+.toolkit-motion-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex: 0 0 auto; min-height: 44px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 100px; background: var(--white); color: var(--muted); font: inherit; font-size: 11px; font-weight: 500; cursor: pointer; transition: border-color .2s, color .2s, transform .2s; }
+.toolkit-motion-toggle[hidden] { display: none; }
+.toolkit-motion-toggle:hover, .toolkit-motion-toggle[aria-pressed="true"] { border-color: var(--blue); color: var(--ink); }
+.toolkit-motion-toggle:active { transform: scale(.96); }
+.toolkit-motion-toggle:focus-visible, .toolkit-viewport:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+.toolkit-motion-symbol { width: 10px; height: 11px; border-inline: 3px solid currentColor; }
+.toolkit-motion-toggle[aria-pressed="true"] .toolkit-motion-symbol { width: 0; height: 0; border: 6px solid transparent; border-right: 0; border-left: 9px solid currentColor; }
+.toolkit-ribbon { position: relative; min-width: 0; padding: 12px 0; }
+.toolkit-ribbon::before, .toolkit-ribbon::after { content: ""; display: block; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--line) 14%, var(--line) 86%, transparent); pointer-events: none; }
+.toolkit-ribbon::before { top: 0; }
+.toolkit-ribbon::after { bottom: 0; }
+.toolkit-viewport { min-width: 0; overflow-x: auto; padding: 8px 2px 14px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; overscroll-behavior-x: contain; }
+.toolkit-strip, .toolkit-list { display: flex; align-items: stretch; gap: 16px; width: max-content; }
+.toolkit-list { flex: 0 0 auto; list-style: none; padding: 0; margin: 0; }
+.toolkit-item { position: relative; display: flex; flex: 0 0 174px; width: 174px; min-height: 170px; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px 12px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--white) 90%, transparent); transition: transform .3s var(--ease), border-color .3s, background-color .35s, box-shadow .3s; }
+.toolkit-item:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--blue) 50%, var(--line)); background: color-mix(in srgb, var(--blue) 5%, var(--white)); box-shadow: 0 12px 22px #496dc514; }
+.toolkit-icon-wrap { display: grid; place-items: center; width: 50px; height: 50px; flex: 0 0 50px; padding: 8px; border-radius: 14px; background: #fff; box-shadow: 0 3px 9px #10294e0c; transition: transform .35s var(--ease), box-shadow .3s; }
+.toolkit-icon-wrap img { display: block; width: 34px; height: 34px; object-fit: contain; user-select: none; -webkit-user-drag: none; }
+.toolkit-item:hover .toolkit-icon-wrap { transform: translateY(-2px) rotate(-8deg) scale(1.07); box-shadow: 0 6px 15px #4266b51c; }
+.toolkit-item-label { max-width: 100%; color: var(--ink); font-size: 12px; font-weight: 500; line-height: 1.45; text-align: center; }
+.toolkit-item-description { max-width: 22ch; color: var(--muted); font-size: 10px; line-height: 1.65; text-align: center; }
+.toolkit-list[data-toolkit-repeat] { display: none; }
+.toolkit-ribbon.is-moving .toolkit-viewport { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 2%, #000 98%, transparent); }
+.toolkit-ribbon.is-moving .toolkit-strip { will-change: transform; animation: toolkit-travel var(--toolkit-loop-duration, 90s) linear infinite; animation-delay: var(--toolkit-loop-delay, 0s); }
+.toolkit-ribbon.is-moving .toolkit-list[data-toolkit-repeat] { display: flex; }
+.toolkit-ribbon.is-moving:hover .toolkit-strip, .toolkit-section.is-background .toolkit-strip, .toolkit-ribbon.is-offscreen .toolkit-strip, .motion-paused .toolkit-strip { animation-play-state: paused; }
 html[data-theme="dark"] .toolkit-item { background: #ffffff04; }
-html[data-theme="dark"] .toolkit-item:hover { background: color-mix(in srgb, var(--group-accent) 9%, var(--theme-surface)); }
-html[data-theme="dark"] .toolkit-group:hover { box-shadow: 0 12px 34px #00000029; }
-/* White icon plates preserve the original dark GitHub, Render, and Vercel marks. */
-html[data-theme="dark"] .toolkit-icon-wrap { box-shadow: 0 3px 14px #00000029; }
-html[data-theme="dark"] .toolkit-tab[aria-selected="true"] { background: var(--theme-surface); box-shadow: 0 2px 10px #00000024; }
-
-@keyframes toolkit-panel-enter {
-  from { opacity: .45; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 1000px) {
-  .toolkit-group { padding: 21px; }
-  .toolkit-list { gap: 10px; }
-  .toolkit-group-programming .toolkit-list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .is-tabbed .toolkit-group-programming .toolkit-list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
-@media (max-width: 760px) {
-  .toolkit-groups { grid-template-columns: 1fr; gap: 16px; }
-  .toolkit-group { padding: 22px; }
-  .toolkit-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-  .toolkit-group-programming .toolkit-list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .toolkit-tab { padding-inline: 18px; }
-  .is-tabbed .toolkit-group-body { grid-template-columns: 1fr; gap: 20px; }
-  .is-tabbed .toolkit-group-copy { max-width: 52ch; }
-  .toolkit-group-intro { font-size: 22px; }
+html[data-theme="dark"] .toolkit-item:hover { background: #a6baff0c; box-shadow: 0 10px 30px #7d9fff0c; }
+html[data-theme="dark"] .toolkit-icon-wrap { box-shadow: 0 3px 14px #0004; }
+@keyframes toolkit-travel { to { transform: translate3d(calc(-1 * var(--toolkit-loop-width, 0px)), 0, 0); } }
+@media (max-width: 700px) {
+  .toolkit-item { flex-basis: 160px; width: 160px; min-height: 165px; }
+  .toolkit-heading-row { align-items: center; }
 }
 @media (max-width: 440px) {
   .toolkit-section { margin-top: 8px; padding-block: 24px 36px; }
-  .toolkit-heading-row { margin-bottom: 20px; }
-  .toolkit-group { padding: 18px 15px; border-radius: 17px; }
-  .toolkit-group-heading { margin-bottom: 16px; }
-  .toolkit-group-intro { font-size: 21px; }
-  .is-tabbed .toolkit-group-body { gap: 18px; }
-  .toolkit-group-programming .toolkit-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .is-tabbed .toolkit-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 5px; }
-  .toolkit-tab { padding-inline: 10px; }
-  .is-tabbed .toolkit-list,
-  .is-tabbed .toolkit-group-programming .toolkit-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .toolkit-list { gap: 9px; }
-  .toolkit-item { min-height: 98px; padding: 12px 5px; gap: 8px; }
-  .toolkit-item-label { font-size: 11px; }
-  .toolkit-icon-wrap { width: 46px; height: 46px; flex-basis: 46px; padding: 7px; }
-  .toolkit-icon-wrap img { width: 32px; height: 32px; }
+  .toolkit-heading-row { align-items: start; flex-direction: column; gap: 13px; margin-bottom: 18px; }
+  .toolkit-motion-toggle { min-height: 44px; padding-inline: 12px; }
+  .toolkit-item { flex-basis: 150px; width: 150px; min-height: 160px; padding: 17px 10px; }
+  .toolkit-strip, .toolkit-list { gap: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .toolkit-group, .toolkit-item, .toolkit-icon-wrap, .toolkit-tab { transition: none; }
-  .is-tabbed .toolkit-group:not([hidden]) .toolkit-list { animation: none; }
+  .toolkit-item, .toolkit-icon-wrap, .toolkit-motion-toggle { transition: none; }
+  .toolkit-ribbon.is-moving .toolkit-strip { animation: none; will-change: auto; }
+  .toolkit-ribbon.is-moving .toolkit-viewport { overflow-x: auto; mask-image: none; }
+  .toolkit-ribbon.is-moving .toolkit-list[data-toolkit-repeat] { display: none; }
   .toolkit-item:hover, .toolkit-item:hover .toolkit-icon-wrap { transform: none; }
 }

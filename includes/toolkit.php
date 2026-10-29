@@ -1,66 +1,28 @@
-<?php
-$toolkitItems = require __DIR__ . '/../data/toolkitData.php';
-$toolkitGroups = [
-    'programming' => [
-        'title' => 'Programming', 'icon' => 'code',
-        'intro' => 'Bringing ideas to life with code.',
-        'description' => 'A growing toolkit of languages and web technologies for my coursework, interfaces, and system projects.',
-    ],
-    'design' => [
-        'title' => 'Design', 'icon' => 'penTool',
-        'intro' => 'Giving ideas a visual shape.',
-        'description' => 'Tools for exploring layouts, editing images, and creating the visuals you see in my design work.',
-    ],
-    'databases' => [
-        'title' => 'Databases', 'icon' => 'layers',
-        'intro' => 'Making information make sense.',
-        'description' => 'My database toolkit for organizing records, connecting tables, and practicing SQL.',
-    ],
-    'hosting' => [
-        'title' => 'Hosting', 'icon' => 'layout',
-        'intro' => 'Taking the next step: sharing my work.',
-        'description' => 'Platforms for managing code, sharing projects, and exploring web deployment.',
-    ],
-];
-?>
-<section class="toolkit-section" data-toolkit-tabs aria-labelledby="toolkit-title">
+<?php $toolkitItems = require __DIR__ . '/../data/toolkitData.php'; ?>
+<section class="toolkit-section" data-toolkit-collection aria-labelledby="toolkit-title">
     <div class="section-shell toolkit-shell">
         <div class="toolkit-heading-row">
-            <h2 id="toolkit-title">My creative toolkit<span class="heading-dot">.</span></h2>
+            <div>
+                <p class="mini-label">THINGS I BUILD WITH</p>
+                <h2 id="toolkit-title">My creative toolkit<span class="heading-dot">.</span></h2>
+            </div>
+            <button class="toolkit-motion-toggle" data-toolkit-motion-toggle type="button" aria-pressed="false" aria-label="Pause toolkit motion" hidden><span class="toolkit-motion-symbol" aria-hidden="true"></span><span data-toolkit-motion-label>Pause motion</span></button>
         </div>
-        <div class="toolkit-tabs" role="tablist" aria-label="Choose a toolkit category">
-            <?php foreach ($toolkitGroups as $toolkitGroupKey => $toolkitGroup): ?>
-                <button class="toolkit-tab" id="toolkit-tab-<?= escapeHtml($toolkitGroupKey) ?>" data-toolkit-tab="<?= escapeHtml($toolkitGroupKey) ?>" type="button" role="tab" aria-controls="toolkit-panel-<?= escapeHtml($toolkitGroupKey) ?>" aria-selected="<?= $toolkitGroupKey === 'programming' ? 'true' : 'false' ?>" tabindex="<?= $toolkitGroupKey === 'programming' ? '0' : '-1' ?>"><?= escapeHtml($toolkitGroup['title']) ?></button>
-            <?php endforeach; ?>
-        </div>
-        <div class="toolkit-groups">
-            <?php foreach ($toolkitGroups as $toolkitGroupKey => $toolkitGroup): ?>
-                <?php $toolkitGroupCount = count(array_filter($toolkitItems, fn($item) => $item['group'] === $toolkitGroupKey)); ?>
-                <section class="toolkit-group toolkit-group-<?= escapeHtml($toolkitGroupKey) ?>" id="toolkit-panel-<?= escapeHtml($toolkitGroupKey) ?>" data-toolkit-panel="<?= escapeHtml($toolkitGroupKey) ?>" aria-labelledby="toolkit-<?= escapeHtml($toolkitGroupKey) ?>-title">
-                    <div class="toolkit-group-heading">
-                        <span class="toolkit-group-icon" aria-hidden="true"><?= renderIcon($toolkitGroup['icon']) ?></span>
-                        <h3 id="toolkit-<?= escapeHtml($toolkitGroupKey) ?>-title"><?= escapeHtml($toolkitGroup['title']) ?></h3>
-                        <span class="toolkit-group-number"><?= $toolkitGroupCount ?> tools</span>
-                    </div>
-                    <div class="toolkit-group-body">
-                        <div class="toolkit-group-copy">
-                            <p class="toolkit-group-intro"><?= escapeHtml($toolkitGroup['intro']) ?></p>
-                            <p class="toolkit-group-description"><?= escapeHtml($toolkitGroup['description']) ?></p>
-                        </div>
-                        <ul class="toolkit-list" aria-label="<?= escapeHtml($toolkitGroup['title']) ?> tools">
+        <p class="sr-only" id="toolkit-motion-help">All 16 tools appear in one continuous row. Hover to pause, or use Pause motion to scroll through the tools. Keyboard focus and touch also pause the row.</p>
+        <div class="toolkit-ribbon" data-toolkit-row>
+            <div class="toolkit-viewport" data-toolkit-viewport tabindex="0" role="region" aria-label="My tools and technologies" aria-describedby="toolkit-motion-help">
+                <div class="toolkit-strip" data-toolkit-strip>
+                    <ul class="toolkit-list" data-toolkit-list aria-label="Tools and technologies">
                         <?php foreach ($toolkitItems as $toolkitItem): ?>
-                            <?php if ($toolkitItem['group'] !== $toolkitGroupKey) { continue; } ?>
-                            <li class="toolkit-item">
-                                <span class="toolkit-icon-wrap">
-                                    <img src="<?= escapeHtml($toolkitItem['icon']) ?>" alt="" aria-hidden="true" width="36" height="36" loading="lazy" decoding="async" draggable="false">
-                                </span>
+                            <li class="toolkit-item" data-toolkit-item>
+                                <span class="toolkit-icon-wrap"><img src="<?= escapeHtml($toolkitItem['icon']) ?>" alt="" aria-hidden="true" width="36" height="36" loading="lazy" decoding="async" draggable="false"></span>
                                 <span class="toolkit-item-label"><?= escapeHtml($toolkitItem['name']) ?></span>
+                                <span class="toolkit-item-description"><?= escapeHtml($toolkitItem['description']) ?></span>
                             </li>
                         <?php endforeach; ?>
-                        </ul>
-                    </div>
-                </section>
-            <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </section>

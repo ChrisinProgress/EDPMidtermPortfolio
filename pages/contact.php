@@ -65,7 +65,6 @@
                 <?= renderIcon('send') ?>
             </button>
             <p class="form-footnote">Fields marked with <span>*</span> are required.</p>
-            <p class="form-footnote">Messages are forwarded through <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer">FormSubmit</a>.</p>
         </form>
     </div>
 </section>

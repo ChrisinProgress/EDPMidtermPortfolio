@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: cjc-portfolio
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    autoDeployTrigger: commit
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: PORTFOLIO_CONTACT_ENABLED
+        value: "true"
