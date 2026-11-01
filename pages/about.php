@@ -8,7 +8,7 @@
         </div>
         <div class="about-layout">
             <div class="about-visual">
-                <?= renderThemePortrait('about', $aboutProfileImage, $aboutPixelProfileImage, 'Christopher John Cruz on a university campus. Hover or activate to reveal my pixel-art portrait.') ?>
+                <?php require __DIR__ . '/../includes/aboutPhotoStack.php'; ?>
                 <div class="about-photo-caption">
                     <span class="about-monogram"><?= renderBrandLogo('about') ?></span>
                     <span>
@@ -20,10 +20,9 @@
             <div class="about-copy">
                 <span class="about-copy-watermark" aria-hidden="true"><?= renderBrandLogo('watermark') ?></span>
                 <p class="mini-label">WHO I AM</p>
-                <h3>A little about the person<br>behind the projects.</h3>
-                <p>I'm Christopher John Cruz, a 20-year-old third-year Information Technology student at Pamantasan ng Lungsod ng Valenzuela.</p>
-                <p>I enjoy both the logic of programming and the freedom of visual design. My academic work brings those interests together through booking and management systems, mobile app interfaces, and brand identities. I like making screens clear and giving each project a visual character of its own.</p>
-                <p>Outside my projects, I spend time gaming, watching anime, biking, and experimenting with edits. I'm still learning, and each piece I make is a chance to try an idea, solve a problem, and improve the details.</p>
+                <h3>Curious by nature.<br>Creative through code.</h3>
+                <p>I'm Christopher John Cruz, a third-year Information Technology student at Pamantasan ng Lungsod ng Valenzuela. I enjoy bringing development and design together through websites, booking and management systems, mobile interfaces, and graphics.</p>
+                <p>I learn by building, testing, and refining my academic projects, with a focus on clear screens and useful features. Outside my work, I recharge through gaming, anime, biking, board games, and exploring new places. Editing photos and visuals gives me another way to experiment and express ideas.</p>
                 <div class="about-interest-label">WHEN I'M AWAY FROM THE KEYBOARD</div>
                 <ul class="about-interests interest-grid" aria-label="My interests">
                     <?php

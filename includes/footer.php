@@ -3,7 +3,7 @@
         <div class="footer-top" data-reveal>
             <div class="footer-brand">
                 <a class="wordmark" href="<?= escapeHtml($navigationPrefix ?? '') ?>#home" aria-label="CJC — Back to Home"><?= renderBrandLogo('footer') ?></a>
-                <p>Thoughtful design. Useful code.<br>Always learning.</p>
+                <p>Thoughtful design. Useful code.<br>Always growing.</p>
             </div>
             <div class="footer-connect">
                 <p class="footer-connect-label">LET'S STAY CONNECTED</p>
@@ -30,7 +30,7 @@
         </div>
         <div class="footer-bottom">
             <p>&copy; 2026 Christopher John Cruz. All rights reserved.</p>
-            <a class="back-to-top" href="<?= escapeHtml($navigationPrefix ?? '') ?>#home">Back to top <?= renderIcon('arrowUp') ?></a>
+            <a class="back-to-top" href="<?= escapeHtml($navigationPrefix ?? '') ?>#home"><span>Back to top</span><span class="back-top-bubble"><?= renderIcon('arrowUp') ?></span></a>
         </div>
     </div>
 </footer>

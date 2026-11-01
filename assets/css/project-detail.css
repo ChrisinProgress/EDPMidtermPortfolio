@@ -14,6 +14,7 @@
 .detail-repository { display: inline-flex; align-items: center; gap: 9px; margin-left: auto; min-height: 44px; padding: 10px 16px; font-size: 12px; border: 1px solid var(--line); border-radius: 100px; background: var(--soft); transition: border-color .25s, transform .25s; }
 .detail-repository:hover { transform: translateY(-3px); border-color: var(--blue); }
 .detail-repository .icon { width: 18px; height: 18px; }
+.detail-design-link img { display: block; width: 18px; height: 18px; object-fit: contain; }
 .detail-image-gallery { margin-top: 46px; }
 .detail-gallery-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
 .detail-gallery-heading h2 { font-size: 26px; letter-spacing: -.03em; }

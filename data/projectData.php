@@ -10,7 +10,7 @@ return [
         'repositoryUrl' => 'https://github.com/ChrisinProgress/RecipeManagementSystem',
         'title' => 'Recipe Management System',
         'category' => 'technical',
-        'categoryLabel' => 'Technical',
+        'categoryLabel' => 'TECHNICAL',
         'technologies' => ['Java'],
         'description' => 'Stores recipes, ingredients, and preparation steps.',
         'images' => [
@@ -26,7 +26,7 @@ return [
         'repositoryUrl' => 'https://github.com/ChrisinProgress/IM101GroupPortfolio',
         'title' => 'Group Portfolio',
         'category' => 'technical',
-        'categoryLabel' => 'Technical',
+        'categoryLabel' => 'TECHNICAL',
         'technologies' => ['C#'],
         'description' => "Presents our IM team's profiles, skills, and projects.",
         'images' => [
@@ -42,7 +42,7 @@ return [
         'repositoryUrl' => 'https://github.com/ChrisinProgress/AirplanePassengerQueueSystem',
         'title' => 'Airplane Passenger Queue System',
         'category' => 'technical',
-        'categoryLabel' => 'Technical',
+        'categoryLabel' => 'TECHNICAL',
         'technologies' => ['Java'],
         'description' => 'Simulates passenger processing with a first-in, first-out queue.',
         'images' => [
@@ -57,7 +57,7 @@ return [
         'repositoryUrl' => 'https://github.com/ChrisinProgress/TricycleRouteNavigator',
         'title' => 'Tricycle Route Navigator',
         'category' => 'technical',
-        'categoryLabel' => 'Technical',
+        'categoryLabel' => 'TECHNICAL',
         'technologies' => ['Java'],
         'description' => 'Displays tricycle short routes and destinations.',
         'images' => [
@@ -72,7 +72,7 @@ return [
         'repositoryUrl' => 'https://github.com/ChrisinProgress/DentalClinicManagementSystem',
         'title' => 'Dental Clinic Management System',
         'category' => 'technical',
-        'categoryLabel' => 'Technical',
+        'categoryLabel' => 'TECHNICAL',
         'technologies' => ['PHP', 'CSS'],
         'description' => 'Manages clinic information and patient records.',
         'images' => [
@@ -91,7 +91,7 @@ return [
         'repositoryUrl' => 'https://github.com/ChrisinProgress/DentalClinicBookingSystem',
         'title' => 'Dental Clinic Booking System',
         'category' => 'technical',
-        'categoryLabel' => 'Technical',
+        'categoryLabel' => 'TECHNICAL',
         'technologies' => ['HTML', 'CSS', 'JavaScript'],
         'description' => 'Lets patients browse services and book appointments.',
         'images' => [
@@ -105,9 +105,10 @@ return [
     ],
     [
         'id' => 'savemore-digital-bank',
+        'designUrl' => 'https://www.figma.com/design/2n03Of7S9qIciJl4Z7PFqG/CRUZ--Christopher-John-H.---BSIT-1-4---SaveMore?node-id=229-2255&t=131EbWlM0MKeidWx-1',
         'title' => 'SaveMore Digital Bank',
         'category' => 'design',
-        'categoryLabel' => 'Digital Design',
+        'categoryLabel' => 'DIGITAL DESIGN',
         'technologies' => ['Figma'],
         'description' => 'Banking UI concept for accounts, savings, and transactions.',
         'images' => [
@@ -121,9 +122,10 @@ return [
     ],
     [
         'id' => 'algoverse-learning-app',
+        'designUrl' => 'https://www.figma.com/design/bEfbQIohpLffKdgNnS3T0h/Group-2_Cruz_Lim_Pagaran_BSIT1-4?node-id=2-5&t=qieNTsZoz8pAcGyV-1',
         'title' => 'AlgoVerse Learning App',
         'category' => 'design',
-        'categoryLabel' => 'Digital Design',
+        'categoryLabel' => 'DIGITAL DESIGN',
         'technologies' => ['Figma'],
         'description' => 'Learning app UI concept for algorithms and programming.',
         'images' => [
@@ -137,7 +139,7 @@ return [
         'id' => 'cozy-grind-brand-identity',
         'title' => 'Cozy Grind Brand Identity',
         'category' => 'design',
-        'categoryLabel' => 'Digital Design',
+        'categoryLabel' => 'DIGITAL DESIGN',
         'technologies' => ['Adobe Photoshop', 'Canva'],
         'description' => 'Coffee brand identity featuring logos, colors, and typography.',
         'images' => [
@@ -171,7 +173,7 @@ return [
         'id' => 'artist-profile',
         'title' => 'Artist Profile',
         'category' => 'design',
-        'categoryLabel' => 'Digital Design',
+        'categoryLabel' => 'DIGITAL DESIGN',
         'technologies' => ['Adobe Photoshop'],
         'description' => "Highlights me as an artist's identity and creative work.",
         'images' => [
@@ -205,7 +207,7 @@ return [
         'id' => 'social-media-advertisement',
         'title' => 'Social Media Advertisement',
         'category' => 'design',
-        'categoryLabel' => 'Digital Design',
+        'categoryLabel' => 'DIGITAL DESIGN',
         'technologies' => ['Adobe Photoshop', 'Canva'],
         'description' => 'Promotional graphics with clear messaging and consistent branding.',
         'images' => [

@@ -21,7 +21,6 @@ $profileImage = [
 ];
 $pixelProfileImage = 'assets/images/profile/christopher-cruz-pixel-hero-cutout.png';
 $aboutProfileImage = 'assets/images/profile/christopher-cruz-campus-portrait.png';
-$aboutPixelProfileImage = 'assets/images/profile/christopher-cruz-pixel-campus-portrait.png';
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -30,11 +29,10 @@ require __DIR__ . '/includes/header.php';
         <div class="hero-copy">
             <p class="eyebrow"><span class="accent-line"></span> IT STUDENT <span class="label-dot">&bull;</span> DEVELOPER <span class="label-dot">&bull;</span> DESIGNER</p>
             <h1 id="home-title"><span class="hero-greeting">Hi, I'm</span> Christopher<br> John <span class="name-accent">Cruz.</span></h1>
-            <p class="hero-description">I'm a third-year Information Technology student at PLV who enjoys turning ideas into useful websites, thoughtful interfaces, and visual designs.</p>
-            <p class="hero-personal-note">From <strong>system prototypes to posters</strong>, I learn by building, testing, and refining the details. This is where I share that progress.</p>
+            <p class="hero-description">I'm a third-year Information Technology student at PLV who enjoys building practical web systems and creating UI/UX and graphic designs. My work brings useful features and clear visuals together to make everyday tasks easier.</p>
             <div class="hero-actions">
-                <a class="button button-primary" href="#projects">View Projects</a>
-                <a class="button button-secondary" href="#about">About Me</a>
+                <a class="button button-primary" href="#projects">View Projects <?= renderIcon('arrowUpRight') ?></a>
+                <a class="button button-secondary" href="#about">About Me <?= renderIcon('arrowRight') ?></a>
             </div>
         </div>
         <div class="hero-visual hero-cutout">
@@ -51,7 +49,7 @@ require __DIR__ . '/includes/header.php';
             <span class="hero-portrait-hint" aria-hidden="true"><span class="hint-pixels"></span> Hover or tap for my pixel side</span>
         </div>
         <div class="hero-bottom">
-            <a class="scroll-cue" href="#projects"><span class="scroll-icon"><?= renderIcon('arrowDown') ?></span> SCROLL TO EXPLORE</a>
+            <a class="scroll-cue" href="#projects"><span class="scroll-mouse" aria-hidden="true"><span></span></span><span>Scroll to explore</span><span class="scroll-cue-arrow"><?= renderIcon('arrowDown') ?></span></a>
         </div>
     </section>
     <?php require __DIR__ . '/includes/toolkit.php'; ?>

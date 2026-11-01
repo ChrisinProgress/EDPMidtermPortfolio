@@ -14,6 +14,7 @@
         <?php foreach ($credentials as $credentialIndex => $credential): ?>
             <article class="credential-card" style="--credential-order: <?= (int) $credentialIndex ?>" data-credential-card role="listitem" aria-labelledby="credential-<?= escapeHtml($credential['id']) ?>">
                 <span class="credential-node" aria-hidden="true"><?= str_pad((string) ($credentialIndex + 1), 2, '0', STR_PAD_LEFT) ?></span>
+                <div class="credential-panel">
                 <a class="credential-preview" href="<?= escapeHtml($credential['image']['src']) ?>" data-preview data-preview-title="<?= escapeHtml($credential['title']) ?>" data-preview-label="Certificate" aria-label="Preview <?= escapeHtml($credential['title']) ?> certificate" aria-haspopup="dialog">
                     <img src="<?= escapeHtml($credential['image']['src']) ?>" alt="<?= escapeHtml($credential['image']['alt']) ?>" width="<?= $credential['image']['width'] ?>" height="<?= $credential['image']['height'] ?>" loading="lazy" decoding="async">
                 </a>
@@ -40,6 +41,7 @@
                             <p class="credential-preview-hint">Select the certificate to open the full-size image.</p>
                         </div>
                     </details>
+                </div>
                 </div>
             </article>
         <?php endforeach; ?>

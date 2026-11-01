@@ -1,0 +1,27 @@
+/* Three real snapshots turn like a small stack of printed photographs. */
+.about-photo-collection { min-width: 0; }
+.about-photo-stack { position: relative; isolation: isolate; display: block; width: 100%; aspect-ratio: 3 / 4; padding: 0; border: 0; border-radius: 10px; background: var(--soft); overflow: hidden; cursor: pointer; }
+.about-photo-stack:focus-visible { outline: 3px solid var(--blue); outline-offset: 5px; }
+.about-stack-photo { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: inherit; object-fit: cover; opacity: 0; transform: scale(1.04) rotate(1deg); transition: transform .6s var(--ease), opacity .5s ease; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+.about-stack-photo.is-current { z-index: 1; opacity: 1; transform: scale(1) rotate(0deg); }
+.about-stack-photo.is-leaving { z-index: 2; opacity: 1; transform-origin: 15% 100%; animation: about-photo-turn-away .58s cubic-bezier(.35, 0, .2, 1) forwards; }
+.about-photo-stack:not([aria-busy="true"]):hover .about-stack-photo.is-current { transform: scale(1.025); }
+.about-photo-turn { position: absolute; z-index: 3; right: 14px; bottom: 14px; display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid #ffffff70; border-radius: 12px; color: #fff; background: #10213a75; backdrop-filter: blur(8px); transition: transform .3s, background-color .3s; pointer-events: none; }
+.about-photo-turn .icon { width: 19px; height: 19px; }
+.about-photo-stack:hover .about-photo-turn { transform: rotate(-8deg) translateY(-2px); background: #10213aa8; }
+.about-photo-browse { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px 12px; padding: 12px 4px 4px; color: var(--muted); font-size: 10px; line-height: 1.7; }
+.about-photo-count { display: inline-flex; gap: 7px; align-items: center; font-variant-numeric: tabular-nums; color: var(--ink); }
+.about-photo-count span { color: var(--muted); }
+.about-photo-fallback { display: flex; flex-wrap: wrap; gap: 12px; padding: 12px 4px; font-size: 11px; }
+.about-photo-fallback a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+@keyframes about-photo-turn-away { from { opacity: 1; transform: translateX(0) rotate(0deg) scale(1); } to { opacity: 0; transform: translateX(64%) rotate(14deg) scale(.94); } }
+.motion-paused .about-stack-photo.is-leaving { animation-play-state: paused; }
+@media (max-width: 480px) {
+  .about-photo-browse { font-size: 9px; padding-inline: 2px; }
+  .about-photo-turn { width: 36px; height: 36px; right: 11px; bottom: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-stack-photo, .about-photo-turn { transition: none; }
+  .about-stack-photo.is-leaving { animation: none; opacity: 0; }
+  .about-photo-stack:not([aria-busy="true"]):hover .about-stack-photo.is-current, .about-photo-stack:hover .about-photo-turn { transform: none; }
+}

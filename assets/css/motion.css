@@ -108,11 +108,11 @@ html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
 /* The class is added only when the observer is ready; no-JS content stays visible. */
 .motion-ready .hero-copy, .motion-ready .hero-visual { animation: none; }
 .motion-ready .motion-reveal {
-  transition: opacity .6s ease var(--reveal-delay, 0ms), translate .6s var(--ease) var(--reveal-delay, 0ms),
+  transition: opacity .6s ease var(--reveal-delay, 0ms), translate .6s var(--ease) var(--reveal-delay, 0ms), scale .7s var(--ease) var(--reveal-delay, 0ms),
     border-color .22s ease, background-color .22s ease, box-shadow .22s ease, transform .25s var(--ease);
 }
-.motion-ready .motion-reveal:not(.is-revealed) { opacity: 0; translate: 0 18px; }
-.motion-ready .motion-reveal.is-revealed { opacity: 1; translate: 0 0; }
+.motion-ready .motion-reveal:not(.is-revealed) { opacity: 0; translate: 0 22px; scale: .95; }
+.motion-ready .motion-reveal.is-revealed { opacity: 1; translate: 0 0; scale: var(--scroll-zoom, 1); }
 
 .button .icon, .contact-link-icon, .theme-toggle { transition: transform .25s var(--ease), border-color .25s, background-color .25s; }
 .button:hover > .icon, .button:focus-visible > .icon { transform: translate(3px, -2px); }
@@ -129,7 +129,7 @@ html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
 .theme-changing body,
 .theme-changing :where(.site-header, .navigation, .site-footer, .about-section, .portrait-frame, .floating-icon,
   .visual-sticker, .project-card, .project-carousel, .toolkit-group, .toolkit-item, .education-card,
-  .education-entry, .skill-card, .credential-card, .credential-content, .contact-form, .lightbox,
+  .education-entry, .skill-card, .credential-panel, .credential-content, .contact-form, .lightbox,
   .form-field input, .form-field textarea, .button-secondary, .filter-button, .icon-button,
   .theme-toggle, .form-status, .contact-link-icon, .skill-icon, .ambient-background, .ambient-stars) {
   transition: background-color .38s ease, color .38s ease, border-color .38s ease, box-shadow .38s ease,
@@ -177,7 +177,7 @@ html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
   .ambient-orb, .ambient-grid, .ambient-stars, .ambient-waves path, .floating-icon,
   .theme-changing .theme-toggle .theme-icon-moon,
   .theme-changing .theme-toggle .theme-icon-sun { animation: none !important; }
-  .motion-ready .motion-reveal { opacity: 1 !important; translate: none !important; transition: none !important; }
+  .motion-ready .motion-reveal { opacity: 1 !important; translate: none !important; scale: none !important; transition: none !important; }
   .theme-view-transition::view-transition-old(root),
   .theme-view-transition::view-transition-new(root) { animation: none !important; }
   .button:hover > .icon, .button:focus-visible > .icon,

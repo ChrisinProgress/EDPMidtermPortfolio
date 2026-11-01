@@ -1,9 +1,24 @@
-/* One continuous ribbon: every tool is equally visible, without category controls. */
+/* All tools share a moving ribbon; category buttons switch to a still grid. */
 .toolkit-section { position: relative; margin-top: 20px; padding-block: 36px 48px; }
 .toolkit-shell { min-width: 0; }
 .toolkit-heading-row { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
 .toolkit-heading-row .mini-label { margin-bottom: 7px; }
 .toolkit-heading-row h2 { font-size: clamp(24px, 2.5vw, 30px); font-weight: 600; line-height: 1.35; letter-spacing: -.035em; }
+.toolkit-filter-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+.toolkit-filter-row[hidden] { display: none; }
+.toolkit-filters { display: flex; flex-wrap: wrap; align-items: stretch; gap: 4px; padding-bottom: 1px; border-bottom: 1px solid var(--line); }
+.toolkit-filter { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 50px; padding: 12px 14px; color: var(--muted); background: transparent; border: 0; border-radius: 10px 10px 0 0; font: inherit; font-size: 12px; font-weight: 500; line-height: 1.5; cursor: pointer; transition: color .2s, background-color .2s; }
+.toolkit-filter::after { content: ""; position: absolute; bottom: -2px; left: 14px; right: 14px; height: 3px; border-radius: 4px; background: linear-gradient(90deg, var(--blue), var(--violet)); opacity: 0; transform: scaleX(.25); transition: transform .3s var(--ease), opacity .25s; }
+.toolkit-filter:hover { color: var(--ink); background: color-mix(in srgb, var(--blue) 4%, transparent); }
+.toolkit-filter[aria-pressed="true"] { color: var(--ink); background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--blue) 6%, transparent)); }
+.toolkit-filter[aria-pressed="true"]::after { opacity: 1; transform: scaleX(1); box-shadow: 0 3px 12px color-mix(in srgb, var(--blue) 16%, transparent); }
+.toolkit-filter-symbol { display: inline-flex; color: var(--muted); transition: color .2s, transform .3s var(--ease); }
+.toolkit-filter-symbol .icon { width: 17px; height: 17px; }
+.toolkit-filter:hover .toolkit-filter-symbol, .toolkit-filter[aria-pressed="true"] .toolkit-filter-symbol { color: var(--blue); transform: translateY(-2px); }
+.toolkit-filter-count { display: grid; place-items: center; min-width: 19px; height: 19px; padding-inline: 4px; border-radius: 5px; color: var(--muted); background: color-mix(in srgb, var(--ink) 5%, transparent); font-size: 9px; line-height: 1; font-variant-numeric: tabular-nums; }
+.toolkit-filter[aria-pressed="true"] .toolkit-filter-count { color: var(--blue); background: color-mix(in srgb, var(--blue) 10%, transparent); }
+.toolkit-filter:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.toolkit-results { flex: 0 0 auto; margin-bottom: 12px; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .toolkit-motion-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex: 0 0 auto; min-height: 44px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 100px; background: var(--white); color: var(--muted); font: inherit; font-size: 11px; font-weight: 500; cursor: pointer; transition: border-color .2s, color .2s, transform .2s; }
 .toolkit-motion-toggle[hidden] { display: none; }
 .toolkit-motion-toggle:hover, .toolkit-motion-toggle[aria-pressed="true"] { border-color: var(--blue); color: var(--ink); }
@@ -18,7 +33,8 @@
 .toolkit-viewport { min-width: 0; overflow-x: auto; padding: 8px 2px 14px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; overscroll-behavior-x: contain; }
 .toolkit-strip, .toolkit-list { display: flex; align-items: stretch; gap: 16px; width: max-content; }
 .toolkit-list { flex: 0 0 auto; list-style: none; padding: 0; margin: 0; }
-.toolkit-item { position: relative; display: flex; flex: 0 0 174px; width: 174px; min-height: 170px; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px 12px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--white) 90%, transparent); transition: transform .3s var(--ease), border-color .3s, background-color .35s, box-shadow .3s; }
+.toolkit-item { position: relative; display: flex; flex: 0 0 174px; width: 174px; min-height: 170px; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 18px 12px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--white) 90%, transparent); transition: transform .3s var(--ease), border-color .3s, background-color .35s, box-shadow .3s; }
+.toolkit-item[hidden] { display: none; }
 .toolkit-item:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--blue) 50%, var(--line)); background: color-mix(in srgb, var(--blue) 5%, var(--white)); box-shadow: 0 12px 22px #496dc514; }
 .toolkit-icon-wrap { display: grid; place-items: center; width: 50px; height: 50px; flex: 0 0 50px; padding: 8px; border-radius: 14px; background: #fff; box-shadow: 0 3px 9px #10294e0c; transition: transform .35s var(--ease), box-shadow .3s; }
 .toolkit-icon-wrap img { display: block; width: 34px; height: 34px; object-fit: contain; user-select: none; -webkit-user-drag: none; }
@@ -30,6 +46,10 @@
 .toolkit-ribbon.is-moving .toolkit-strip { will-change: transform; animation: toolkit-travel var(--toolkit-loop-duration, 90s) linear infinite; animation-delay: var(--toolkit-loop-delay, 0s); }
 .toolkit-ribbon.is-moving .toolkit-list[data-toolkit-repeat] { display: flex; }
 .toolkit-ribbon.is-moving:hover .toolkit-strip, .toolkit-section.is-background .toolkit-strip, .toolkit-ribbon.is-offscreen .toolkit-strip, .motion-paused .toolkit-strip { animation-play-state: paused; }
+.toolkit-section.is-filtered .toolkit-viewport { overflow: visible; padding-inline: 0; mask-image: none; }
+.toolkit-section.is-filtered .toolkit-strip { display: block; width: 100%; animation: none; transform: none; will-change: auto; }
+.toolkit-section.is-filtered .toolkit-list { display: grid; width: 100%; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 16px; }
+.toolkit-section.is-filtered .toolkit-item { width: auto; min-width: 0; }
 html[data-theme="dark"] .toolkit-item { background: #ffffff04; }
 html[data-theme="dark"] .toolkit-item:hover { background: #a6baff0c; box-shadow: 0 10px 30px #7d9fff0c; }
 html[data-theme="dark"] .toolkit-icon-wrap { box-shadow: 0 3px 14px #0004; }
@@ -37,6 +57,10 @@ html[data-theme="dark"] .toolkit-icon-wrap { box-shadow: 0 3px 14px #0004; }
 @media (max-width: 700px) {
   .toolkit-item { flex-basis: 160px; width: 160px; min-height: 165px; }
   .toolkit-heading-row { align-items: center; }
+  .toolkit-filter-row { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .toolkit-filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
+  .toolkit-filter { padding-inline: 9px; }
+  .toolkit-results { margin-bottom: 0; }
 }
 @media (max-width: 440px) {
   .toolkit-section { margin-top: 8px; padding-block: 24px 36px; }
@@ -44,11 +68,19 @@ html[data-theme="dark"] .toolkit-icon-wrap { box-shadow: 0 3px 14px #0004; }
   .toolkit-motion-toggle { min-height: 44px; padding-inline: 12px; }
   .toolkit-item { flex-basis: 150px; width: 150px; min-height: 160px; padding: 17px 10px; }
   .toolkit-strip, .toolkit-list { gap: 12px; }
+  .toolkit-filter { justify-content: flex-start; gap: 6px; font-size: 10px; padding-inline: 8px; }
+  .toolkit-filter-symbol .icon { width: 15px; height: 15px; }
+  .toolkit-filter-count { margin-left: auto; }
+  .toolkit-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+  .toolkit-filter[data-toolkit-filter="all"] { grid-column: 1 / -1; justify-content: center; }
+  .toolkit-filter[data-toolkit-filter="all"] .toolkit-filter-count { margin-left: 0; }
+  .toolkit-section.is-filtered .toolkit-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .toolkit-item, .toolkit-icon-wrap, .toolkit-motion-toggle { transition: none; }
+  .toolkit-item, .toolkit-icon-wrap, .toolkit-motion-toggle, .toolkit-filter, .toolkit-filter::after, .toolkit-filter-symbol { transition: none; }
   .toolkit-ribbon.is-moving .toolkit-strip { animation: none; will-change: auto; }
   .toolkit-ribbon.is-moving .toolkit-viewport { overflow-x: auto; mask-image: none; }
   .toolkit-ribbon.is-moving .toolkit-list[data-toolkit-repeat] { display: none; }
   .toolkit-item:hover, .toolkit-item:hover .toolkit-icon-wrap { transform: none; }
+  .toolkit-filter:hover .toolkit-filter-symbol, .toolkit-filter[aria-pressed="true"] .toolkit-filter-symbol { transform: none; }
 }

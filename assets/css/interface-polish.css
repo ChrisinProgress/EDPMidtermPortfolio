@@ -1,0 +1,33 @@
+html { scrollbar-gutter: stable; }
+.hero .button { border-radius: 14px; min-height: 52px; padding-inline: 24px; box-shadow: 0 8px 22px #4e6bca0d; }
+.hero .button .icon { flex: 0 0 18px; }
+.hero .button-primary:hover .icon { transform: translate(3px, -3px); }
+.hero .button-secondary:hover .icon { transform: translateX(4px); }
+.hero-bottom .scroll-cue { display: inline-flex; align-items: center; gap: 12px; padding: 10px 12px 10px 16px; min-height: 54px; border: 1px solid var(--line); border-radius: 100px; background: color-mix(in srgb, var(--white) 80%, transparent); color: var(--muted); letter-spacing: .04em; font-size: 10px; transition: border-color .3s, transform .3s, box-shadow .3s; }
+.scroll-mouse { width: 16px; height: 25px; border: 1.5px solid currentColor; border-radius: 10px; position: relative; }
+.scroll-mouse > span { position: absolute; left: 5.5px; top: 5px; width: 2px; height: 5px; border-radius: 2px; background: currentColor; animation: scrollWheel 2.4s ease-in-out infinite; }
+.scroll-cue-arrow { display: grid; place-items: center; width: 31px; height: 31px; margin-left: 8px; border-radius: 50%; color: var(--blue); background: color-mix(in srgb, var(--blue) 8%, var(--white)); }
+.scroll-cue-arrow .icon { width: 15px; height: 15px; }
+.hero-bottom .scroll-cue:hover { border-color: var(--blue); transform: translateY(3px); box-shadow: 0 7px 24px #4e6bca12; }
+.back-to-top { display: inline-flex; align-items: center; gap: 11px; min-height: 50px; padding: 6px 7px 6px 17px; border: 1px solid var(--line); border-radius: 100px; background: var(--white); color: var(--muted); box-shadow: 0 6px 20px #243e740a; transition: transform .3s, border-color .3s, box-shadow .3s; }
+.back-top-bubble { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--violet)); color: white; }
+.back-to-top .icon { width: 18px; height: 18px; padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; }
+.back-to-top:hover { transform: translateY(-4px); border-color: var(--blue); box-shadow: 0 10px 25px #527dcc1a; }
+.project-filters { gap: 8px; padding: 6px; width: fit-content; max-width: 100%; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--white) 80%, transparent); }
+.project-filters .filter-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 15px; border-radius: 12px; border-color: transparent; background: transparent; color: var(--muted); font-size: 10px; letter-spacing: .035em; }
+.project-filters .filter-button span { min-width: 22px; height: 22px; display: grid; place-items: center; padding: 2px 4px; margin: 0; background: color-mix(in srgb, var(--blue) 7%, transparent); border-radius: 7px; font-size: 10px; }
+.project-filters .filter-button[aria-pressed="true"] { color: var(--blue); border-color: color-mix(in srgb, var(--blue) 20%, var(--line)); background: color-mix(in srgb, var(--blue) 8%, var(--white)); box-shadow: 0 3px 8px #3856a909; }
+.project-filters .filter-button:hover { color: var(--blue); background: color-mix(in srgb, var(--blue) 5%, var(--white)); }
+@keyframes scrollWheel { 0%, 100% { transform: translateY(0); opacity: .5; } 50% { transform: translateY(5px); opacity: 1; } }
+.motion-paused .scroll-mouse > span { animation-play-state: paused; }
+@media (max-width: 550px) {
+  .project-filters { display: grid; grid-template-columns: 1fr 1fr; width: 100%; border-radius: 15px; gap: 4px; }
+  .project-filters .filter-button:first-child { grid-column: 1 / -1; }
+  .project-filters .filter-button { padding: 9px 6px; font-size: 9px; gap: 5px; }
+  .hero-bottom .scroll-cue { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-mouse > span { animation: none; }
+  .hero-bottom .scroll-cue, .back-to-top { transition: none; }
+  .hero-bottom .scroll-cue:hover, .back-to-top:hover, .hero .button:hover .icon { transform: none; }
+}

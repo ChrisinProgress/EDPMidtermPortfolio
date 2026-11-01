@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="project-content">
-        <div class="project-category"><span class="category-dot<?= $project['category'] === 'design' ? ' violet-dot' : '' ?>"></span><?= escapeHtml($project['categoryLabel']) ?></div>
+        <div class="project-category"><span class="category-dot<?= $project['category'] === 'design' ? ' violet-dot' : '' ?>"></span><?= escapeHtml($project['categoryLabel']) ?> PROJECT</div>
         <h3 id="<?= escapeHtml($project['id']) ?>-title"><?= escapeHtml($project['title']) ?></h3>
         <p class="project-description"><?= escapeHtml($project['description']) ?></p>
         <div class="project-exhibit-meta">

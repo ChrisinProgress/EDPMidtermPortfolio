@@ -6,9 +6,9 @@
     </div></div>
     <div class="project-toolbar">
         <div class="project-filters" role="group" aria-label="Filter projects by category">
-            <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">All Projects <span><?= count($projects) ?></span></button>
-            <button class="filter-button" type="button" data-filter="technical" aria-pressed="false">Technical <span><?= $technicalCount ?></span></button>
-            <button class="filter-button" type="button" data-filter="design" aria-pressed="false">Digital Design <span><?= $designCount ?></span></button>
+            <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">ALL PROJECTS <span><?= count($projects) ?></span></button>
+            <button class="filter-button" type="button" data-filter="technical" aria-pressed="false">TECHNICAL <span><?= $technicalCount ?></span></button>
+            <button class="filter-button" type="button" data-filter="design" aria-pressed="false">DIGITAL DESIGN <span><?= $designCount ?></span></button>
         </div>
         <p class="results-count" data-results-count role="status" aria-live="polite"><?= count($projects) ?> projects</p>
     </div>

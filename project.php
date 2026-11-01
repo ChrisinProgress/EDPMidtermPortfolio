@@ -43,6 +43,9 @@ require __DIR__ . '/includes/header.php';
             <?php if ($selectedProject['category'] === 'technical' && !empty($selectedProject['repositoryUrl'])): ?>
                 <a class="detail-repository" href="<?= escapeHtml($selectedProject['repositoryUrl']) ?>" target="_blank" rel="noopener noreferrer"><?= renderIcon('github') ?> View on GitHub<span class="sr-only"> (opens in a new tab)</span></a>
             <?php endif; ?>
+            <?php if (!empty($selectedProject['designUrl'])): ?>
+                <a class="detail-repository detail-design-link" href="<?= escapeHtml($selectedProject['designUrl']) ?>" target="_blank" rel="noopener noreferrer"><img src="assets/icons/toolkit/figma.svg" alt="" width="18" height="18"> View on Figma<span class="sr-only"> (opens in a new tab)</span></a>
+            <?php endif; ?>
         </div>
         <section class="detail-image-gallery" aria-labelledby="detail-gallery-title" data-carousel>
             <div class="detail-gallery-heading"><div><p class="mini-label">TAKE A CLOSER LOOK</p><h2 id="detail-gallery-title">Inside the project</h2></div><p>Select a thumbnail to explore each image.</p></div>

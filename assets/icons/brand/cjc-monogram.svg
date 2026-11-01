@@ -3,9 +3,10 @@
   <circle class="cjc-logo-ring" cx="64" cy="64" r="58" stroke-width="3"/>
   <circle class="cjc-logo-ring-inner" cx="64" cy="64" r="53.8" stroke-width="1.8"/>
   <circle class="cjc-logo-orbit" cx="64" cy="64" r="58" stroke-width="3.5" stroke-dasharray="15 350" stroke-linecap="round"/>
-  <g stroke-width="4" stroke-linejoin="miter">
-    <path class="cjc-logo-letter cjc-logo-first" pathLength="1" d="M44 22V38C35 43 30 53 30 64C30 75 35 85 44 90V106C27 99 17 83 17 64C17 45 27 29 44 22Z"/>
-    <path class="cjc-logo-letter cjc-logo-middle" pathLength="1" d="M50 18H74V86C74 99 68 107 56 110H50V97H55C60 97 62 94 62 87V30H50V18Z"/>
-    <path class="cjc-logo-letter cjc-logo-last" pathLength="1" d="M107 41L96 50C93 44 90 40 85 37V91C90 88 93 84 96 78L107 87C101 98 91 105 78 109V19C91 23 101 30 107 41Z"/>
+  <title>CJC</title>
+  <g stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter">
+    <path class="cjc-logo-letter cjc-logo-first" pathLength="1" d="M45 22V40H39C31 46 27 54 27 64C27 74 31 82 39 88H45V106C27 99 16 83 16 64C16 45 27 29 45 22Z"/>
+    <path class="cjc-logo-letter cjc-logo-middle" pathLength="1" d="M53 17H72V88C72 101 65 109 53 111V97C58 95 60 91 60 85V29H53V17Z"/>
+    <path class="cjc-logo-letter cjc-logo-last" pathLength="1" d="M108 41L98 50C95 43 91 39 86 36V92C91 89 95 85 98 78L108 87C102 99 92 106 79 109V19C92 23 102 30 108 41Z"/>
   </g>
 </svg>

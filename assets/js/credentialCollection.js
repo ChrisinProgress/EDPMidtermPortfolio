@@ -4,11 +4,48 @@
     const cards = Array.from(section.querySelectorAll("[data-credential-card]"));
     if (!cards.length) return;
     section.classList.add("is-exhibition");
-    if (typeof IntersectionObserver === "function") {
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => entry.target.classList.toggle("is-in-view", entry.isIntersecting));
-      }, { threshold: .2, rootMargin: "-6% 0px -8% 0px" });
-      cards.forEach(card => observer.observe(card));
+
+    const timeline = section.querySelector(".credential-timeline");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let railTop = 0;
+    let railHeight = 1;
+    let nodeCenters = [];
+    let scrollFrame = 0;
+    const updateRail = () => {
+      scrollFrame = 0;
+      if (!timeline) return;
+      const readingPosition = window.innerHeight * .64 - timeline.getBoundingClientRect().top;
+      const progress = reducedMotion.matches ? 1 : Math.min(1, Math.max(0, (readingPosition - railTop) / railHeight));
+      timeline.style.setProperty("--credential-scroll", progress.toFixed(4));
+      cards.forEach((card, index) => card.classList.toggle("is-reached", reducedMotion.matches || readingPosition >= nodeCenters[index]));
+    };
+    const scheduleRail = () => {
+      if (scrollFrame || document.hidden) return;
+      scrollFrame = window.requestAnimationFrame(updateRail);
+    };
+    const measureRail = () => {
+      if (!timeline) return;
+      const timelineTop = timeline.getBoundingClientRect().top;
+      nodeCenters = cards.map(card => {
+        const node = card.querySelector(".credential-node");
+        const bounds = node.getBoundingClientRect();
+        return bounds.top + bounds.height / 2 - timelineTop;
+      });
+      railTop = nodeCenters[0];
+      railHeight = Math.max(1, nodeCenters[nodeCenters.length - 1] - railTop);
+      timeline.style.setProperty("--credential-rail-top", railTop + "px");
+      timeline.style.setProperty("--credential-rail-height", railHeight + "px");
+      scheduleRail();
+    };
+    if (timeline) {
+      window.addEventListener("scroll", scheduleRail, { passive: true });
+      window.addEventListener("resize", measureRail);
+      window.addEventListener("pageshow", measureRail);
+      document.addEventListener("visibilitychange", scheduleRail);
+      reducedMotion.addEventListener("change", scheduleRail);
+      if (typeof ResizeObserver === "function") new ResizeObserver(measureRail).observe(timeline);
+      document.fonts?.ready.then(measureRail);
+      measureRail();
     }
 
     const dialog = section.querySelector("[data-credential-dialog]");
