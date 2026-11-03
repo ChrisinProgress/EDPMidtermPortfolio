@@ -30,3 +30,4 @@ Microsoft owns this name and logo; the Devicon MIT license does not apply to thi
 `render.svg` is the unchanged favicon linked by [Render's official homepage](https://render.com/) on October 27, 2026: [official SVG source](https://render.com/icon.svg?icon.00d01gt742wgb.svg?dpl=7bcf56747d). It is used only to identify the hosting platform. Render owns its name and logo; the Devicon MIT license does not apply to this separately sourced asset.
 
 Dark monochrome icons sit on white icon plates in both interface themes so their original colors do not need to be changed.
+`nWorkspace logos: VS Code, Visual Studio, NetBeans, PyCharm and Eclipse from https://github.com/devicons/devicon/tree/master/icons (Devicon license in LICENSE.txt). Notepad++ from https://notepad-plus-plus.org/images/logo.svg. Dev-C++ from https://github.com/Embarcadero/Dev-Cpp/blob/master/Source/Images/devcpplogo.png. Product marks belong to their respective owners. Retrieved November 3, 2026.

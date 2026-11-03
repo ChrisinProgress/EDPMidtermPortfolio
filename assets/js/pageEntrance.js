@@ -11,11 +11,20 @@
   const finish = () => {
     if (complete) return;
     complete = true;
+    const label = document.querySelector("[data-entrance-percent]");
+    if (label) label.textContent = "100%";
     window.clearTimeout(safetyTimer);
     root.classList.remove("intro-pending");
     skipEvents.forEach(name => window.removeEventListener(name, finish));
   };
   root.classList.add("intro-pending");
+  const updateProgress = () => {
+    if (complete) return;
+    const label = document.querySelector("[data-entrance-percent]");
+    if (label) label.textContent = Math.min(99, Math.round((performance.now() - started) / 10.5)) + "%";
+    requestAnimationFrame(updateProgress);
+  };
+  requestAnimationFrame(updateProgress);
   skipEvents.forEach(name => window.addEventListener(name, finish, { passive: true }));
   // Never wait for all project images or for a third-party service to load.
   safetyTimer = window.setTimeout(finish, 1800);

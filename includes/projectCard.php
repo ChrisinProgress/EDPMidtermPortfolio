@@ -26,7 +26,6 @@
                     </span>
                 <?php endforeach; ?>
             </div>
-            <span><?= count($project['images']) ?> images</span>
         </div>
     </div>
 </article>

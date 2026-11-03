@@ -16,11 +16,11 @@ $technicalCount = count(array_filter($projects, fn($project) => $project['catego
 $designCount = count($projects) - $technicalCount;
 $contactConfig = getContactConfig();
 $profileImage = [
-    'src' => 'assets/images/profile/christopher-cruz-hero-cutout.png',
+    'src' => 'assets/images/profile/hero.png',
     'alt' => 'Christopher John Cruz',
 ];
 $pixelProfileImage = 'assets/images/profile/christopher-cruz-pixel-hero-cutout.png';
-$aboutProfileImage = 'assets/images/profile/christopher-cruz-campus-portrait.png';
+$aboutProfileImage = 'assets/images/profile/campus.png';
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -35,23 +35,19 @@ require __DIR__ . '/includes/header.php';
                 <a class="button button-secondary" href="#about">About Me <?= renderIcon('arrowRight') ?></a>
             </div>
         </div>
-        <div class="hero-visual hero-cutout">
-            <div class="portrait-aura" aria-hidden="true"></div>
-            <div class="visual-orbit orbit-one" aria-hidden="true"></div>
-            <div class="visual-orbit orbit-two" aria-hidden="true"></div>
-            <div class="portrait-frame">
-                <div class="portrait-topline"><span>THE PERSON BEHIND THE WORK</span><?= renderBrandLogo('portrait') ?></div>
-                <?= renderThemePortrait('hero', $profileImage['src'], $pixelProfileImage, 'Christopher John Cruz. Hover or activate to reveal my pixel-art portrait.', true) ?>
-            </div>
-            <span class="floating-icon code-icon" aria-hidden="true"><?= renderIcon('code') ?></span>
-            <span class="floating-icon design-icon" aria-hidden="true"><?= renderIcon('penTool') ?></span>
-            <div class="visual-sticker"><?= renderIcon('sparkles') ?><span>A little code.<br><strong>A lot of curiosity.</strong></span></div>
-            <span class="hero-portrait-hint" aria-hidden="true"><span class="hint-pixels"></span> Hover or tap for my pixel side</span>
-        </div>
+        <div class="hero-visual id-scene">
+ <div class="id-lanyard" aria-hidden="true"></div><div class="id-clip" aria-hidden="true"></div>
+ <button class="student-id" type="button" data-student-id aria-pressed="false" aria-label="Turn Christopher's portfolio ID over">
+ <span class="id-face id-front"><span class="id-heading"><span>DEVELOPER<br>&amp; DESIGNER</span><?= renderBrandLogo('portrait') ?></span>
+ <span class="id-photo"><img src="<?= escapeHtml($profileImage['src']) ?>" alt="Christopher John Cruz" width="600" height="700" fetchpriority="high"><img class="id-pixel" src="assets/images/profile/christopher-cruz-pixel-hero-cutout.png" alt="" width="600" height="700" aria-hidden="true"></span>
+ <strong class="id-name">Christopher John Cruz</strong><span class="id-course">BS INFORMATION TECHNOLOGY · PLV</span><span class="id-number">STUDENT NO. <strong>24-333*</strong></span><span class="id-bottom">PORTFOLIO ID </span></span>
+ <span class="id-face id-back" aria-hidden="true"><?= renderBrandLogo('portrait') ?><strong>Practical code.<br>Purposeful design.</strong><span class="id-specialties"><span><?= renderIcon('code') ?> Development</span><span><?= renderIcon('palette') ?> Design</span><span><?= renderIcon('check') ?> Testing</span></span><span class="id-bottom">LET'S BUILD SOMETHING </span></span>
+ </button></div>
         <div class="hero-bottom">
             <a class="scroll-cue" href="#projects"><span class="scroll-mouse" aria-hidden="true"><span></span></span><span>Scroll to explore</span><span class="scroll-cue-arrow"><?= renderIcon('arrowDown') ?></span></a>
         </div>
     </section>
+    <nav class="portfolio-summary section-shell" aria-label="Portfolio at a glance"><a href="#projects"><span class="summary-icon"><?= renderIcon('code') ?></span><strong><?= count($projects) ?></strong><span>Projects<small>Systems and digital design</small></span></a><a href="#credentials"><span class="summary-icon"><?= renderIcon('award') ?></span><strong><?= count($credentials) ?></strong><span>Credentials<small>Learning put into practice</small></span></a><a href="#toolkit"><span class="summary-icon"><?= renderIcon('layers') ?></span><strong><?= count(require __DIR__ . '/data/toolkitData.php') ?></strong><span>Tech Stack<small>Tools behind my work</small></span></a></nav>
     <?php require __DIR__ . '/includes/toolkit.php'; ?>
     <?php require __DIR__ . '/pages/projects.php'; ?>
     <?php require __DIR__ . '/pages/about.php'; ?>

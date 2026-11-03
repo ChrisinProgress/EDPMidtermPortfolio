@@ -38,7 +38,7 @@
                             <a class="credential-detail-image" href="<?= escapeHtml($credential['image']['src']) ?>" target="_blank" rel="noopener" aria-label="Open full-size <?= escapeHtml($credential['title']) ?> certificate in a new tab">
                                 <img src="<?= escapeHtml($credential['image']['src']) ?>" alt="<?= escapeHtml($credential['image']['alt']) ?>" width="<?= $credential['image']['width'] ?>" height="<?= $credential['image']['height'] ?>" loading="lazy" decoding="async">
                             </a>
-                            <p class="credential-preview-hint">Select the certificate to open the full-size image.</p>
+                            <p class="credential-preview-hint sr-only">Select the certificate to open the full-size image.</p>
                         </div>
                     </details>
                 </div>

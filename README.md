@@ -129,7 +129,7 @@ These 51 supplied images use descriptive filenames identifying the project and s
 
 For project screenshots, add local JPG, PNG, or WebP files and update each project's `images` entries in `data/projectData.php`. Each image has a `src`, descriptive `alt`, and short `label`; set `isPlaceholder` to `false` for actual screenshots. Omitted flags default to placeholders, which must retain their disclosure in both the image and alternative text. The detail page's thumbnail collection adapts to the number of entries. All displayed counts and categories are calculated from the central data.
 
-Portrait files live in `assets/images/profile/`. Configure the hero photo/pixel sources and original About image in `index.php`. `includes/themePortrait.php` pairs the hero versions independently of the selected theme; `pages/about.php` includes the three-photo collection from `includes/aboutPhotoStack.php`. The two additional supplied photographs use `christopher-cruz-waterfall-portrait.png` and `christopher-cruz-beach-portrait.png`.
+Portrait files live in `assets/images/profile/`. Configure the hero photo/pixel sources and original About image in `index.php`. `includes/themePortrait.php` pairs the hero versions independently of the selected theme; `pages/about.php` includes the three-photo collection from `includes/aboutPhotoStack.php`. The two additional supplied photographs use `waterfall.png` and `beach.png`.
 
 Project cards use the same local logos as the toolkit. Technology names remain available as image alternatives and hover labels; `Adobe Photoshop` uses the Photoshop icon.
 

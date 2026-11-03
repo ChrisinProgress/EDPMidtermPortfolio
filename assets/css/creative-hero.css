@@ -1,68 +1,38 @@
-/* The cutout lives in the same space as the copy, instead of inside a photo card. */
-.hero-cutout { padding: 8px 0 30px; }
-.hero-cutout .portrait-frame,
-html[data-theme="dark"] .hero-cutout .portrait-frame {
-  background: transparent; border: 0; box-shadow: none; padding: 0;
-  animation: portraitFloat 7s ease-in-out infinite alternate;
-}
-.hero-cutout .portrait-topline { padding: 0 12px 12px; color: var(--muted); }
-.hero-cutout .portrait-topline > span { max-width: 190px; font-size: 9px; }
-.hero-cutout .theme-portrait-hero,
-html[data-theme="dark"] .hero-cutout .theme-portrait-hero {
-  background: transparent; border-radius: 0; overflow: visible;
-  mask-image: linear-gradient(#000 0%, #000 85%, transparent 100%);
-}
-.hero-cutout .theme-portrait-hero:focus-visible { outline-offset: 8px; border-radius: 45% 45% 15% 15%; }
-.hero-cutout .theme-portrait-hero::after { border: 0; }
-.hero-cutout .theme-portrait-hero .portrait-layer { object-fit: contain; object-position: center bottom; }
-.hero-cutout .theme-portrait-hero .portrait-real { filter: drop-shadow(0 10px 16px #334ca013); }
-.hero-cutout .portrait-pixel-grid { border-radius: 48% 48% 15% 15%; }
-.portrait-aura {
-  position: absolute; inset: 18% -3% 8%; pointer-events: none; z-index: 0;
-  border-radius: 44% 56% 61% 39% / 46% 38% 62% 54%;
-  background: radial-gradient(circle at 40% 35%, #b8d4ff80, #dcd0fc55 52%, transparent 75%);
-  animation: portraitAura 13s ease-in-out infinite alternate;
-}
-html[data-theme="dark"] .portrait-aura {
-  background: radial-gradient(circle at 40% 35%, #3861c755, #7462c330 52%, transparent 75%);
-}
-.hero-cutout .visual-orbit { border-style: dashed; border-color: #7c9bdb40; }
-.hero-cutout .orbit-one { animation: portraitRingPulse 7s ease-in-out infinite alternate; }
-.hero-cutout .orbit-two { animation: portraitRingPulse 9s -4s ease-in-out infinite alternate-reverse; }
-.hero-cutout .orbit-one::before,
-.hero-cutout .orbit-two::before {
-  content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--violet);
-  position: absolute; left: 50%; top: -3px; box-shadow: 0 0 14px #9b8bea66;
-}
-.hero-cutout .orbit-two::before { background: var(--blue); }
-.hero-cutout .visual-sticker { bottom: 70px; left: -20px; rotate: -4deg; transition: rotate .3s, transform .3s; }
-.hero-cutout .visual-sticker:hover { rotate: 0deg; transform: translateY(-4px); }
-.hero-cutout .code-icon { top: 23%; right: -4px; }
-.hero-cutout .design-icon { left: -16px; top: 42%; }
-.hero-portrait-hint { position: absolute; bottom: 8px; left: 0; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--muted); font-size: 10px; letter-spacing: .02em; }
-.hint-pixels { width: 5px; height: 5px; background: var(--violet); box-shadow: 7px 0 var(--blue), 0 7px var(--blue); margin: 0 6px 5px 0; }
-@keyframes portraitFloat { from { transform: translateY(0); } to { transform: translateY(-7px); } }
-@keyframes portraitAura { from { transform: rotate(-7deg) scale(.98); } to { transform: rotate(7deg) scale(1.035); } }
-@keyframes portraitRingPulse { from { opacity: .35; } to { opacity: .85; } }
-.motion-paused .hero-cutout .portrait-frame, .motion-paused .portrait-aura,
-.motion-paused .hero-cutout .visual-orbit { animation-play-state: paused; }
-@media (max-width: 800px) {
-  .hero-cutout { padding-top: 0; }
-  .hero-cutout .visual-sticker { left: -8px; bottom: 75px; }
-}
-@media (max-width: 480px) {
-  .hero-cutout { width: min(92%, 365px); padding-bottom: 30px; }
-  .hero-cutout .visual-sticker { font-size: 10px; padding: 10px 12px; left: -8px; bottom: 62px; }
-  .hero-cutout .visual-sticker .icon { width: 20px; height: 20px; }
-  .hero-cutout .floating-icon { width: 40px; height: 40px; }
-  .hero-cutout .design-icon { left: -6px; }
-  .hero-cutout .code-icon { right: -6px; }
-  .hero-cutout .portrait-topline { padding-inline: 0; }
-  .hero-cutout .portrait-topline > span { font-size: 8px; max-width: 160px; }
-  .hero-portrait-hint { font-size: 9px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-cutout .portrait-frame, .portrait-aura, .hero-cutout .visual-orbit { animation: none; }
-  .hero-cutout .visual-sticker { transition: none; }
-  .hero-cutout .visual-sticker:hover { transform: none; rotate: -4deg; }
-}
+/* Portfolio identity: one responsive, keyboard-accessible hanging card. */
+.id-scene{display:flex;flex-direction:column;align-items:center;perspective:1200px;isolation:isolate;padding:0 12px 30px;min-width:0}
+.id-lanyard{height:54px;width:36px;background:repeating-linear-gradient(90deg,#182239 0 5px,#28334c 5px 7px);color:white;overflow:hidden;box-shadow:0 4px 15px #0003;transform:none;transform-origin:top}
+
+.id-clip{width:26px;height:32px;border:5px solid #8993a4;border-radius:12px;z-index:2;margin-top:-6px;margin-bottom:-13px;background:linear-gradient(100deg,#d4d9e0,#7b8491,#d4d9e0)}
+.student-id{position:relative;width:min(330px,100%);height:470px;padding:0;border:0;background:transparent;cursor:pointer;color:#172033;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.2,.7,.2,1);transform:none;font:inherit;text-align:left;box-shadow:none}
+.student-id:hover{transform:none}
+.student-id.is-flipped{transform:rotateY(180deg)}
+.student-id:focus-visible{outline:3px solid #7760ee;outline-offset:10px;border-radius:22px}
+.id-face{position:absolute;inset:0;display:flex;flex-direction:column;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #c7cedb;border-radius:20px;padding:22px;background:linear-gradient(145deg,#fff,#edf0ff);box-shadow:0 22px 48px #14244426;overflow:hidden}
+.id-heading{display:flex;justify-content:space-between;align-items:center;font-size:22px;font-weight:800;line-height:1.05;letter-spacing:-1px}
+.id-heading .brand-logo{width:44px;height:44px;color:#172033}
+.id-photo{display:block;height:236px;margin:14px -4px 10px;background:radial-gradient(ellipse at bottom,#b6b5e6,transparent 70%);overflow:hidden;border-radius:12px}
+.id-photo img{width:100%;height:100%;object-fit:contain;object-position:bottom;transition:transform .5s}
+.student-id:hover .id-photo img{transform:scale(1.035)}
+.id-name{font-size:19px;line-height:1.3}.id-course{font-size:9px;letter-spacing:1px;margin-top:4px}.id-number{font-size:11px;margin-top:10px;display:flex;justify-content:space-between}.id-number strong{font-size:16px;letter-spacing:2px}
+.id-bottom{border-top:1px solid #bdc5d8;margin-top:auto;padding-top:12px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.5px}.id-bottom span{font-size:10px}
+.id-back{transform:rotateY(180deg);background:#172033;color:white;justify-content:space-between}.id-back .brand-logo{width:64px;color:white}.id-back>strong{font-size:29px;line-height:1.2}.id-back>span:not(.id-bottom){font-size:14px;line-height:1.8}.id-specialties{border-left:2px solid #a99bff;padding-left:14px}.id-back .id-bottom{margin-top:0}
+.portfolio-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-top:18px;padding-bottom:42px}.portfolio-summary a{display:flex;gap:18px;align-items:center;padding:24px;border:1px solid var(--border-color,#dbe3ef);border-radius:18px;color:inherit;text-decoration:none;background:var(--card-bg,transparent);transition:transform .25s,box-shadow .25s}.portfolio-summary a:hover{transform:translateY(-5px);box-shadow:0 14px 30px #5549b516}.portfolio-summary strong{font-size:32px;color:var(--primary-color,#6575ea)}.portfolio-summary span{font-weight:600}.portfolio-summary small{display:block;font-size:11px;font-weight:400;margin-top:5px}
+.entrance-percent{font-variant-numeric:tabular-nums;font-size:13px;letter-spacing:2px}.contact-form select{font:inherit;color:inherit;background:transparent;border:1px solid #cbd6e6;border-radius:12px;padding:14px;max-width:100%;width:100%}.contact-form select option{background:#fff;color:#172033}.contact-form small{font-size:11px;opacity:.8}
+@media(max-width:650px){.id-scene{padding-top:0}.id-lanyard{height:44px}.student-id{height:455px;width:min(310px,100%)}.id-photo{height:221px}.portfolio-summary{grid-template-columns:1fr;gap:10px}.portfolio-summary a{padding:16px 22px}.id-heading{font-size:20px}}
+@media(prefers-reduced-motion:reduce){.student-id,.id-photo img,.portfolio-summary a{transition:none}.student-id:hover{transform:none}.student-id.is-flipped{transform:rotateY(180deg)}}
+/* Touch and keyboard share the same spring response; flip and bounce use separate axes. */
+.id-scene{overflow:visible}.id-specialties{display:grid;gap:14px;border:0;padding:0}.id-specialties>span{display:flex;align-items:center;gap:12px}.id-specialties .icon{width:32px;height:32px;padding:6px;border-radius:10px;background:#ffffff12;color:#c8c2ff;box-sizing:content-box}
+.portfolio-summary a{position:relative;gap:14px;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;border-color:#8898b84d}.portfolio-summary a:hover,.portfolio-summary a:focus-visible{transform:translateY(-4px);border-color:#8b7af2;box-shadow:0 12px 28px #6353d41c}.summary-icon{display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;border-radius:13px;background:#7770ee14;color:#8478ed}.summary-icon .icon{transition:transform .3s}.portfolio-summary a:hover .summary-icon .icon{transform:rotate(-8deg) scale(1.1)}.portfolio-summary strong{font-size:27px}.portfolio-summary small{line-height:1.6}.portfolio-summary a:active{transform:scale(.98)}
+@media(max-width:650px){.portfolio-summary a{min-height:84px}.portfolio-summary .summary-icon{width:40px;height:40px}}
+@media(prefers-reduced-motion:reduce){.portfolio-summary a,.summary-icon .icon{transition:none}.portfolio-summary a:hover,.portfolio-summary a:active,.portfolio-summary a:hover .summary-icon .icon{transform:none}}
+/* Aligned stationary ID and compact summary tiles. */
+.id-scene{position:relative;width:min(100%,380px);justify-self:center;box-sizing:border-box;touch-action:pan-y}.student-id{touch-action:pan-y}.id-photo img{-webkit-user-drag:none;pointer-events:none}
+.portfolio-summary a{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;gap:20px 14px;padding:24px;min-height:158px;overflow:hidden;isolation:isolate;border-radius:20px;background:linear-gradient(145deg,#7987ef08,#a596ef0d)}
+.portfolio-summary .summary-icon{grid-column:1;grid-row:1}.portfolio-summary a>strong{grid-column:2;grid-row:1;font-size:38px;line-height:1.1;align-self:center;color:inherit}.portfolio-summary a>span:last-child{grid-column:1/-1;grid-row:2;font-size:13px;text-transform:uppercase;letter-spacing:1.3px}.portfolio-summary small{text-transform:none;letter-spacing:0;font-size:12px;font-weight:400}
+.portfolio-summary a::before{content:"";position:absolute;z-index:-1;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#9182f530,transparent 70%);right:-60px;bottom:-80px;transition:transform .65s cubic-bezier(.2,.8,.2,1),opacity .65s;opacity:.45}.portfolio-summary a:hover::before,.portfolio-summary a:focus-visible::before{transform:translate(-45px,-55px) scale(2.5);opacity:1}.portfolio-summary a:hover{animation:summary-bubble .65s both}
+@keyframes summary-bubble{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-5px) scale(1.018)}70%{transform:translateY(-2px) scale(.995)}100%{transform:translateY(-4px) scale(1)}}
+@media(max-width:650px){.portfolio-summary a{min-height:145px;padding:22px}.portfolio-summary a>strong{font-size:34px}}
+@media(prefers-reduced-motion:reduce){.portfolio-summary a:hover{animation:none}.portfolio-summary a::before{transition:none}}
+.id-photo{position:relative}.id-photo img{position:absolute;inset:0;transition:opacity .35s ease,transform .45s ease}.id-photo .id-pixel{opacity:0;image-rendering:pixelated}
+@media(hover:hover){.student-id:not(.is-flipped):hover .id-photo img:first-child{opacity:0}.student-id:not(.is-flipped):hover .id-photo .id-pixel{opacity:1}}
+@media(prefers-reduced-motion:reduce){.id-photo img{transition:none}}

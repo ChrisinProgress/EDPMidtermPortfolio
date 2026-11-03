@@ -40,8 +40,8 @@
     <div class="site-entrance-inner">
     <div class="site-entrance-mark"><?= renderBrandLogo('entrance') ?></div>
     <span class="site-entrance-name">CHRISTOPHER JOHN CRUZ</span>
-    <span class="site-entrance-note">Code. Design. Create.</span>
-    <span class="site-entrance-line"></span>
+    <span class="site-entrance-note">Code. Join. Create.</span>
+    <span class="site-entrance-line"></span><span class="entrance-percent" data-entrance-percent>0%</span>
     </div>
 </div>
 <div class="ambient-background" aria-hidden="true"><span class="ambient-orb ambient-orb-one"></span><span class="ambient-orb ambient-orb-two"></span><span class="ambient-orb ambient-orb-three"></span><div class="ambient-grid"></div><div class="ambient-stars"></div><svg class="ambient-waves" viewBox="0 0 1440 900" preserveAspectRatio="none"><path d="M-100 220 Q250 130 650 230 T1540 170"/><path d="M-100 580 Q350 700 770 570 T1540 650"/><path d="M-100 800 Q420 720 820 820 T1540 740"/></svg></div>

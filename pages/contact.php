@@ -30,19 +30,18 @@
                     <?= renderIcon('arrowUpRight') ?>
                 </a>
             </div>
-            <p class="contact-signoff"><?= renderIcon('sparkles') ?> Good things start with a conversation.</p>
         </div>
-        <form class="contact-form" id="contact-form" data-contact-form action="handlers/contactHandler.php" method="post">
+        <form class="contact-form" id="contact-form" data-native-contact action="https://formsubmit.co/cruchristopherjohnhoylar@gmail.com" method="post">
             <div class="form-heading">
                 <h3>Send Me a Message</h3>
                 <p>A new idea starts with a simple hello.</p>
             </div>
-            <input type="hidden" name="csrfToken" value="<?= escapeHtml(getCsrfToken()) ?>">
+            <input type="hidden" name="_subject" value="New portfolio inquiry"><input type="hidden" name="_template" value="table"><input type="hidden" name="_autoresponse" value="Thank you for contacting Christopher John Cruz. Your inquiry has been submitted. A copy is included below. I will review your message and reply to the email address you provided.">
             <div class="honeypot" aria-hidden="true">
                 <label for="website">Leave this field empty</label>
-                <input id="website" type="text" name="website" tabindex="-1" autocomplete="off">
+                <input id="website" type="text" name="_honey" tabindex="-1" autocomplete="off">
             </div>
-            <div class="form-row">
+            <div class="form-field"><label for="project-brief">Start with a project brief (optional)</label><select id="project-brief" data-project-brief><option value="">Write my own message</option><option value="website">Website or web system</option><option value="design">UI/UX or graphic design</option><option value="collaboration">Collaboration</option></select><small>Choosing a topic adds a starting point to an empty message.</small></div><div class="form-row">
                 <div class="form-field">
                     <label for="contact-name">Your Name <span aria-hidden="true">*</span></label>
                     <input id="contact-name" name="name" type="text" placeholder="How should I call you?" required maxlength="100" autocomplete="name" aria-describedby="name-error">
@@ -64,7 +63,7 @@
                 <span data-submit-label>Send Message</span>
                 <?= renderIcon('send') ?>
             </button>
-            <p class="form-footnote">Fields marked with <span>*</span> are required.</p>
+            <p class="form-footnote">Complete the verification after sending. A confirmation and message copy will be emailed to the address you enter.</p>
         </form>
     </div>
 </section>

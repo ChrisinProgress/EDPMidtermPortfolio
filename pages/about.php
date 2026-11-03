@@ -20,7 +20,7 @@
             <div class="about-copy">
                 <span class="about-copy-watermark" aria-hidden="true"><?= renderBrandLogo('watermark') ?></span>
                 <p class="mini-label">WHO I AM</p>
-                <h3>Curious by nature.<br>Creative through code.</h3>
+                <h3>Built with purpose.<br>Designed for people.</h3>
                 <p>I'm Christopher John Cruz, a third-year Information Technology student at Pamantasan ng Lungsod ng Valenzuela. I enjoy bringing development and design together through websites, booking and management systems, mobile interfaces, and graphics.</p>
                 <p>I learn by building, testing, and refining my academic projects, with a focus on clear screens and useful features. Outside my work, I recharge through gaming, anime, biking, board games, and exploring new places. Editing photos and visuals gives me another way to experiment and express ideas.</p>
                 <div class="about-interest-label">WHEN I'M AWAY FROM THE KEYBOARD</div>
@@ -67,9 +67,9 @@
                     'description' => 'I build functional, responsive websites.',
                 ],
                 [
-                    'title' => 'System Prototyping',
+                    'title' => 'Testing',
                     'icon' => 'layers',
-                    'description' => 'I prototype systems and interfaces.',
+                    'description' => 'I test features, find issues, and improve usability.',
                 ],
             ];
             foreach ($skills as $skill):

@@ -4,7 +4,7 @@ Created using the built-in imagegen tool in background-extraction edit mode. The
 
 Saved files:
 
-- `assets/images/profile/christopher-cruz-hero-cutout.png`
+- `assets/images/profile/hero.png`
 - `assets/images/profile/christopher-cruz-pixel-hero-cutout.png`
 
 ## Photograph edit prompt

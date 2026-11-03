@@ -3,21 +3,6 @@ declare(strict_types=1);
 
 return [
     [
-        'id' => 'marketing-with-canva',
-        'title' => 'Marketing with Canva',
-        'type' => 'Course Completion',
-        'issuer' => 'Canva Design School',
-        'date' => '2026-10-23',
-        'dateLabel' => 'October 23, 2026',
-        'description' => 'Completed one hour of training in marketing with Canva.',
-        'image' => [
-            'src' => 'assets/images/credentials/canva-marketing-certificate.png',
-            'alt' => 'Canva Design School Certificate of Completion in Marketing with Canva awarded to Christopher John Cruz on October 23, 2026.',
-            'width' => 7028,
-            'height' => 4969,
-        ],
-    ],
-    [
         'id' => 'canva-essentials',
         'title' => 'Canva Essentials',
         'type' => 'Course Completion',
@@ -28,6 +13,21 @@ return [
         'image' => [
             'src' => 'assets/images/credentials/canva-essentials-certificate.png',
             'alt' => 'Canva Design School Certificate of Completion in Canva Essentials awarded to Christopher John Cruz on October 22, 2026.',
+            'width' => 7028,
+            'height' => 4969,
+        ],
+    ],
+    [
+        'id' => 'marketing-with-canva',
+        'title' => 'Marketing with Canva',
+        'type' => 'Course Completion',
+        'issuer' => 'Canva Design School',
+        'date' => '2026-10-23',
+        'dateLabel' => 'October 23, 2026',
+        'description' => 'Completed one hour of training in marketing with Canva.',
+        'image' => [
+            'src' => 'assets/images/credentials/canva-marketing-certificate.png',
+            'alt' => 'Canva Design School Certificate of Completion in Marketing with Canva awarded to Christopher John Cruz on October 23, 2026.',
             'width' => 7028,
             'height' => 4969,
         ],

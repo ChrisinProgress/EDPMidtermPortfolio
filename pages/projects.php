@@ -6,11 +6,11 @@
     </div></div>
     <div class="project-toolbar">
         <div class="project-filters" role="group" aria-label="Filter projects by category">
-            <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">ALL PROJECTS <span><?= count($projects) ?></span></button>
-            <button class="filter-button" type="button" data-filter="technical" aria-pressed="false">TECHNICAL <span><?= $technicalCount ?></span></button>
-            <button class="filter-button" type="button" data-filter="design" aria-pressed="false">DIGITAL DESIGN <span><?= $designCount ?></span></button>
+            <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">ALL PROJECTS</button>
+            <button class="filter-button" type="button" data-filter="technical" aria-pressed="false">TECHNICAL</button>
+            <button class="filter-button" type="button" data-filter="design" aria-pressed="false">DIGITAL DESIGN</button>
         </div>
-        <p class="results-count" data-results-count role="status" aria-live="polite"><?= count($projects) ?> projects</p>
+        <p class="results-count sr-only" data-results-count role="status" aria-live="polite"><?= count($projects) ?> projects</p>
     </div>
     <div class="work-gallery" data-work-gallery role="region" aria-label="Explore my project collection">
         <div class="work-stage" data-work-stage tabindex="0" aria-label="Project collection. Use left and right keys to browse; select the featured image to see its details.">
@@ -27,10 +27,10 @@
                 <?php endforeach; ?>
             </div>
         </div>
-        <p class="gallery-interaction-hint">Hover or tap the featured image to reveal the project.</p>
+        <p class="gallery-interaction-hint sr-only">Hover or tap the featured image to reveal the project.</p>
         <div class="gallery-chooser">
-            <span class="gallery-position" data-gallery-position aria-hidden="true">01 / <?= count($projects) ?></span>
-            <label for="gallery-project-choice">Choose a project</label>
+            <span class="gallery-position" hidden data-gallery-position aria-hidden="true">01 / <?= count($projects) ?></span>
+            <label for="gallery-project-choice">Project collection</label>
             <select id="gallery-project-choice" data-gallery-select>
                 <?php foreach ($projects as $project): ?><option value="<?= escapeHtml($project['id']) ?>" data-option-category="<?= escapeHtml($project['category']) ?>"><?= escapeHtml($project['title']) ?></option><?php endforeach; ?>
             </select>

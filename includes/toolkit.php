@@ -4,12 +4,13 @@ $toolkitCategories = [
     'programming' => 'Development',
     'design' => 'Design',
     'databases' => 'Databases',
+    'workspace' => 'Workspace',
     'hosting' => 'Hosting',
 ];
 $toolkitFilterCounts = array_count_values(array_column($toolkitItems, 'group'));
 $toolkitFilterLabels = ['all' => 'All'] + $toolkitCategories;
 ?>
-<section class="toolkit-section" data-toolkit-collection aria-labelledby="toolkit-title">
+<section id="toolkit" class="toolkit-section" data-toolkit-collection aria-labelledby="toolkit-title">
     <div class="section-shell toolkit-shell">
         <div class="toolkit-heading-row">
             <div>
@@ -28,15 +29,14 @@ $toolkitFilterLabels = ['all' => 'All'] + $toolkitCategories;
                             <?php elseif ($categoryKey === 'hosting'): ?>
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 1 1 .6-10A6.2 6.2 0 0 1 20 10a4 4 0 0 1-1 8M12 21V11m-3 3 3-3 3 3"/></svg>
                             <?php else: ?>
-                                <?= renderIcon(['all' => 'layout', 'programming' => 'code', 'design' => 'palette'][$categoryKey]) ?>
+                                <?= renderIcon(['all' => 'layout', 'programming' => 'code', 'design' => 'palette', 'workspace' => 'code'][$categoryKey]) ?>
                             <?php endif; ?>
                         </span>
                         <span class="toolkit-filter-name"><?= escapeHtml($categoryName) ?></span>
-                        <span class="toolkit-filter-count"><?= $categoryKey === 'all' ? count($toolkitItems) : ($toolkitFilterCounts[$categoryKey] ?? 0) ?><span class="sr-only"> tools</span></span>
                     </button>
                 <?php endforeach; ?>
             </div>
-            <p class="toolkit-results" data-toolkit-results role="status" aria-live="polite" aria-atomic="true">All <?= count($toolkitItems) ?> tools</p>
+            <p class="toolkit-results" data-toolkit-results role="status" aria-live="polite" aria-atomic="true">Explore all tools</p>
         </div>
         <p class="sr-only" id="toolkit-motion-help">All tools appear in one moving row. Hover to pause, or use Pause motion to scroll through the tools. Keyboard focus and touch also pause the row. Choose a category for a still, easy-to-browse grid.</p>
         <div class="toolkit-ribbon" data-toolkit-row>

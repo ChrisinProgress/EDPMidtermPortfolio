@@ -4,6 +4,8 @@ declare(strict_types=1);
 function renderIcon(string $iconName): string
 {
     $iconPaths = [
+        'check' => '<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+        'award' => '<circle cx="12" cy="8" r="5"/><path d="m8 12-2 9 6-3 6 3-2-9"/>',
         'arrowUpRight' => '<path d="M7 17 17 7M6 7h11v11"/>',
         'arrowRight' => '<path d="M4 12h16m-6-6 6 6-6 6"/>',
         'arrowLeft' => '<path d="M20 12H4m6-6-6 6 6 6"/>',

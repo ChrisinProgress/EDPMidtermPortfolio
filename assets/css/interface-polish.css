@@ -10,8 +10,9 @@ html { scrollbar-gutter: stable; }
 .scroll-cue-arrow .icon { width: 15px; height: 15px; }
 .hero-bottom .scroll-cue:hover { border-color: var(--blue); transform: translateY(3px); box-shadow: 0 7px 24px #4e6bca12; }
 .back-to-top { display: inline-flex; align-items: center; gap: 11px; min-height: 50px; padding: 6px 7px 6px 17px; border: 1px solid var(--line); border-radius: 100px; background: var(--white); color: var(--muted); box-shadow: 0 6px 20px #243e740a; transition: transform .3s, border-color .3s, box-shadow .3s; }
-.back-top-bubble { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--violet)); color: white; }
+.back-top-bubble { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #3478f7, #7554ed); color: white; }
 .back-to-top .icon { width: 18px; height: 18px; padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; }
+.site-footer .back-to-top .back-top-bubble .icon { color: #fff; }
 .back-to-top:hover { transform: translateY(-4px); border-color: var(--blue); box-shadow: 0 10px 25px #527dcc1a; }
 .project-filters { gap: 8px; padding: 6px; width: fit-content; max-width: 100%; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--white) 80%, transparent); }
 .project-filters .filter-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 15px; border-radius: 12px; border-color: transparent; background: transparent; color: var(--muted); font-size: 10px; letter-spacing: .035em; }
@@ -31,3 +32,10 @@ html { scrollbar-gutter: stable; }
   .hero-bottom .scroll-cue, .back-to-top { transition: none; }
   .hero-bottom .scroll-cue:hover, .back-to-top:hover, .hero .button:hover .icon { transform: none; }
 }
+/* Consistent typography and immediate interaction feedback. */
+:root{--font:"Poppins",sans-serif}
+body,button,input,textarea,select,option{font-family:"Poppins",sans-serif}
+.student-id .id-front .cjc-logo{--brand-ink:#101010;color:#101010;width:44px}
+.student-id .id-back .cjc-logo{--brand-ink:#fff;color:#fff;width:64px}
+.student-id{transition-duration:.45s}
+.motion-ready [data-reveal]{transition-delay:0s!important}

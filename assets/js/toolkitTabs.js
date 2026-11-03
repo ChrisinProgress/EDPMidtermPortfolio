@@ -93,7 +93,7 @@
       viewport.setAttribute("aria-label", category === "all" ? "My tools and technologies" : `Tools: ${categoryLabel}`);
       if (category === "all") viewport.tabIndex = 0;
       else viewport.removeAttribute("tabindex");
-      results.textContent = category === "all" ? `All ${visibleCount} tools` : `${visibleCount} tools · ${categoryLabel}`;
+      results.textContent = category === "all" ? "Explore all tools" : categoryLabel;
       configure(allOffset);
     };
     filters.forEach(button => button.addEventListener("click", () => selectCategory(button)));
