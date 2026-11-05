@@ -1,5 +1,5 @@
 <div class="about-studies education-progress" aria-label="My studies" data-reveal>
-    <p class="mini-label studies-label">MY STUDIES</p>
+    <h3 class="studies-title">My Studies</h3>
     <ol class="learning-timeline" aria-label="Current and previous studies">
         <li class="learning-step is-current" aria-current="step">
             <span class="learning-marker" aria-hidden="true"><span></span></span>

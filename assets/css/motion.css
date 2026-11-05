@@ -9,8 +9,8 @@ body { isolation: isolate; }
   pointer-events: none;
   contain: strict;
   background:
-    radial-gradient(ellipse at 8% 8%, rgb(219 234 254 / 37%), transparent 54%),
-    radial-gradient(ellipse at 95% 80%, rgb(237 233 254 / 32%), transparent 48%);
+    radial-gradient(ellipse at 8% 8%, color-mix(in srgb,var(--neutral-100) 37%,transparent), transparent 54%),
+    radial-gradient(ellipse at 95% 80%, color-mix(in srgb,var(--neutral-100) 32%,transparent), transparent 48%);
 }
 
 .ambient-orb {
@@ -26,36 +26,36 @@ body { isolation: isolate; }
 .ambient-orb-one {
   top: -24%;
   left: -13%;
-  background: radial-gradient(circle, #8bb9ff 0, #94b7ff70 45%, transparent 72%);
+  background: radial-gradient(circle, var(--red-soft) 0, color-mix(in srgb,var(--red-soft) 43.92%,transparent) 45%, transparent 72%);
   animation: ambientDriftOne 28s ease-in-out infinite alternate;
 }
 
 .ambient-orb-two {
   top: 24%;
   right: -19%;
-  background: radial-gradient(circle, #b8a3ff 0, #d5bbff70 44%, transparent 72%);
+  background: radial-gradient(circle, var(--yellow) 0, color-mix(in srgb,var(--yellow) 43.92%,transparent) 44%, transparent 72%);
   animation: ambientDriftTwo 35s ease-in-out infinite alternate;
 }
 
 .ambient-orb-three {
   bottom: -34%;
   left: 25%;
-  background: radial-gradient(circle, #9ee1ed 0, #c9e5ff50 46%, transparent 72%);
+  background: radial-gradient(circle, var(--red-soft) 0, color-mix(in srgb,var(--neutral-200) 31.37%,transparent) 46%, transparent 72%);
   animation: ambientDriftThree 32s ease-in-out infinite alternate;
 }
 
 .ambient-grid, .ambient-stars { position: absolute; inset: -6%; }
-.ambient-waves { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: #637ba2; stroke-width: 1; opacity: .08; }
+.ambient-waves { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--red); stroke-width: 1; opacity: .08; }
 .ambient-waves path { transform-origin: center; animation: ambientWave 20s ease-in-out infinite alternate; }
 .ambient-waves path:nth-child(2) { animation-delay: -8s; }
 .ambient-waves path:nth-child(3) { animation-delay: -14s; }
-html[data-theme="dark"] .ambient-waves { stroke: #b9cafa; opacity: .075; }
+html[data-theme="dark"] .ambient-waves { stroke: var(--red-soft); opacity: .075; }
 .ambient-grid {
   background-image:
-    linear-gradient(rgb(104 135 183 / 11%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(104 135 183 / 11%) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb,var(--red) 11%,transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb,var(--red) 11%,transparent) 1px, transparent 1px);
   background-size: 88px 88px;
-  mask-image: linear-gradient(180deg, #0005, transparent 65%);
+  mask-image: linear-gradient(180deg, color-mix(in srgb,var(--neutral-950) 33.33%,transparent), transparent 65%);
   opacity: .45;
   animation: ambientGridTravel 70s linear infinite;
 }
@@ -63,29 +63,29 @@ html[data-theme="dark"] .ambient-waves { stroke: #b9cafa; opacity: .075; }
 .ambient-stars {
   opacity: 0;
   background-image:
-    radial-gradient(1px 1px at 12% 17%, #c1dbff 95%, transparent),
-    radial-gradient(1px 1px at 35% 73%, #a8bbf7 95%, transparent),
-    radial-gradient(1px 1px at 68% 28%, #d6c5ff 95%, transparent),
-    radial-gradient(1.5px 1.5px at 89% 61%, #8ecae1 95%, transparent),
-    radial-gradient(1px 1px at 54% 92%, #a8bbf7 95%, transparent);
+    radial-gradient(1px 1px at 12% 17%, var(--red-soft) 95%, transparent),
+    radial-gradient(1px 1px at 35% 73%, var(--red-soft) 95%, transparent),
+    radial-gradient(1px 1px at 68% 28%, var(--neutral-200) 95%, transparent),
+    radial-gradient(1.5px 1.5px at 89% 61%, var(--red-soft) 95%, transparent),
+    radial-gradient(1px 1px at 54% 92%, var(--red-soft) 95%, transparent);
   background-size: 430px 340px;
   animation: starDrift 45s linear infinite alternate;
 }
 
 html[data-theme="dark"] .ambient-background {
   background:
-    radial-gradient(ellipse at 10% 0, rgb(31 57 112 / 36%), transparent 62%),
-    radial-gradient(ellipse at 90% 85%, rgb(44 28 84 / 28%), transparent 55%);
+    radial-gradient(ellipse at 10% 0, color-mix(in srgb,var(--red-strong) 36%,transparent), transparent 62%),
+    radial-gradient(ellipse at 90% 85%, color-mix(in srgb,var(--neutral-800) 28%,transparent), transparent 55%);
 }
 html[data-theme="dark"] .ambient-orb { opacity: .42; filter: blur(88px); }
-html[data-theme="dark"] .ambient-orb-one { background: radial-gradient(circle, #315ad9, #234d7e80 42%, transparent 72%); }
-html[data-theme="dark"] .ambient-orb-two { background: radial-gradient(circle, #7154ca, #413b7c70 44%, transparent 72%); }
-html[data-theme="dark"] .ambient-orb-three { background: radial-gradient(circle, #1b7b9e, #224d7950 44%, transparent 72%); }
+html[data-theme="dark"] .ambient-orb-one { background: radial-gradient(circle, var(--red), color-mix(in srgb,var(--red-strong) 50.2%,transparent) 42%, transparent 72%); }
+html[data-theme="dark"] .ambient-orb-two { background: radial-gradient(circle, var(--yellow), color-mix(in srgb,var(--yellow-strong) 43.92%,transparent) 44%, transparent 72%); }
+html[data-theme="dark"] .ambient-orb-three { background: radial-gradient(circle, var(--red-strong), color-mix(in srgb,var(--red-strong) 31.37%,transparent) 44%, transparent 72%); }
 html[data-theme="dark"] .ambient-stars { opacity: .3; }
 html[data-theme="dark"] .ambient-stars { animation: starDrift 45s linear infinite alternate, starPulse 9s ease-in-out infinite alternate; }
 html[data-theme="dark"] .ambient-grid { opacity: .35; }
-html[data-theme="dark"] .about-section { background: rgb(17 27 45 / 76%); }
-html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
+html[data-theme="dark"] .about-section { background: color-mix(in srgb,var(--neutral-850) 76%,transparent); }
+html[data-theme="dark"] .site-footer { background: color-mix(in srgb,var(--neutral-900) 83%,transparent); }
 
 .motion-paused .ambient-orb,
 .motion-paused .ambient-grid,
@@ -101,8 +101,8 @@ html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
   pointer-events: none;
   transform: scaleX(0);
   transform-origin: left center;
-  background: linear-gradient(90deg, var(--blue), var(--violet), #4cc3d7);
-  box-shadow: 0 0 10px rgb(99 102 241 / 22%);
+  background: linear-gradient(90deg, var(--accent), var(--accent-secondary), var(--red));
+  box-shadow: 0 0 10px color-mix(in srgb,var(--red) 22%,transparent);
 }
 
 /* The class is added only when the observer is ready; no-JS content stays visible. */
@@ -132,8 +132,8 @@ html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
   .education-entry, .skill-card, .credential-panel, .credential-content, .contact-form, .lightbox,
   .form-field input, .form-field textarea, .button-secondary, .filter-button, .icon-button,
   .theme-toggle, .form-status, .contact-link-icon, .skill-icon, .ambient-background, .ambient-stars) {
-  transition: background-color .38s ease, color .38s ease, border-color .38s ease, box-shadow .38s ease,
-    transform .28s var(--ease), opacity .38s ease;
+  transition: background-color .55s ease, color .55s ease, border-color .55s ease, box-shadow .55s ease,
+    transform .28s var(--ease), opacity .55s ease;
 }
 
 .theme-view-transition::view-transition-old(root),
@@ -141,7 +141,7 @@ html[data-theme="dark"] .site-footer { background: rgb(14 21 36 / 83%); }
 .theme-view-transition::view-transition-old(root) { z-index: 1; }
 .theme-view-transition::view-transition-new(root) {
   z-index: 2;
-  animation: themeReveal .48s cubic-bezier(.3, 0, .2, 1) both;
+  animation: themeReveal .55s cubic-bezier(.3, 0, .2, 1) both;
 }
 
 /* Snapshot the finished palette; a second CSS color fade would capture old colors. */

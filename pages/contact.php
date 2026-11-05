@@ -1,8 +1,7 @@
 <section class="contact-section section-shell" id="contact" aria-labelledby="contact-title">
     <div class="contact-layout">
         <div class="contact-copy">
-            <p class="eyebrow"><span class="section-index">04</span> LET'S MAKE SOMETHING MEANINGFUL</p>
-            <h2 id="contact-title">Let's Work<br> <span class="contact-title-accent">Together</span><span class="heading-dot">.</span></h2>
+            <h2 id="contact-title" data-type-heading>Let's Work<br> <span class="contact-title-accent">Together</span><span class="heading-dot">.</span></h2>
             <p class="contact-description">Have a project idea, collaboration opportunity, or just want to connect? Feel free to reach out. I'm always open to learning, sharing ideas, and exploring opportunities to grow as an IT student and designer.</p>
             <div class="contact-links">
                 <a class="contact-link email-link" href="mailto:cruchristopherjohnhoylar@gmail.com">
@@ -34,7 +33,6 @@
         <form class="contact-form" id="contact-form" data-native-contact action="https://formsubmit.co/cruchristopherjohnhoylar@gmail.com" method="post">
             <div class="form-heading">
                 <h3>Send Me a Message</h3>
-                <p>A new idea starts with a simple hello.</p>
             </div>
             <input type="hidden" name="_subject" value="New portfolio inquiry"><input type="hidden" name="_template" value="table"><input type="hidden" name="_autoresponse" value="Thank you for contacting Christopher John Cruz. Your inquiry has been submitted. A copy is included below. I will review your message and reply to the email address you provided.">
             <div class="honeypot" aria-hidden="true">
@@ -58,12 +56,12 @@
                 <textarea id="contact-message" name="message" placeholder="Tell me a little about your idea…" required minlength="10" maxlength="5000" rows="5" aria-describedby="message-error"></textarea>
                 <span class="field-error" id="message-error" data-field-error="message"></span>
             </div>
+            <label class="contact-consent"><input type="checkbox" name="privacyConsent" value="Agreed to inquiry processing" required><span>I agree to the use of my name, email, and message to respond to this inquiry, as described in the <a href="privacy.php">Privacy Policy</a>.</span></label>
             <p class="form-status" data-form-status role="status" aria-live="polite" aria-atomic="true"></p>
             <button class="button button-primary submit-button" type="submit" data-submit-button>
                 <span data-submit-label>Send Message</span>
                 <?= renderIcon('send') ?>
             </button>
-            <p class="form-footnote">Complete the verification after sending. A confirmation and message copy will be emailed to the address you enter.</p>
         </form>
     </div>
 </section>

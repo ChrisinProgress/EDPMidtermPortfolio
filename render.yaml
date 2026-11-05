@@ -11,5 +11,3 @@ services:
     envVars:
       - key: PORT
         value: "10000"
-      - key: PORTFOLIO_CONTACT_ENABLED
-        value: "true"

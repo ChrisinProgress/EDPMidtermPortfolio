@@ -1,14 +1,12 @@
 <section class="projects-section section-shell" id="projects" aria-labelledby="projects-title">
     <div class="section-heading"><div>
-        <p class="eyebrow"><span class="section-index">01</span> SELECTED WORK</p>
-        <h2 id="projects-title">Work Gallery<span class="heading-dot">.</span></h2>
-        <p class="project-section-description">Systems, interfaces, and visual ideas I've built along the way.</p>
+        <h2 id="projects-title" data-type-heading>Work Gallery<span class="heading-dot">.</span></h2>
     </div></div>
     <div class="project-toolbar">
         <div class="project-filters" role="group" aria-label="Filter projects by category">
-            <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">ALL PROJECTS</button>
-            <button class="filter-button" type="button" data-filter="technical" aria-pressed="false">TECHNICAL</button>
-            <button class="filter-button" type="button" data-filter="design" aria-pressed="false">DIGITAL DESIGN</button>
+            <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">All Projects</button>
+            <button class="filter-button" type="button" data-filter="technical" aria-pressed="false">Technical</button>
+            <button class="filter-button" type="button" data-filter="design" aria-pressed="false">Digital Design</button>
         </div>
         <p class="results-count sr-only" data-results-count role="status" aria-live="polite"><?= count($projects) ?> projects</p>
     </div>

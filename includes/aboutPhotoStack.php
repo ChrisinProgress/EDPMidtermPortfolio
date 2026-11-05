@@ -1,6 +1,6 @@
 <?php
 $aboutPhotos = [
-    ['src' => $aboutProfileImage, 'label' => 'Campus', 'description' => 'Christopher John Cruz on a university campus', 'width' => 959, 'height' => 1279, 'position' => '50% 60%'],
+    ['src' => 'assets/images/profile/campus.png', 'label' => 'Campus', 'description' => 'Christopher John Cruz on a university campus', 'width' => 959, 'height' => 1279, 'position' => '50% 60%'],
     ['src' => 'assets/images/profile/waterfall.png', 'label' => 'Exploring', 'description' => 'Christopher John Cruz beside a waterfall', 'width' => 1536, 'height' => 2048, 'position' => '50% 62%'],
     ['src' => 'assets/images/profile/beach.png', 'label' => 'By the sea', 'description' => 'Christopher John Cruz by the sea', 'width' => 1536, 'height' => 2048, 'position' => '50% 60%'],
 ];

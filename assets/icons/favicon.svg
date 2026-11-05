@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#f5f9ff"/><text x="8" y="42" font-family="Arial,sans-serif" font-size="29" font-weight="800" fill="#172033">CJ</text><circle cx="51" cy="39" r="4" fill="#8b5cf6"/></svg>
+<svg class="cjc-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" stroke="currentColor" aria-hidden="true" focusable="false"><title>CJC Portfolio favicon</title>
+  <style>svg.cjc-logo{color:#101010}@media(prefers-color-scheme:dark){svg.cjc-logo{color:#fff}}</style>
+  <circle class="cjc-logo-ring" cx="64" cy="64" r="58" stroke-width="3"/>
+  <circle class="cjc-logo-ring-inner" cx="64" cy="64" r="53.8" stroke-width="1.8"/>
+  <circle class="cjc-logo-orbit" cx="64" cy="64" r="58" stroke-width="3.5" stroke-dasharray="15 350" stroke-linecap="round"/>
+  <title>CJC</title>
+  <g stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter">
+    <path class="cjc-logo-letter cjc-logo-first" pathLength="1" d="M45 22V40H39C31 46 27 54 27 64C27 74 31 82 39 88H45V106C27 99 16 83 16 64C16 45 27 29 45 22Z"/>
+    <path class="cjc-logo-letter cjc-logo-middle" pathLength="1" d="M53 17H72V88C72 101 65 109 53 111V97C58 95 60 91 60 85V29H53V17Z"/>
+    <path class="cjc-logo-letter cjc-logo-last" pathLength="1" d="M108 41L98 50C95 43 91 39 86 36V92C91 89 95 85 98 78L108 87C102 99 92 106 79 109V19C92 23 102 30 108 41Z"/>
+  </g>
+</svg>

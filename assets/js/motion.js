@@ -50,7 +50,7 @@
     ".hero-copy", ".hero-visual", ".section-heading", ".toolkit-heading-row",
     ".toolkit-group", ".toolkit-category", ".education-card", ".education-entry",
     ".about-visual", ".about-copy", ".skill-card", ".credential-panel", ".contact-copy", ".contact-form",
-    ".footer-top", ".footer-socials", "[data-reveal]",
+    ".footer-top", ".footer-socials", ".footer-editorial > *", ".portfolio-summary > a", "[data-reveal]",
   ].join(",")))).filter((element) => !element.closest("[data-work-gallery]") &&
     (!element.closest("[data-project-card]") || element.classList.contains("project-cover-card")));
 
@@ -80,7 +80,7 @@
     candidates.forEach((element) => {
       const siblingIndex = siblingCounts.get(element.parentElement) || 0;
       siblingCounts.set(element.parentElement, siblingIndex + 1);
-      element.style.setProperty("--reveal-delay", `${Math.min(siblingIndex, 4) * 45}ms`);
+      element.style.setProperty("--reveal-delay", `${Math.min(siblingIndex, 4) * 80}ms`);
       element.classList.add("motion-reveal");
       observer.observe(element);
     });

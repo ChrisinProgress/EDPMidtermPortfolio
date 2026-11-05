@@ -28,7 +28,7 @@
   width: 48px;
   height: 48px;
   flex: 0 0 auto;
-  color: var(--blue);
+  color: var(--accent);
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: 15px;
@@ -58,7 +58,7 @@
   border: 1px solid var(--line);
   border-radius: 22px;
   background: var(--white);
-  box-shadow: 0 8px 30px #17203304;
+  box-shadow: 0 8px 30px color-mix(in srgb,var(--neutral-850) 1.57%,transparent);
   transition: transform .28s var(--ease), border-color .28s, box-shadow .28s;
 }
 
@@ -70,19 +70,19 @@
   left: -1px;
   width: 3px;
   border-radius: 3px;
-  background: var(--violet);
+  background: var(--accent-secondary);
   opacity: .7;
   transition: opacity .28s;
 }
 
 .education-card-current::before {
-  background: var(--blue);
+  background: var(--accent);
 }
 
 .education-card:hover {
   transform: translateY(-4px);
-  border-color: var(--blue);
-  box-shadow: 0 16px 36px #1720330b;
+  border-color: var(--accent);
+  box-shadow: 0 16px 36px color-mix(in srgb,var(--neutral-850) 4.31%,transparent);
 }
 
 .education-card:hover::before {
@@ -96,9 +96,9 @@
   width: 76px;
   height: 76px;
   padding: 7px;
-  border: 1px solid #e6eaf2;
+  border: 1px solid var(--neutral-100);
   border-radius: 20px;
-  background: #fff;
+  background: var(--neutral-0);
   transition: transform .3s var(--ease);
 }
 
@@ -127,7 +127,7 @@
 }
 
 .education-period {
-  color: var(--blue);
+  color: var(--accent);
   font-weight: 600;
   letter-spacing: .015em;
 }
@@ -144,7 +144,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--blue);
+  background: var(--accent);
 }
 
 .education-level {
@@ -239,11 +239,11 @@
 
 .footer-social-link:hover,
 .footer-social-link:focus-visible {
-  color: var(--blue);
+  color: var(--accent);
   background: var(--soft);
-  border-color: var(--blue);
+  border-color: var(--accent);
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px #3b82f60b;
+  box-shadow: 0 6px 16px color-mix(in srgb,var(--red) 4.31%,transparent);
 }
 
 .footer-social-link:hover .icon,
@@ -264,7 +264,7 @@
 
 html[data-theme="dark"] .education-card {
   background: var(--theme-surface, var(--soft));
-  box-shadow: 0 8px 30px #00000014;
+  box-shadow: 0 8px 30px color-mix(in srgb,var(--neutral-950) 7.84%,transparent);
 }
 
 html[data-theme="dark"] .education-heading-icon,
@@ -273,13 +273,13 @@ html[data-theme="dark"] .footer-social-link {
 }
 
 html[data-theme="dark"] .education-card:hover {
-  box-shadow: 0 16px 36px #00000033;
+  box-shadow: 0 16px 36px color-mix(in srgb,var(--neutral-950) 20%,transparent);
 }
 
 html[data-theme="dark"] .footer-social-link:hover,
 html[data-theme="dark"] .footer-social-link:focus-visible {
   background: var(--theme-hover, var(--soft));
-  box-shadow: 0 6px 20px #0000002b;
+  box-shadow: 0 6px 20px color-mix(in srgb,var(--neutral-950) 16.86%,transparent);
 }
 
 @media (max-width: 1050px) {

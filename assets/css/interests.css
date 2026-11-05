@@ -1,13 +1,13 @@
 /* Small personal touches, with each hobby's own line-drawn symbol. */
 .about-interest-label { margin-top: 26px; letter-spacing: .045em; }
 .about-interests.interest-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.about-interests .interest-item { --interest-color: #6877d9; display: flex; align-items: center; justify-content: flex-start; gap: 10px; min-width: 0; min-height: 74px; padding: 12px 10px; border-radius: 14px; background: color-mix(in srgb, var(--white) 87%, transparent); transition: transform .3s var(--ease), border-color .3s, box-shadow .3s, background-color .3s; }
+.about-interests .interest-item { --interest-color: var(--red); display: flex; align-items: center; justify-content: flex-start; gap: 10px; min-width: 0; min-height: 74px; padding: 12px 10px; border-radius: 14px; background: color-mix(in srgb, var(--white) 87%, transparent); transition: transform .3s var(--ease), border-color .3s, box-shadow .3s, background-color .3s; }
 .about-interests .interest-item::before { display: none; }
-.about-interests .interest-anime { --interest-color: #b274bd; }
-.about-interests .interest-bicycle { --interest-color: #1d9d87; }
-.about-interests .interest-dice { --interest-color: #be8641; }
-.about-interests .interest-compass { --interest-color: #468bbc; }
-.about-interests .interest-scissors { --interest-color: #bf708f; }
+.about-interests .interest-anime { --interest-color: var(--yellow); }
+.about-interests .interest-bicycle { --interest-color: var(--yellow-strong); }
+.about-interests .interest-dice { --interest-color: var(--red); }
+.about-interests .interest-compass { --interest-color: var(--red); }
+.about-interests .interest-scissors { --interest-color: var(--red); }
 .interest-icon { display: grid; place-items: center; flex: 0 0 33px; width: 33px; height: 36px; color: var(--interest-color); transform-origin: 50% 65%; animation: interest-bob 5s ease-in-out infinite; }
 .interest-icon .icon { width: 26px; height: 26px; stroke-width: 1.7; }
 .interest-item:nth-child(even) .interest-icon { animation-delay: -2.5s; }
@@ -20,14 +20,14 @@
 .interest-bicycle:hover .interest-icon { animation: interest-ride .65s ease-in-out both; }
 .interest-compass:hover .interest-icon { animation: interest-turn .7s var(--ease) both; }
 .interest-dice:hover .interest-icon { animation: interest-tumble .65s var(--ease) both; }
-html[data-theme="dark"] .about-interests .interest-item { background: #ffffff04; }
+html[data-theme="dark"] .about-interests .interest-item { background: color-mix(in srgb,var(--neutral-0) 1.57%,transparent); }
 html[data-theme="dark"] .about-interests .interest-item:hover { background: color-mix(in srgb, var(--interest-color) 12%, var(--theme-surface)); }
-html[data-theme="dark"] .interest-item { --interest-color: #b5b4ff; }
-html[data-theme="dark"] .interest-anime { --interest-color: #dfb3ed; }
-html[data-theme="dark"] .interest-bicycle { --interest-color: #78cfb9; }
-html[data-theme="dark"] .interest-dice { --interest-color: #dfb87f; }
-html[data-theme="dark"] .interest-compass { --interest-color: #8ac7e9; }
-html[data-theme="dark"] .interest-scissors { --interest-color: #e6aac5; }
+html[data-theme="dark"] .interest-item { --interest-color: var(--red-soft); }
+html[data-theme="dark"] .interest-anime { --interest-color: var(--yellow); }
+html[data-theme="dark"] .interest-bicycle { --interest-color: var(--yellow); }
+html[data-theme="dark"] .interest-dice { --interest-color: var(--red-soft); }
+html[data-theme="dark"] .interest-compass { --interest-color: var(--red-soft); }
+html[data-theme="dark"] .interest-scissors { --interest-color: var(--red-soft); }
 .motion-paused .interest-icon { animation-play-state: paused; }
 @keyframes interest-bob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-2px) rotate(3deg); } }
 @keyframes interest-wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-13deg) scale(1.12); } 70% { transform: rotate(10deg) scale(1.08); } }

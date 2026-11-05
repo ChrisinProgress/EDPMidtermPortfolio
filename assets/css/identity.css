@@ -1,6 +1,6 @@
 /* A drawn CJC mark and paired portraits make each theme feel personal. */
-.cjc-logo { --brand-ink: #101010; display: block; width: 64px; height: auto; flex: 0 0 auto; overflow: visible; color: var(--brand-ink); }
-html[data-theme="dark"] .cjc-logo { --brand-ink: #fff; }
+.cjc-logo { --brand-ink: var(--neutral-950); display: block; width: 64px; height: auto; flex: 0 0 auto; overflow: visible; color: var(--brand-ink); }
+html[data-theme="dark"] .cjc-logo { --brand-ink: var(--neutral-0); }
 .wordmark:has(.cjc-logo) { display: inline-flex; align-items: center; min-height: 44px; line-height: 1; }
 .wordmark .cjc-logo { width: 64px; }
 .site-footer .wordmark .cjc-logo { width: 64px; }
@@ -15,8 +15,8 @@ html[data-theme="dark"] .cjc-logo { --brand-ink: #fff; }
 .portrait-topline { min-height: 46px; gap: 16px; }
 .portrait-topline .cjc-logo { width: 49px; }
 .portrait-topline > span { max-width: 210px; line-height: 1.6; }
-.theme-portrait { display: block; width: 100%; padding: 0; border: 0; cursor: pointer; position: relative; isolation: isolate; overflow: hidden; border-radius: 10px; background: #f3f6fc; }
-.theme-portrait:focus-visible { outline: 3px solid var(--blue); outline-offset: 5px; }
+.theme-portrait { display: block; width: 100%; padding: 0; border: 0; cursor: pointer; position: relative; isolation: isolate; overflow: hidden; border-radius: 10px; background: var(--neutral-50); }
+.theme-portrait:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
 .theme-portrait-hero { aspect-ratio: 1; }
 .theme-portrait-about { aspect-ratio: 3 / 4; }
 .theme-portrait .portrait-layer {
@@ -29,20 +29,20 @@ html[data-theme="dark"] .cjc-logo { --brand-ink: #fff; }
 .theme-portrait .portrait-pixel { z-index: 2; opacity: 0; transform: scale(1.035); image-rendering: pixelated; clip-path: inset(0 100% 0 0); transition: clip-path .6s steps(12,end), opacity .35s ease, transform .75s var(--ease); }
 .theme-portrait-hero .portrait-real { object-position: 50% 43%; }
 .theme-portrait-about .portrait-real, .theme-portrait-about .portrait-pixel { object-position: 50% 60%; }
-.portrait-pixel-grid { position: absolute; z-index: 3; inset: 0; pointer-events: none; opacity: 0; background-image: linear-gradient(#a3c2ff09 1px, transparent 1px), linear-gradient(90deg, #a3c2ff09 1px, transparent 1px); background-size: 16px 16px; transition: opacity .65s; }
-html[data-theme="dark"] .theme-portrait { background: #121d32; }
+.portrait-pixel-grid { position: absolute; z-index: 3; inset: 0; pointer-events: none; opacity: 0; background-image: linear-gradient(color-mix(in srgb,var(--red-soft) 3.53%,transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb,var(--red-soft) 3.53%,transparent) 1px, transparent 1px); background-size: 16px 16px; transition: opacity .65s; }
+html[data-theme="dark"] .theme-portrait { background: var(--neutral-850); }
 .theme-portrait.is-pixel .portrait-real { opacity: 0; transform: scale(1.025); }
 .theme-portrait.is-pixel .portrait-pixel { opacity: 1; transform: scale(1); clip-path: inset(0); }
 .theme-portrait.is-pixel .portrait-pixel-grid { opacity: 1; }
-.theme-portrait::before { content: ''; position: absolute; z-index: 5; pointer-events: none; inset: 0 auto 0 0; width: 2px; opacity: 0; background: #b8d3ff; box-shadow: 0 0 16px #8bb8ff; }
+.theme-portrait::before { content: ''; position: absolute; z-index: 5; pointer-events: none; inset: 0 auto 0 0; width: 2px; opacity: 0; background: var(--red-soft); box-shadow: 0 0 16px var(--red-soft); }
 .theme-portrait.is-pixel::before { animation: portraitScan .65s ease-out both; }
 @keyframes portraitScan { 0% { left: 0; opacity: 0; } 20%,80% { opacity: .8; } 100% { left: 100%; opacity: 0; } }
 .portrait-mode-label { display: flex; align-items: center; gap: 7px; padding: 12px 7px 3px; color: var(--muted); font-size: 10px; letter-spacing: .07em; line-height: 1.5; }
-.portrait-mode-label::before { content: ""; width: 5px; height: 5px; flex: 0 0 auto; background: #34b496; border-radius: 50%; box-shadow: 0 0 0 3px #34b49614; }
+.portrait-mode-label::before { content: ""; width: 5px; height: 5px; flex: 0 0 auto; background: var(--yellow); border-radius: 50%; box-shadow: 0 0 0 3px color-mix(in srgb,var(--yellow) 7.84%,transparent); }
 .portrait-mode-pixel { display: none; }
 html[data-theme="dark"] .portrait-mode-real { display: none; }
 html[data-theme="dark"] .portrait-mode-pixel { display: inline; }
-html[data-theme="dark"] .portrait-mode-label::before { border-radius: 0; background: #9cbbff; box-shadow: 0 0 0 3px #9cbbff14; animation: pixelSignal 3s steps(2, end) infinite; }
+html[data-theme="dark"] .portrait-mode-label::before { border-radius: 0; background: var(--red-soft); box-shadow: 0 0 0 3px color-mix(in srgb,var(--red-soft) 7.84%,transparent); animation: pixelSignal 3s steps(2, end) infinite; }
 .about-photo-caption .about-monogram { width: 46px; height: 40px; flex: 0 0 46px; background: transparent; border-radius: 0; }
 .about-monogram .cjc-logo { width: 46px; }
 .about-photo-caption { padding-inline: 5px; }
@@ -57,11 +57,11 @@ html[data-theme="dark"] .about-copy-watermark { opacity: .05; }
 .about-interest-label { margin: 22px 0 11px; color: var(--ink); font-size: 12px; font-weight: 500; }
 .about-interests { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
 .about-interests li { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 100px; color: var(--muted); background: var(--white); font-size: 11px; transition: transform .25s, border-color .25s, color .25s; }
-.about-interests li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--violet); }
-.about-interests li:hover { transform: translateY(-3px); border-color: var(--blue); color: var(--ink); }
+.about-interests li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--accent-secondary); }
+.about-interests li:hover { transform: translateY(-3px); border-color: var(--accent); color: var(--ink); }
 .hero-personal-note { max-width: 48ch; margin-top: 14px; color: var(--muted); font-size: 12px; line-height: 1.8; }
 .hero-personal-note strong { font-weight: 500; color: var(--ink); }
-.theme-portrait::after { content: ""; position: absolute; z-index: 4; inset: 0; pointer-events: none; border: 1px solid #fff3; border-radius: inherit; }
+.theme-portrait::after { content: ""; position: absolute; z-index: 4; inset: 0; pointer-events: none; border: 1px solid color-mix(in srgb,var(--neutral-0) 20%,transparent); border-radius: inherit; }
 @keyframes logoGlint { 0%, 25%, 100% { stroke-dashoffset: 70; opacity: .3; } 40%, 75% { stroke-dashoffset: 0; opacity: .8; } }
 @keyframes logoSpark { 0%, 70%, 100% { opacity: .7; transform: scale(1); } 80% { opacity: 1; transform: scale(1.3); } }
 @keyframes monogramDraw { from { stroke-dashoffset: 1; opacity: .2; } to { stroke-dashoffset: 0; opacity: 1; } }

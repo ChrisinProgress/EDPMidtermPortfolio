@@ -7,35 +7,61 @@
   const menuToggle = document.querySelector("[data-menu-toggle]");
   const navigation = document.querySelector("[data-navigation]");
   const navLinks = Array.from(document.querySelectorAll("[data-nav-link]"));
-  const sections = navLinks.map((link) => document.getElementById(link.hash.slice(1))).filter(Boolean);
+  const sections = navLinks.map((link) => {
+    if (link.getAttribute("href").startsWith("#")) return document.getElementById(link.hash.slice(1));
+    return null;
+  }).filter(Boolean);
+  const mobileMenu = window.matchMedia("(max-width: 899px)");
+  let menuOpen = false;
 
   const setMenuOpen = (isOpen) => {
     if (!menuToggle || !navigation) return;
+    menuOpen = isOpen && mobileMenu.matches;
+    isOpen = menuOpen;
     menuToggle.setAttribute("aria-expanded", String(isOpen));
     menuToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
     navigation.classList.toggle("is-open", isOpen);
+    navigation.inert = mobileMenu.matches && !isOpen;
     document.body.classList.toggle("menu-open", isOpen);
-    if (isOpen) navigation.querySelector("a[href]")?.focus({ preventScroll: true });
   };
 
   if (menuToggle && navigation) {
     setMenuOpen(false);
     menuToggle.addEventListener("click", () => {
-      setMenuOpen(menuToggle.getAttribute("aria-expanded") !== "true");
+      setMenuOpen(!menuOpen);
+      if (menuOpen) {
+        const focusTarget = navigation.querySelector("[aria-current]") || navigation.querySelector("a[href]");
+        focusTarget?.focus({ preventScroll: true });
+      }
+    });
+    mobileMenu.addEventListener("change", () => {
+      if (mobileMenu.matches && navigation.contains(document.activeElement)) menuToggle.focus({ preventScroll: true });
+      setMenuOpen(false);
     });
 
     navigation.addEventListener("click", (event) => {
-      if (event.target.closest("a[href^='#']")) setMenuOpen(false);
+      const link = event.target.closest("a[href]");
+      if (!menuOpen || !link) return;
+      setMenuOpen(false);
+      if (!link.getAttribute("href").startsWith("#")) return;
+      const section = document.getElementById(link.hash.slice(1));
+      if (!section) return;
+      if (!section.hasAttribute("tabindex")) {
+        section.tabIndex = -1;
+        section.addEventListener("blur", () => section.removeAttribute("tabindex"), { once: true });
+      }
+      section.focus({ preventScroll: true });
     });
 
     document.addEventListener("pointerdown", (event) => {
-      if (!navigation.contains(event.target) && !menuToggle.contains(event.target)) {
+      if (menuOpen && !navigation.contains(event.target) && !menuToggle.contains(event.target)) {
+        if (navigation.contains(document.activeElement)) menuToggle.focus({ preventScroll: true });
         setMenuOpen(false);
       }
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && menuToggle.getAttribute("aria-expanded") === "true") {
+      if (event.key === "Escape" && menuOpen) {
         setMenuOpen(false);
         menuToggle.focus();
       }
@@ -77,10 +103,7 @@
   };
 
   window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
-  window.addEventListener("resize", () => {
-    if (window.innerWidth >= 900) setMenuOpen(false);
-    scheduleScrollUpdate();
-  });
+  window.addEventListener("resize", scheduleScrollUpdate);
   window.addEventListener("load", scheduleScrollUpdate, { once: true });
   updateScrollState();
 
@@ -137,8 +160,7 @@
     lightboxImage.src = source;
     lightboxImage.alt = previewImage.alt || `${title} — ${label}`;
     if (lightboxTitle) lightboxTitle.textContent = title;
-    const itemLabel = carousel.kind === "credential" ? "Certificate" : "Image";
-    if (lightboxStatus) lightboxStatus.textContent = `${label} · ${itemLabel} ${carousel.index + 1} of ${carousel.slides.length}`;
+    if (lightboxStatus) lightboxStatus.textContent = `${label} · Image ${carousel.index + 1} of ${carousel.slides.length}`;
     lightboxPicker?.querySelectorAll("[data-lightbox-choice]").forEach((choice, index) => {
       choice.setAttribute("aria-pressed", String(index === carousel.index));
     });
@@ -151,7 +173,7 @@
       const choices = carousel.slides.map((slide, index) => {
         const sourcePreview = slide.querySelector("[data-preview]");
         const sourceImage = sourcePreview?.querySelector("img");
-        const label = (carousel.kind === "credential" ? sourcePreview?.dataset.previewTitle : sourcePreview?.dataset.previewLabel) || `Image ${index + 1}`;
+        const label = sourcePreview?.dataset.previewLabel || `Image ${index + 1}`;
         const button = document.createElement("button");
         button.type = "button";
         button.className = "lightbox-choice";
@@ -315,28 +337,6 @@
       if (openLightbox(carousel, preview)) event.preventDefault();
     });
   });
-
-  const credentialCards = Array.from(document.querySelectorAll("[data-credential-card]"));
-  if (credentialCards.length) {
-    const credentialGallery = {
-      kind: "credential",
-      slides: credentialCards,
-      index: 0,
-      setIndex(nextIndex) {
-        this.index = ((nextIndex % this.slides.length) + this.slides.length) % this.slides.length;
-      },
-    };
-
-    credentialCards.forEach((card, index) => {
-      card.querySelectorAll("[data-preview], [data-open-credential]").forEach((trigger) => {
-        trigger.addEventListener("click", (event) => {
-          if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-          credentialGallery.setIndex(index);
-          if (openLightbox(credentialGallery, trigger)) event.preventDefault();
-        });
-      });
-    });
-  }
 
   const contactForm = document.querySelector("[data-contact-form]");
   if (!contactForm || typeof window.fetch !== "function" || typeof window.FormData !== "function") return;

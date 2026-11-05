@@ -20,14 +20,14 @@ $check = function (bool $condition, string $description) use (&$failureMessages,
     }
 };
 
-$check(is_array($projects) && count($projects) === 11, 'There must be exactly 11 projects.');
+$check(is_array($projects) && count($projects) === 12, 'There must be exactly 12 projects.');
 if (!is_array($projects)) {
     fwrite(STDERR, implode(PHP_EOL, $failureMessages) . PHP_EOL);
     exit(1);
 }
 
 $categoryCounts = array_count_values(array_column($projects, 'category'));
-$check(($categoryCounts['technical'] ?? 0) === 6, 'There must be 6 technical projects.');
+$check(($categoryCounts['technical'] ?? 0) === 7, 'There must be 7 technical projects.');
 $check(($categoryCounts['design'] ?? 0) === 5, 'There must be 5 digital design projects.');
 $projectIds = [];
 $imagePaths = [];
@@ -49,6 +49,7 @@ foreach ($projects as $projectIndex => $project) {
     }
     $images = $project['images'] ?? [];
     $expectedImageCount = [
+        'vision-aid' => 5,
         'recipe-management-system' => 5,
         'group-portfolio' => 5,
         'dental-clinic-management-system' => 8,
@@ -90,12 +91,30 @@ foreach ($projects as $projectIndex => $project) {
     $check(count(array_unique($projectImagePaths)) === $expectedImageCount, $projectLabel . ' must use ' . $expectedImageCount . ' different image paths.');
 }
 
-$check(count(array_unique($projectIds)) === 11, 'Project IDs must be unique.');
-$check(count($imagePaths) === 51 && count(array_unique($imagePaths)) === 51, 'All 51 gallery image paths must be distinct.');
-$check(count($imageHashes) === 51 && count(array_unique($imageHashes)) === 51, 'All 51 gallery images must have distinct contents.');
+$check(count(array_unique($projectIds)) === 12, 'Project IDs must be unique.');
+$check(count($imagePaths) === 56 && count(array_unique($imagePaths)) === 56, 'All 56 gallery image paths must be distinct.');
+$check(count($imageHashes) === 56 && count(array_unique($imageHashes)) === 56, 'All 56 gallery images must have distinct contents.');
+
+// Supplied capstone resources and Materials must remain available in deployed assets.
+$check(($projects[0]['id'] ?? '') === 'vision-aid' && ($projects[1]['id'] ?? '') === 'recipe-management-system', 'Vision Aid must appear immediately before Recipe Management.');
+foreach (['documentUrl' => '%PDF-', 'videoUrl' => 'ftyp'] as $field => $signature) {
+    $path = $rootPath . '/' . ($projects[0][$field] ?? '');
+    $check(is_file($path), 'Vision Aid is missing ' . $field . '.');
+    $header = is_file($path) ? file_get_contents($path, false, null, 0, 32) : '';
+    $check(str_contains($header, $signature), 'Vision Aid ' . $field . ' needs a valid file signature.');
+}
+$about = require $rootPath . '/data/aboutData.php';
+$check(!in_array('Community Engagement', array_column($about['expertise'], 'title'), true), 'Community Engagement must be removed.');
+foreach ($about['materials'] as $material) {
+    $path = $rootPath . '/' . $material['image'];
+    $check(is_file($path) && @getimagesize($path) !== false, $material['title'] . ' needs a valid material image.');
+    $check(!empty($material['imageAlt']) && !empty($material['description']), $material['title'] . ' needs image text and a description.');
+}
+$check(!in_array('marketing-with-canva', array_column($credentials, 'id'), true), 'Marketing with Canva must be removed.');
+$check(($credentials[0]['id'] ?? '') === 'canva-essentials', 'Canva Essentials must remain first.');
 
 // Credentials are separate from the project galleries and their image totals.
-$check(is_array($credentials) && count($credentials) === 8, 'There must be eight credentials.');
+$check(is_array($credentials) && count($credentials) === 7, 'There must be seven credentials.');
 $credentialIds = [];
 $credentialImagePaths = [];
 foreach (is_array($credentials) ? $credentials : [] as $credentialIndex => $credential) {
@@ -193,5 +212,5 @@ if ($failureMessages !== []) {
     exit(1);
 }
 
-echo 'PASS: ' . $checkCount . ' checks; 11 projects (6 technical, 5 design), 51 distinct gallery images (' . $screenshotCount . ' screenshots, ' . $placeholderCount . ' labeled placeholders), ' . count($credentials) . ' credentials, and local references.' . PHP_EOL;
+echo 'PASS: ' . $checkCount . ' checks; 12 projects (7 technical, 5 design), 56 distinct gallery images (' . $screenshotCount . ' screenshots, ' . $placeholderCount . ' labeled placeholders), ' . count($credentials) . ' credentials, and local references.' . PHP_EOL;
 echo $hasXmlSupport ? 'Validated ' . $svgCount . ' distinct SVG files as XML.' . PHP_EOL : 'SVG XML validation skipped: SimpleXML is unavailable.' . PHP_EOL;

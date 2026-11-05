@@ -1,23 +1,22 @@
-<section class="credentials-section section-shell" id="credentials" data-credential-collection aria-labelledby="credentials-title">
-    <div class="section-heading credentials-heading">
-        <div>
-            <p class="eyebrow"><span class="section-index">03</span> SEMINARS &amp; CERTIFICATES</p>
-            <h2 id="credentials-title">Credentials<span class="heading-dot">.</span></h2>
-            <p class="credentials-intro">Little milestones, new skills, and more reasons to keep learning.</p>
-        </div>
-    </div>
-    <div class="credential-gallery-heading">
-        <p>My learning journey</p>
-        <span class="credentials-status" data-credentials-status><?= count($credentials) ?> certifications &amp; seminars</span>
-    </div>
-    <div class="credential-timeline" role="list" aria-label="Certifications and seminars">
-        <?php foreach ($credentials as $credentialIndex => $credential): ?>
-            <article class="credential-card" style="--credential-order: <?= (int) $credentialIndex ?>" data-credential-card role="listitem" aria-labelledby="credential-<?= escapeHtml($credential['id']) ?>">
-                <span class="credential-node" aria-hidden="true"><?= str_pad((string) ($credentialIndex + 1), 2, '0', STR_PAD_LEFT) ?></span>
+<?php usort($credentials, static fn($a, $b) => strcmp($b['date'], $a['date'])); ?>
+<section class="credentials-section section-shell" id="credentials" data-credential-collection data-slider aria-labelledby="credentials-title">
+    <h2 id="credentials-title" class="sr-only">Credentials</h2>
+    <div class="slider-heading"><?= renderSliderControls('certifications') ?></div>
+    <div class="horizontal-gallery academy-gallery" data-slider-viewport tabindex="0" role="region" aria-label="Certifications and seminars, latest first">
+        <?php foreach ($credentials as $credential): ?>
+            <article class="gallery-card academy-card" data-credential-card data-slide-card aria-labelledby="credential-<?= escapeHtml($credential['id']) ?>">
                 <div class="credential-panel">
-                <a class="credential-preview" href="<?= escapeHtml($credential['image']['src']) ?>" data-preview data-preview-title="<?= escapeHtml($credential['title']) ?>" data-preview-label="Certificate" aria-label="Preview <?= escapeHtml($credential['title']) ?> certificate" aria-haspopup="dialog">
-                    <img src="<?= escapeHtml($credential['image']['src']) ?>" alt="<?= escapeHtml($credential['image']['alt']) ?>" width="<?= $credential['image']['width'] ?>" height="<?= $credential['image']['height'] ?>" loading="lazy" decoding="async">
-                </a>
+                <?php $hasCertificate = !empty($credential['image']['src']) && is_file(__DIR__ . '/../' . $credential['image']['src']); if ($hasCertificate): ?>
+                <?php
+                $previewPath = substr($credential['image']['src'], 0, -4) . '-preview.webp';
+                if (!is_file(__DIR__ . '/../' . $previewPath)) {
+                    $previewPath = $credential['image']['src'];
+                }
+                ?>
+                <div class="credential-preview">
+                    <img src="<?= escapeHtml($previewPath) ?>" alt="<?= escapeHtml($credential['image']['alt']) ?>" width="<?= $credential['image']['width'] ?>" height="<?= $credential['image']['height'] ?>" loading="lazy" decoding="async">
+                </div>
+                <?php else: ?><?= renderMedia('', $credential['title'], 'Certificate Preview Unavailable') ?><?php endif; ?>
                 <div class="credential-content">
                     <div class="credential-meta">
                         <span class="credential-type"><?= escapeHtml($credential['type']) ?></span>
@@ -26,31 +25,9 @@
                     <h3 id="credential-<?= escapeHtml($credential['id']) ?>"><?= escapeHtml($credential['title']) ?></h3>
                     <p class="credential-issuer"><?= escapeHtml($credential['issuer']) ?></p>
                     <p class="credential-description"><?= escapeHtml($credential['description']) ?></p>
-                    <details class="credential-details" data-credential-details>
-                        <summary class="credential-view" data-credential-detail-trigger>View Details<span class="sr-only">: <?= escapeHtml($credential['title']) ?></span></summary>
-                        <div class="credential-detail-content" data-credential-detail-content>
-                            <dl class="credential-facts">
-                                <div><dt>Issued by</dt><dd><?= escapeHtml($credential['issuer']) ?></dd></div>
-                                <div><dt>Issue date</dt><dd><time datetime="<?= escapeHtml($credential['date']) ?>"><?= escapeHtml($credential['dateLabel']) ?></time></dd></div>
-                                <div><dt>Credential type</dt><dd><?= escapeHtml($credential['type']) ?></dd></div>
-                            </dl>
-                            <p class="credential-detail-description"><?= escapeHtml($credential['description']) ?></p>
-                            <a class="credential-detail-image" href="<?= escapeHtml($credential['image']['src']) ?>" target="_blank" rel="noopener" aria-label="Open full-size <?= escapeHtml($credential['title']) ?> certificate in a new tab">
-                                <img src="<?= escapeHtml($credential['image']['src']) ?>" alt="<?= escapeHtml($credential['image']['alt']) ?>" width="<?= $credential['image']['width'] ?>" height="<?= $credential['image']['height'] ?>" loading="lazy" decoding="async">
-                            </a>
-                            <p class="credential-preview-hint sr-only">Select the certificate to open the full-size image.</p>
-                        </div>
-                    </details>
                 </div>
                 </div>
             </article>
         <?php endforeach; ?>
     </div>
-    <dialog class="credential-dialog" data-credential-dialog aria-labelledby="credential-dialog-title">
-        <div class="credential-dialog-heading">
-            <div><p class="eyebrow">A LEARNING MILESTONE</p><h2 id="credential-dialog-title" data-credential-dialog-title>Certification details</h2></div>
-            <button class="credential-dialog-close" type="button" data-credential-dialog-close aria-label="Close certification details"><?= renderIcon('close') ?></button>
-        </div>
-        <div data-credential-dialog-body></div>
-    </dialog>
 </section>

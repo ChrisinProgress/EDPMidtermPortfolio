@@ -6,6 +6,23 @@ declare(strict_types=1);
 // Each project owns its gallery so adding a project does not require template edits.
 return [
     [
+        'id' => 'vision-aid',
+        'title' => 'Vision Aid',
+        'category' => 'technical',
+        'categoryLabel' => 'TECHNICAL',
+        'technologies' => ['Arduino IDE'],
+        'description' => 'A Senior High School Capstone: an Arduino-based first-response kit with sensor-activated audio descriptions for visually impaired users.',
+        'documentUrl' => 'assets/documents/vision-aid.pdf',
+        'videoUrl' => 'assets/videos/vision-aid.mp4',
+        'images' => [
+            ['src' => 'assets/images/projects/vision-aid/concept.png', 'alt' => 'Concept rendering of the Vision Aid first-response kit with closed and open cabinet views.', 'label' => 'Concept Design', 'isPlaceholder' => false, 'width' => 1448, 'height' => 1086],
+            ['src' => 'assets/images/projects/vision-aid/prototype.jpg', 'alt' => 'Assembled Vision Aid cabinet with a red cross and an audio speaker.', 'label' => 'Prototype', 'isPlaceholder' => false, 'width' => 2048, 'height' => 1536],
+            ['src' => 'assets/images/projects/vision-aid/electronics.jpg', 'alt' => 'Arduino electronics, wiring, and speaker inside the Vision Aid prototype.', 'label' => 'Arduino & Audio', 'isPlaceholder' => false, 'width' => 2048, 'height' => 1536],
+            ['src' => 'assets/images/projects/vision-aid/sensors.jpg', 'alt' => 'Sensor connections and wiring mounted inside the Vision Aid cabinet door.', 'label' => 'Sensor Wiring', 'isPlaceholder' => false, 'width' => 2048, 'height' => 1536],
+            ['src' => 'assets/images/projects/vision-aid/assembly.jpg', 'alt' => 'Team members assembling the Vision Aid first-response kit.', 'label' => 'Assembly', 'isPlaceholder' => false, 'width' => 2040, 'height' => 1536],
+        ],
+    ],
+    [
         'id' => 'recipe-management-system',
         'repositoryUrl' => 'https://github.com/ChrisinProgress/RecipeManagementSystem',
         'title' => 'Recipe Management System',

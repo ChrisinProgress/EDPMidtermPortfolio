@@ -1,133 +1,44 @@
-/* Retained filename: All is a ribbon; selected categories are still grids. */
 (() => {
-  "use strict";
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  document.querySelectorAll("[data-toolkit-collection]").forEach(section => {
-    const row = section.querySelector("[data-toolkit-row]");
-    const viewport = section.querySelector("[data-toolkit-viewport]");
-    const strip = section.querySelector("[data-toolkit-strip]");
-    const list = section.querySelector("[data-toolkit-list]");
-    const toggle = section.querySelector("[data-toolkit-motion-toggle]");
-    const motionLabel = section.querySelector("[data-toolkit-motion-label]");
-    const controls = section.querySelector("[data-toolkit-filter-controls]");
-    const results = section.querySelector("[data-toolkit-results]");
-    const filters = Array.from(section.querySelectorAll("[data-toolkit-filter]"));
-    const items = Array.from(list?.querySelectorAll("[data-toolkit-item]") || []);
-    if (!row || !viewport || !strip || !list || !toggle || !motionLabel || !controls || !results || !items.length) return;
-
-    let activeCategory = "all";
-    let paused = false;
-    let period = 0;
-    let duration = 90;
-    let allOffset = 0;
-    let observedWidth = -1;
-    let resizeFrame = 0;
-    const currentOffset = () => {
-      const transform = getComputedStyle(strip).transform;
-      if (transform === "none") return viewport.scrollLeft;
-      const matrix = new DOMMatrixReadOnly(transform);
-      return Math.abs(matrix.m41) % (period || 1);
-    };
-    const removeRepeats = () => strip.querySelectorAll("[data-toolkit-repeat]").forEach(copy => copy.remove());
-    const setControls = () => {
-      toggle.hidden = activeCategory !== "all" || reducedMotion.matches;
-      toggle.setAttribute("aria-pressed", String(paused));
-      toggle.setAttribute("aria-label", (paused ? "Play" : "Pause") + " toolkit motion");
-      motionLabel.textContent = paused ? "Play motion" : "Pause motion";
-      filters.forEach(button => {
-        const selected = button.dataset.toolkitFilter === activeCategory;
-        button.classList.toggle("is-active", selected);
-        button.setAttribute("aria-pressed", String(selected));
-      });
-    };
-    const configure = (offset = activeCategory === "all" ? currentOffset() : allOffset) => {
-      row.classList.remove("is-moving");
-      removeRepeats();
-      if (activeCategory !== "all") {
-        viewport.scrollLeft = 0;
-        setControls();
-        return;
-      }
-      const gap = parseFloat(getComputedStyle(strip).columnGap) || 16;
-      period = list.getBoundingClientRect().width + gap;
-      duration = Math.max(60, period / 34);
-      if (!(period > 0)) { setControls(); return; }
-      allOffset = offset % period;
-      strip.style.setProperty("--toolkit-loop-width", period + "px");
-      strip.style.setProperty("--toolkit-loop-duration", duration + "s");
-      if (!reducedMotion.matches && !paused) {
-        const copy = list.cloneNode(true);
-        copy.removeAttribute("data-toolkit-list");
-        copy.removeAttribute("aria-label");
-        copy.dataset.toolkitRepeat = "";
-        copy.setAttribute("aria-hidden", "true");
-        copy.inert = true;
-        copy.querySelectorAll("[data-toolkit-item]").forEach(item => item.removeAttribute("data-toolkit-item"));
-        strip.append(copy);
-        viewport.scrollLeft = 0;
-        strip.style.setProperty("--toolkit-loop-delay", (-((allOffset / period) * duration)) + "s");
-        row.classList.add("is-moving");
-      } else {
-        viewport.scrollLeft = Math.max(0, Math.min(allOffset, viewport.scrollWidth - viewport.clientWidth));
-      }
-      setControls();
-    };
-    const selectCategory = button => {
-      const category = button.dataset.toolkitFilter;
-      if (!category) return;
-      if (category === activeCategory) {
-        if (category === "all" && paused) { paused = false; configure(currentOffset()); }
-        return;
-      }
-      if (activeCategory === "all") allOffset = currentOffset();
-      activeCategory = category;
-      if (category === "all") paused = false;
-      section.classList.toggle("is-filtered", category !== "all");
-      let visibleCount = 0;
-      items.forEach(item => {
-        const visible = category === "all" || item.dataset.toolkitCategory === category;
-        item.hidden = !visible;
-        if (visible) visibleCount++;
-      });
-      const categoryLabel = button.dataset.toolkitLabel || category;
-      viewport.setAttribute("aria-label", category === "all" ? "My tools and technologies" : `Tools: ${categoryLabel}`);
-      if (category === "all") viewport.tabIndex = 0;
-      else viewport.removeAttribute("tabindex");
-      results.textContent = category === "all" ? "Explore all tools" : categoryLabel;
-      configure(allOffset);
-    };
-    filters.forEach(button => button.addEventListener("click", () => selectCategory(button)));
-    const pauseForBrowsing = () => {
-      if (activeCategory !== "all" || paused || reducedMotion.matches) return;
-      const offset = currentOffset();
-      paused = true;
-      configure(offset);
-    };
-    toggle.addEventListener("click", () => {
-      if (activeCategory !== "all") return;
-      const offset = currentOffset();
-      paused = !paused;
-      configure(offset);
-    });
-    viewport.addEventListener("focus", pauseForBrowsing);
-    viewport.addEventListener("pointerdown", event => { if (event.pointerType !== "mouse") pauseForBrowsing(); });
-    const updateVisibility = () => section.classList.toggle("is-background", document.hidden);
-    document.addEventListener("visibilitychange", updateVisibility);
-    updateVisibility();
-    const resize = () => {
-      const width = viewport.getBoundingClientRect().width;
-      if (Math.abs(width - observedWidth) < 1) return;
-      observedWidth = width;
-      if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
-      resizeFrame = window.requestAnimationFrame(() => { resizeFrame = 0; configure(); });
-    };
-    if (typeof ResizeObserver === "function") new ResizeObserver(resize).observe(viewport);
-    else window.addEventListener("resize", resize);
-    if (typeof IntersectionObserver === "function") {
-      new IntersectionObserver(entries => row.classList.toggle("is-offscreen", !entries[0].isIntersecting), { threshold: 0 }).observe(row);
-    }
-    reducedMotion.addEventListener("change", () => configure());
-    configure();
-    controls.hidden = false;
+ 'use strict';
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ document.querySelectorAll('[data-toolkit-collection]').forEach(section=>{
+  const filter=section.querySelector('[data-toolkit-select]');
+  const list=section.querySelector('[data-toolkit-list]');
+  const items=[...section.querySelectorAll('[data-toolkit-item]')];
+  const viewport=section.querySelector('[data-toolkit-viewport]');
+  const row=section.querySelector('[data-toolkit-row]');
+  const strip=section.querySelector('[data-toolkit-strip]');
+  const controls=section.querySelector('[data-toolkit-filter-controls]');
+  const results=section.querySelector('[data-toolkit-results]');
+  if(!viewport||!controls||!list||!filter) return;
+  let category='all',paused=false,period=0,resizeFrame=0;
+  const offset=()=>row.classList.contains('is-moving')?Math.abs(new DOMMatrixReadOnly(getComputedStyle(strip).transform).m41)%(period||1):viewport.scrollLeft;
+  const configure=(position=0)=>{
+   row.classList.remove('is-moving');strip.querySelector('[data-toolkit-repeat]')?.remove();
+   if(category==='all'&&!paused&&!reduced.matches&&viewport.clientWidth){
+    period=list.getBoundingClientRect().width+(parseFloat(getComputedStyle(strip).columnGap)||18);
+    const copy=list.cloneNode(true);copy.removeAttribute('data-toolkit-list');copy.removeAttribute('aria-label');copy.dataset.toolkitRepeat='';copy.setAttribute('aria-hidden','true');copy.inert=true;
+    copy.querySelectorAll('[data-toolkit-item]').forEach(item=>{item.removeAttribute('data-toolkit-item');item.removeAttribute('data-slide-card');});strip.append(copy);
+    const duration=Math.max(55,period/34);strip.style.setProperty('--toolkit-period',period+'px');strip.style.setProperty('--toolkit-duration',duration+'s');strip.style.setProperty('--toolkit-delay',-(position/period*duration)+'s');viewport.scrollLeft=0;row.classList.add('is-moving');
+   }else viewport.scrollLeft=Math.max(0,position);
+   viewport.dispatchEvent(new Event('sliderchange'));
+  };
+  const pause=()=>{if(category!=='all'||paused||reduced.matches)return;const position=offset();paused=true;configure(position);};
+  section.querySelectorAll('[data-slide-prev],[data-slide-next]').forEach(b=>b.addEventListener('click',pause,true));
+  viewport.addEventListener('beforebrowse',pause);viewport.addEventListener('focusin',pause);viewport.addEventListener('pointerdown',pause);
+  const resume=()=>{if(category==='all'&&paused&&!section.contains(document.activeElement)){const position=offset();paused=false;configure(position);}};
+  section.addEventListener('focusout',()=>requestAnimationFrame(resume));section.addEventListener('pointerleave',resume);
+  filter.addEventListener('change',()=>{
+   category=filter.value;paused=false;
+   items.forEach(item=>{item.hidden=category!=='all'&&item.dataset.toolkitCategory!==category;});
+   results.textContent=filter.selectedOptions[0].textContent;
+   viewport.setAttribute('aria-label','Tools: '+results.textContent);configure(0);
   });
+  let observedWidth=-1;
+  new ResizeObserver(()=>{if(viewport.clientWidth===observedWidth)return;observedWidth=viewport.clientWidth;cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>configure(offset()));}).observe(viewport);
+  new IntersectionObserver(([entry])=>row.classList.toggle('is-offscreen',!entry.isIntersecting)).observe(row);
+  reduced.addEventListener('change',()=>configure(offset()));
+  document.addEventListener('visibilitychange',()=>row.classList.toggle('is-offscreen',document.hidden));
+  controls.hidden=false;configure();
+ });
 })();

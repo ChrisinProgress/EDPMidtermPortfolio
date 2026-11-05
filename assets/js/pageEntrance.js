@@ -14,7 +14,12 @@
     const label = document.querySelector("[data-entrance-percent]");
     if (label) label.textContent = "100%";
     window.clearTimeout(safetyTimer);
+    root.classList.add("intro-revealing");
     root.classList.remove("intro-pending");
+    let revealed = false;
+    const revealComplete = () => { if (revealed) return; revealed = true; root.classList.remove("intro-revealing"); };
+    document.querySelector("[data-site-entrance]")?.addEventListener("transitionend", revealComplete, { once: true });
+    window.setTimeout(revealComplete, reducedMotion.matches ? 0 : 750);
     skipEvents.forEach(name => window.removeEventListener(name, finish));
   };
   root.classList.add("intro-pending");

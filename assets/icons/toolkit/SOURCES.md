@@ -30,4 +30,16 @@ Microsoft owns this name and logo; the Devicon MIT license does not apply to thi
 `render.svg` is the unchanged favicon linked by [Render's official homepage](https://render.com/) on October 27, 2026: [official SVG source](https://render.com/icon.svg?icon.00d01gt742wgb.svg?dpl=7bcf56747d). It is used only to identify the hosting platform. Render owns its name and logo; the Devicon MIT license does not apply to this separately sourced asset.
 
 Dark monochrome icons sit on white icon plates in both interface themes so their original colors do not need to be changed.
-`nWorkspace logos: VS Code, Visual Studio, NetBeans, PyCharm and Eclipse from https://github.com/devicons/devicon/tree/master/icons (Devicon license in LICENSE.txt). Notepad++ from https://notepad-plus-plus.org/images/logo.svg. Dev-C++ from https://github.com/Embarcadero/Dev-Cpp/blob/master/Source/Images/devcpplogo.png. Product marks belong to their respective owners. Retrieved November 3, 2026.
+
+Workspace logos: VS Code, Visual Studio, NetBeans, and PyCharm from https://github.com/devicons/devicon/tree/master/icons (Devicon license in LICENSE.txt). Notepad++ from https://notepad-plus-plus.org/images/logo.svg. Product marks belong to their respective owners.
+
+
+`lightroom.svg` is a local typographic fallback mark.
+
+| Local file | Listing and source |
+| --- | --- |
+| devcpp-classic.png | [Orwell Dev-C++](https://sourceforge.net/projects/orwelldevcpp/) · [PNG](https://a.fsdn.com/allura/p/orwelldevcpp/icon?1480458710=) |
+| pixellab-app.png | [App Holdings on Google Play](https://play.google.com/store/apps/details?id=com.imaginstudio.imagetools.pixellab) |
+| photoshop-touch.png | [Adobe product icon archived by Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Photoshop_Touch_Logo.png) |
+
+Arduino IDE: `arduino.svg` is the unmodified Arduino original SVG from Devicon v2.17.0: https://github.com/devicons/devicon/blob/v2.17.0/icons/arduino/arduino-original.svg . Devicon MIT license applies to its distribution; Arduino trademark rules remain separate: https://www.arduino.cc/en/trademark/guides/arduino-and-community-logos/ . Used descriptively to identify a tool, not endorsement.

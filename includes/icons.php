@@ -4,6 +4,10 @@ declare(strict_types=1);
 function renderIcon(string $iconName): string
 {
     $iconPaths = [
+        'workspace' => '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4M6 8l3 2-3 2m6 0h5"/>',
+        'facebook' => '<path d="M14 22v-9h3l1-4h-4V7c0-1 1-2 2-2h2V2h-3c-4 0-5 3-5 5v2H7v4h3v9"/>',
+        'instagram' => '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
+        'threads' => '<path d="M19 7c-1-4-10-6-13-1-2 3-2 10 1 13 4 4 12 2 13-3 1-5-4-7-8-6-5 1-4 6 0 6 4 0 5-9 1-10-2-.5-4 0-5 2"/>',
         'check' => '<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
         'award' => '<circle cx="12" cy="8" r="5"/><path d="m8 12-2 9 6-3 6 3-2-9"/>',
         'arrowUpRight' => '<path d="M7 17 17 7M6 7h11v11"/>',
@@ -12,6 +16,7 @@ function renderIcon(string $iconName): string
         'arrowDown' => '<path d="M12 4v16m-6-6 6 6 6-6"/>',
         'arrowUp' => '<path d="M12 20V4m-6 6 6-6 6 6"/>',
         'close' => '<path d="m6 6 12 12M6 18 18 6"/>',
+        'zoom' => '<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6M7 10h6"/><path class="zoom-plus" d="M10 7v6"/>',
         'menu' => '<path d="M4 7h16M4 12h16M4 17h16"/>',
         'moon' => '<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/>',
         'sun' => '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4m0-14.2-1.4 1.4M6.3 17.7l-1.4 1.4"/>',
@@ -25,6 +30,8 @@ function renderIcon(string $iconName): string
         'github' => '<path d="M9 19c-4 1-4-2-6-2m12 5v-4a3.5 3.5 0 0 0-1-3c3-.3 6-1.5 6-6a4.7 4.7 0 0 0-1.3-3.3 4.3 4.3 0 0 0-.1-3.2s-1.1-.4-3.6 1.3a12.6 12.6 0 0 0-6 0C6.5 2.1 5.4 2.5 5.4 2.5a4.3 4.3 0 0 0-.1 3.2A4.7 4.7 0 0 0 4 9c0 4.5 3 5.7 6 6a3.5 3.5 0 0 0-1 3v4"/>',
         'linkedin' => '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10v7m4-7v7m0-4a3 3 0 0 1 6 0v4"/><path d="M7.5 7h.01"/>',
         'graduation' => '<path d="m12 3 10 5-10 5L2 8l10-5Zm-6 8v6c4 3 8 3 12 0v-6M22 8v8"/>',
+        'document' => '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8m-8 4h5"/>',
+        'play' => '<circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/>',
         'image' => '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m21 15-6-6-12 12"/>',
         'send' => '<path d="m22 2-7 20-4-9-9-4L22 2ZM22 2 11 13"/>',
         'heart' => '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',

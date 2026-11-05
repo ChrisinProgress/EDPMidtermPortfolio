@@ -35,6 +35,7 @@ function Assert-Status([string] $Path, [int[]] $Expected, [string] $Method = 'GE
 
 $home = Assert-Status '' @(200)
 if ($home.Content -notmatch 'id="home-title"') { throw 'The root URL did not render the portfolio.' }
+if ($home.Content -notmatch 'action="https://formsubmit.co/') { throw 'The native contact destination is missing.' }
 $checks++
 
 # Follow the actual rendered assets and project links, then project screenshots
@@ -53,6 +54,10 @@ function Queue-References([string] $Content, [Uri] $DocumentUrl, [bool] $IsCss =
     }
 }
 Queue-References $home.Content $base
+foreach ($path in @('privacy.php', 'terms.php', 'licenses.php', 'legal.php')) {
+    $policy = Assert-Status $path @(200)
+    Queue-References $policy.Content ([Uri]::new($base, $path))
+}
 while ($pending.Count -gt 0) {
     $target = $pending.Dequeue()
     $response = Assert-Status $target.AbsoluteUri @(200)
@@ -61,8 +66,7 @@ while ($pending.Count -gt 0) {
 }
 $null = Assert-Status 'index.php#about' @(200)
 $null = Assert-Status 'project.php?project=not-a-project' @(404)
-$null = Assert-Status 'handlers/contactHandler.php' @(405)
-$null = Assert-Status 'handlers/contactHandler.php' @(403) 'POST' @{ name = 'Deployment check' }
+$null = Assert-Status 'handlers/contactHandler.php' @(403, 404)
 
 foreach ($path in @('config/appConfig.php', 'data/projectData.php', 'includes/header.php', 'pages/about.php')) {
     $null = Assert-Status $path @(403)
@@ -70,4 +74,4 @@ foreach ($path in @('config/appConfig.php', 'data/projectData.php', 'includes/he
 foreach ($path in @('.git/config', '.env', 'tools/verifyPortfolio.php', 'docs/contactSetup.md', 'vendor/phpmailer/README.md', 'Dockerfile', 'render.yaml', 'docker/start-portfolio.sh')) {
     $null = Assert-Status $path @(403, 404)
 }
-Write-Output "PASS: $checks deployment HTTP checks; rendered assets, project links, contact rejection, and private paths. No email sent."
+Write-Output "PASS: $checks deployment HTTP checks for rendered assets, project links, policy pages, and private paths. No email sent."

@@ -1,6 +1,6 @@
 # Christopher John Cruz — Personal Portfolio
 
-A responsive PHP portfolio with blue and violet accents, custom CJC letter outlines inside a double-circle mark, light and dark themes, and dedicated project detail pages. The introduction and About text explain Christopher's IT studies, development/design interests, and learning approach in clear paragraphs. The hero uses a transparent portrait with a pixel-art hover effect; About cycles through three real photographs on click. Built with HTML, CSS, JavaScript, and PHP, with password-free FormSubmit forwarding for contact messages. No framework, database, package installation, or frontend build step is required.
+A responsive PHP portfolio with red and yellow accents, custom CJC letter outlines inside a double-circle mark, light and dark themes, and dedicated project detail pages. The introduction and About text explain Christopher's IT studies, development/design interests, and learning approach in clear paragraphs. The hero uses a transparent portrait with a pixel-art hover effect; About cycles through three real photographs on click. Built with HTML, CSS, JavaScript, and PHP, with password-free FormSubmit forwarding for contact messages. No framework, database, package installation, or frontend build step is required.
 
 ## Run with XAMPP
 
@@ -38,7 +38,7 @@ Docker is not installed in the current workspace environment, so the image build
 | `includes/aboutPhotoStack.php` | Three supplied real About photographs, click-to-turn control, and photo counter |
 | `includes/education.php` | Integrated About studies line, with PLV first and Malinta second |
 | `includes/imageViewer.php` | Shared full-size image dialog and thumbnail selector |
-| `data/projectData.php` | All 11 projects, uppercase category labels, gallery images, and supplied repository/design URLs |
+| `data/projectData.php` | All 12 projects, uppercase category labels, gallery images, and supplied repository/design URLs |
 | `data/credentialsData.php` | Certificate titles, issuers, dates, descriptions, and image details |
 | `data/toolkitData.php` | Development, Design, Databases, and Hosting tools, short descriptions, and local icons |
 | `assets/css/style.css` | Layout, components, responsive breakpoints, and reduced-motion behavior |
@@ -46,9 +46,8 @@ Docker is not installed in the current workspace environment, so the image build
 | `assets/fonts/poppins/` | Bundled Poppins weights and SIL Open Font License |
 | `assets/css/refinements.css` | Readability and progressive-enhancement styles |
 | `assets/css/theme.css` | Theme toggle and dark-mode colors for the entire page |
-| `assets/css/credentials.css` | Alternating timeline, stationary numbered nodes, scroll-lit rail, and certificate details buttons/dialog |
+| `assets/css/credentials.css` | Certificate metadata and hover-only image zoom |
 | `assets/js/main.js` | Navigation, project filters, screenshot selection, full-size viewer, and form feedback |
-| `assets/js/credentialCollection.js` | Progressive certificate-gallery interactions |
 | `assets/js/theme.js` | Early theme initialization, accessible switching, and saved preference |
 | `assets/css/toolkit.css` | Moving All-tools ribbon, icon/count category selector, and still category grids |
 | `assets/js/toolkitTabs.js` | Category selection, pausable toolkit motion, and keyboard/touch scrolling |
@@ -69,16 +68,15 @@ Docker is not installed in the current workspace environment, so the image build
 | `assets/js/pageEntrance.js` | Bounded, skippable entrance with reduced-motion support |
 | `assets/icons/toolkit/` | Local Devicon brand SVGs, license, and source attribution |
 | `assets/icons/brand/` | Custom CJC monogram assets and favicon |
-| `assets/images/projects/` | 51 supplied screenshots and design images across all 11 project galleries; no active placeholders |
+| `assets/images/projects/` | 56 supplied screenshots and design images across all 12 project galleries; no active placeholders |
 | `assets/images/credentials/` | Eight supplied Canva, TESDA, and PLV certificate images |
 | `assets/images/profile/` | Original photographs, pixel versions, and transparent hero cutouts |
 | `assets/images/education/` | Supplied PLV and Malinta National High School seals |
 | `config/appConfig.php` | Session, escaping, CSRF, and the fixed contact relay destination |
-| `includes/contactMailer.php` | HTTPS forwarding to FormSubmit with a fixed recipient |
-| `handlers/contactHandler.php` | Validated POST endpoint that emails submissions and returns JSON or ordinary HTML |
+| `pages/contact.php` | Native FormSubmit contact form with required acknowledgment |
 | `docs/contactSetup.md` | FormSubmit activation, forwarding behavior, privacy, and troubleshooting |
 | `tools/verifyPortfolio.php` | CLI data, asset, and reference checks |
-| `tools/verifyContact.php` | Relay payload/response and disabled local HTTP checks that send no outgoing messages |
+| `tools/verifyContact.php` | Native contact form and optional local HTTP header checks |
 | `Dockerfile`, `render.yaml`, `docker/` | Production container, Render Blueprint, startup settings, and deployment checks |
 
 ## Creative toolkit
@@ -101,7 +99,7 @@ The hero's background-free photographic cutout changes to pixel art on hover; re
 
 The hero explains Christopher's practical web systems, UI/UX, and graphics work in one paragraph, without a separate learning-note line. About uses two paragraphs to describe his PLV studies, project approach, and interests. Hero action links include arrow icons, while the scroll cue and footer back-to-top link use rounded arrow treatments.
 
-The interests area adds illustrated Gaming, Anime, Biking, Board games, Traveling, and Editing cards. Each icon has a small individual hover movement, with reduced-motion support.
+My Studies appears beside the About photo, replacing the former interests cards. It retains the PLV and Malinta education details and school seals.
 
 Studies are integrated within About, without a separate Education heading. The horizontal line places Pamantasan ng Lungsod ng Valenzuela first, with the ongoing BSIT degree (2024–Present), followed by completed STEM studies at Malinta National High School (2022–2024). Both supplied school seals appear beside the course details. The line animates subtly and the current node pulses; it adapts vertically on narrow phones. The footer reads **Thoughtful design. Useful code. Always growing.** Its icon-only links retain the supplied Facebook and Instagram profiles, plus existing GitHub, LinkedIn, and email destinations, with accessible labels and keyboard focus states.
 
@@ -111,8 +109,9 @@ The visible FormSubmit forwarding sentence is omitted from the contact form. Thi
 
 ## Project gallery images
 
-All 11 project galleries use supplied PNG screenshots and design images:
+All 12 project galleries use supplied PNG and JPG screenshots, prototype photos, and design images:
 
+- Vision Aid: Concept Design, Prototype, Arduino & Audio, Sensor Wiring, and Assembly. This Senior High IoT capstone appears first; its detail page has separate **View Project Details (PDF)** and **Watch Video** buttons opening the supplied files in new tabs. Files are stored as `assets/documents/vision-aid.pdf` and `assets/videos/vision-aid.mp4`; no autoplay or inline video loads on the project page.
 - Recipe Management System: Main Menu, Create Recipe, Saved Recipes, Pantry, and Shopping List.
 - Group Portfolio: Registration, Team Profiles, About Me, Educational Background, and Contact Information.
 - Airplane Passenger Queue System: Passenger Registration, Seating Arrangement, Queue Display, and Boarding Status.
@@ -125,7 +124,7 @@ All 11 project galleries use supplied PNG screenshots and design images:
 - Social Media Advertisement: Campaign Mockup, Photoshop Layout, and Canva Poster Design.
 - Cozy Grind Brand Identity: Brand Board, Logo Design, and Canva Layout.
 
-These 51 supplied images use descriptive filenames identifying the project and screen. AlgoVerse uses `algoverse-learning-app-project-overview.png`, `algoverse-learning-app-mobile-ui-design.png`, `algoverse-learning-app-style-guide.png`, and `algoverse-learning-app-site-map.png`. SaveMore uses `savemore-digital-bank-project-overview.png`, `savemore-digital-bank-mobile-ui-design.png`, `savemore-digital-bank-site-map.png`, `savemore-digital-bank-logo-design.png`, `savemore-digital-bank-style-guide.png`, and `savemore-digital-bank-ui-components.png`. Artist Profile uses `artist-profile-final-poster.png`, `artist-profile-photoshop-portrait-detail.png`, and `artist-profile-photoshop-full-layout.png`. Social Media Advertisement uses `social-media-advertisement-mango-campaign-mockup.png`, `social-media-advertisement-photoshop-layout.png`, and `social-media-advertisement-canva-poster-design.png`. Cozy Grind uses `cozy-grind-brand-identity-brand-board.png`, `cozy-grind-brand-identity-photoshop-logo-design.png`, and `cozy-grind-brand-identity-canva-brand-layout.png`. The original SVG placeholder assets remain in the assets folder but are no longer used in any project gallery.
+These 56 supplied images use descriptive filenames identifying the project and screen. AlgoVerse uses `algoverse-learning-app-project-overview.png`, `algoverse-learning-app-mobile-ui-design.png`, `algoverse-learning-app-style-guide.png`, and `algoverse-learning-app-site-map.png`. SaveMore uses `savemore-digital-bank-project-overview.png`, `savemore-digital-bank-mobile-ui-design.png`, `savemore-digital-bank-site-map.png`, `savemore-digital-bank-logo-design.png`, `savemore-digital-bank-style-guide.png`, and `savemore-digital-bank-ui-components.png`. Artist Profile uses `artist-profile-final-poster.png`, `artist-profile-photoshop-portrait-detail.png`, and `artist-profile-photoshop-full-layout.png`. Social Media Advertisement uses `social-media-advertisement-mango-campaign-mockup.png`, `social-media-advertisement-photoshop-layout.png`, and `social-media-advertisement-canva-poster-design.png`. Cozy Grind uses `cozy-grind-brand-identity-brand-board.png`, `cozy-grind-brand-identity-photoshop-logo-design.png`, and `cozy-grind-brand-identity-canva-brand-layout.png`. The original SVG placeholder assets remain in the assets folder but are no longer used in any project gallery.
 
 For project screenshots, add local JPG, PNG, or WebP files and update each project's `images` entries in `data/projectData.php`. Each image has a `src`, descriptive `alt`, and short `label`; set `isPlaceholder` to `false` for actual screenshots. Omitted flags default to placeholders, which must retain their disclosure in both the image and alternative text. The detail page's thumbnail collection adapts to the number of entries. All displayed counts and categories are calculated from the central data.
 
@@ -141,19 +140,15 @@ No repository or live-demo URLs are invented. The supplied GitHub and LinkedIn p
 
 ## Credentials
 
-The Credentials section contains eight certificates, ordered with the latest completions first. Six are from Canva Design School: Marketing with Canva, completed on October 23, 2026 with one hour of training, and five courses completed on October 22, 2026: Canva Essentials, Graphic Design Essentials, AI Skills for Students, AI Essentials 2026, and Work Smarter with AI. The section also includes TESDA's Microsoft Digital Literacy course completion (June 4, 2025) and PLV's Identity & Access Management seminar participation (April 24, 2025).
+The Credentials section contains seven certificates, with Canva Essentials first. The five Canva Design School courses completed on October 22, 2026 are Canva Essentials, Graphic Design Essentials, AI Skills for Students, AI Essentials 2026, and Work Smarter with AI. The section also includes TESDA's Microsoft Digital Literacy course completion (June 4, 2025) and PLV's Identity & Access Management seminar participation (April 24, 2025).
 
-All eight certificates alternate left and right of a connected center timeline. Each compact card shows the certificate image, title, issuer, date, and a short description. The rail illuminates according to scroll progress. Numbered nodes stay stationary and opaque, separate from the animated `.credential-panel` content, so the rail and card effects do not pass over the numbers. On narrow screens the rail moves left and cards stack in reading order. There are no issuer filters or buttons over the certificate pictures. Reduced-motion preferences keep a visible rail while disabling decorative motion.
+Seven certificates appear in the manually browsed Credentials gallery. Each shows its title, issuer, date, and description. The gallery supports touch scrolling, keyboard navigation, and previous/next buttons.
 
-Select the **View Details** button to open a dialog with the issuing organization, date, type, description, and certificate preview. Close or Escape returns focus to the original control. Without JavaScript, the button-styled native expandable details provide the same information. Click a certificate image to open the original-resolution image in the shared viewer, with labeled thumbnails and keyboard navigation, without visible arrow buttons. Certificate images remain separate from the 11 projects and 51 project gallery images. Update `data/credentialsData.php` to maintain their content and descriptive local image filenames.
+The gallery uses lazy-loaded WebP previews. Hovering over a certificate image gently enlarges it within its frame on devices with a fine pointer.
 
 ## Contact messages
 
-Valid contact submissions forward the visitor's name, email address, and message to `cruchristopherjohnhoylar@gmail.com` through FormSubmit. The recipient is fixed on the server; the visitor's email field enables replies to the client. A successful HTTP 200 response means the relay accepted the submission; it does not prove inbox arrival. Disabled forwarding returns HTTP 503, and relay rejection or transport failure returns HTTP 502 without claiming success.
-
-The application does not store contact messages in a database. The `midterm_portfolio` database and its project connection, schema, and setup files were removed; other databases were left unchanged. No Gmail password or mail credential is used. FormSubmit requires a one-time email activation after the first submission. It processes the submitted details and documents a 30-day submission archive; see [contact setup](docs/contactSetup.md) for activation and privacy details.
-
-The endpoint checks POST, CSRF, required fields, email format, field lengths, control characters, and a honeypot. The client prevents duplicate in-flight submissions; successfully sent messages have a 60-second session cooldown and a ten-minute duplicate check. Delivery errors do not start the cooldown. The handler also works without JavaScript. PHP sessions need a writable configured session directory.
+The browser sends the visitor's name, email, message, and acknowledgment directly to FormSubmit for delivery to the portfolio inbox. The form requests a confirmation email. The website has no message database or mail credentials. See [contact setup](docs/contactSetup.md) for activation and delivery checks.
 
 ## Verification
 
@@ -162,7 +157,6 @@ The endpoint checks POST, CSRF, required fields, email format, field lengths, co
 Get-ChildItem -Recurse -Filter '*.php' | ForEach-Object { & 'C:\xampp\php\php.exe' -l $_.FullName }
 node --check assets/js/main.js
 node --check assets/js/workGallery.js
-node --check assets/js/credentialCollection.js
 node --check assets/js/toolkitTabs.js
 node --check assets/js/portraitInteraction.js
 node --check assets/js/aboutPhotos.js
@@ -171,6 +165,30 @@ node --check assets/js/theme.js
 node --check assets/js/motion.js
 ```
 
-The portfolio check covers 11 projects (6 technical and 5 digital design), their 51 supplied gallery images, and eight credentials. It checks data completeness, image paths and dimensions, alternative text, unique IDs and files, imports, SVG validity, and navigation fragments. Browser verification should cover the skippable logo curtain, repeat zoom-and-fade scroll reveals, project selection, uppercase category labels, supplied Figma links, full-size viewing and focus restoration, the toolkit icon/count selector and All/category motion behavior, the scroll-lit certificate rail with fixed numbered nodes, View Details buttons/dialogs, hero pixel interaction, campus/waterfall/beach About cycling, rounded arrow controls, mobile navigation, form feedback, and desktop/tablet/mobile layouts. `tools/verifyContact.php` provides relay payload/response and disabled local HTTP checks without sending real email. A live forwarding test requires the owner to complete FormSubmit's email activation.
+The portfolio check covers 12 projects, 56 gallery images, and seven credentials. `tools/verifyLegal.php` checks policy routes and attribution. `tools/verifyContact.php` checks the native form without sending email. A live forwarding test requires FormSubmit activation.
 
 Navigation, project detail links, original-image links, and the contact form remain usable without JavaScript. All tools and credentials remain available; enhanced filter and selection controls are hidden. Smooth transitions respect the visitor's reduced-motion preference.
+
+## About content and image placeholders
+
+Edit `data/aboutData.php` to manage Expertise and Materials. Set each item's `image` to a local asset path such as `assets/images/materials/college-manual.png`; an empty or unavailable path displays the shared placeholder. Real material images automatically open a full-size preview. `includes/media.php` supplies consistent image slots and graceful missing-image handling. Existing project and certificate image paths remain in their original data files. Tool logo fallbacks and their source notes are listed in `assets/icons/toolkit/SOURCES.md`.
+
+About has Expertise, Credentials, Materials, and Tools tabs. Direct links to `#credentials`, `#materials`, and `#toolkit` reveal the corresponding tab. `pages/feature.php` presents the current featured project, and `data/socialData.php` manages the fixed social dock and footer account links. The dock stays on the left at every scroll position, with a reserved content gutter.
+
+The About collections use manual horizontal sliders with native touch scrolling, arrow buttons, and keyboard navigation. Tools loops in All view; its category dropdown switches to a still manual slider with matching tools. Credentials lists certificates latest first. The greetings marquee moves left and pauses on hover or keyboard focus; reduced-motion preferences show static greetings.
+
+Nine supplied GFX artworks are stored under `assets/images/artwork` and listed in `data/artworkData.php`. `pages/artwork.php` displays two image-only rows immediately before Contact, moving in opposite directions. Clicking an image opens the original in a modal; its close control and Escape return to the gallery.
+
+The About collections share controls aligned with their tabs. Project filters use matching title-case pills. Main headings type when they enter view; the featured project fades on scroll. Preview close buttons sit on the left, with an animated entrance and a blurred page backdrop.
+
+Materials include the CEIT College Manual, Gubat Chronicles cards and board mats, two infographics, and the Science & Technology brochure. Original images open in a full-size preview. Infographic thumbnails match the brochure dimensions and previews initially fit the complete image; optional zoom preserves access to detail. Community Engagement and the Marketing with Canva credential are omitted from displayed content.
+
+## Policy and interface refresh — November 5, 2026
+
+Privacy Policy (`privacy.php`), Terms of Service (`terms.php`), and Licenses & Attribution (`licenses.php`) share `includes/legalPage.php` and use policy text and asset credits from `data/`. The footer links to all three pages, and `legal.php` remains their directory. The notices explain native FormSubmit, local theme storage, photo removal requests, applicable privacy rights, and project-specific reuse terms.
+
+Social links start above the greeting and move to a left dock after that area scrolls away, returning whenever it comes back into view. The transition repeats without a visit limit, and initial motion waits until the logo curtain has finished. Project titles type when their detail page opens. Gallery card titles are static. Arduino IDE is part of Workspace and is the sole technology logo on Vision Aid. The Form of Beauty is removed from displayed Materials. The UI uses centered content, Poppins, red/yellow gradients, compact summary cards, left-aligned feature content, theme-aware selects, and reduced-motion alternatives.
+
+Run `php tools/verifyLegal.php` for legal-page navigation, external-link safety, unique IDs, the contact consent control, current content exclusions, Arduino placement, and deployment-entry checks. Public policy/source URLs should also be checked over the network; bot-blocked responses do not establish that a source is invalid.
+
+Project detail pages now share a responsive overview with metadata and resource buttons aligned in one sidebar, which stacks below the heading on smaller screens. Vision Aid uses the **Technical Project** label and describes its Senior High School Capstone context in the introduction. The two redundant instruction/end sentences are removed from the shared template. Project filters use standalone rounded buttons matching the About tabs, with no outer panel. The summary links to **Work Gallery**, and the About monogram has no background plate in either theme. The feature screenshot is grayscale until hovered or keyboard-focused. Artwork marquee rows pause only for a hovered picture or keyboard focus on a picture, resume automatically afterward, and retain the modal/offscreen pauses; preview close controls sit in a left-aligned toolbar.

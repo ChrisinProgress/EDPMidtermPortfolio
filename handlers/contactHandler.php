@@ -29,8 +29,8 @@ function sendContactResponse(int $statusCode, bool $success, string $message, ar
     echo '<!doctype html><html lang="en"><head><meta charset="utf-8">';
     echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
     echo '<title>' . escapeHtml($pageTitle) . ' | Christopher John Cruz</title>';
-    echo '<link rel="stylesheet" href="../assets/css/fonts.css">';
-    echo '<style>body{margin:0;padding:5rem 1.5rem;background:#f5f9ff;color:#172033;font:1rem/1.7 Poppins,sans-serif}main{box-sizing:border-box;max-width:38rem;margin:auto;padding:2rem;background:#fff;border:1px solid #e2e8f0;border-radius:1.25rem}h1{font-size:1.8rem;line-height:1.25}a{color:#245ec9;text-underline-offset:.2em}a:focus-visible{outline:3px solid #8b5cf6;outline-offset:5px}li{margin:.4rem 0}</style>';
+    echo '<link rel="stylesheet" href="../assets/css/fonts.css"><link rel="stylesheet" href="../assets/css/style.css">';
+    echo '<style>body{margin:0;padding:5rem 1.5rem;background:var(--soft);color:var(--ink);font:1rem/1.7 Poppins,sans-serif}main{box-sizing:border-box;max-width:38rem;margin:auto;padding:2rem;background:var(--white);border:1px solid var(--line);border-radius:1.25rem}h1{font-size:1.8rem;line-height:1.25}a{color:var(--accent);text-underline-offset:.2em}a:focus-visible{outline:3px solid var(--accent);outline-offset:5px}li{margin:.4rem 0}</style>';
     echo '</head><body><main><h1>' . escapeHtml($pageTitle) . '</h1>';
     echo '<p>' . escapeHtml($message) . '</p>';
     if ($errors !== []) {

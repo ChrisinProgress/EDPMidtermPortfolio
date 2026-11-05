@@ -147,7 +147,7 @@ button, input, textarea, select { font-family: var(--font); }
 }
 .section-index { font-size: var(--type-label); font-weight: 500; }
 .mini-label, .section-index, .nav-link:hover,
-.nav-link.is-active, .filter-button.is-active { color: #2563eb; }
+.nav-link.is-active, .filter-button.is-active { color: var(--red); }
 .section-description, .contact-description {
   font-size: var(--type-body);
   line-height: 1.75;
@@ -175,15 +175,15 @@ button, input, textarea, select { font-family: var(--font); }
   line-height: 1.5;
 }
 .filter-button.is-active {
-  background: #eff5ff;
-  border-color: #b8d0fb;
+  background: var(--neutral-50);
+  border-color: var(--red-soft);
   box-shadow: none;
 }
 .filter-button span { font-size: 11px; min-width: 22px; height: 22px; line-height: 1; }
 .results-count { font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
 .project-grid { gap: 28px 24px; }
 .project-card { border-radius: var(--panel-radius); }
-.preview-link img.project-screenshot { object-fit: contain; background: #fff; }
+.preview-link img.project-screenshot { object-fit: contain; background: var(--neutral-0); }
 .project-card:hover .preview-link img.project-screenshot { transform: none; }
 .project-content { padding: 24px; }
 .project-category {
@@ -316,7 +316,7 @@ button, input, textarea, select { font-family: var(--font); }
 .form-field textarea { min-height: 144px; }
 .form-field input::placeholder, .form-field textarea::placeholder {
   font-size: inherit;
-  color: #77869c;
+  color: var(--neutral-500);
 }
 .delivery-note, .field-error, .form-status { font-size: 12px; line-height: 1.75; }
 .delivery-note { color: var(--muted); }

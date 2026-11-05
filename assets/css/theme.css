@@ -24,7 +24,7 @@ html.theme-ready .theme-toggle {
 }
 
 .theme-toggle:hover {
-  border-color: var(--blue);
+  border-color: var(--accent);
   background: var(--soft);
 }
 
@@ -36,7 +36,7 @@ html.theme-ready .theme-toggle {
 .theme-icon-sun {
   align-items: center;
   justify-content: center;
-  color: var(--blue);
+  color: var(--accent);
 }
 
 .theme-icon-moon {
@@ -59,16 +59,12 @@ html.theme-ready .theme-toggle {
 }
 
 html[data-theme="dark"] {
-  color-scheme: dark;
-  --white: #0e1524;
-  --soft: #141f33;
-  --ink: #e9eef8;
-  --muted: #abb9ce;
-  --blue: #8bb8ff;
-  --violet: #b9a2ff;
-  --line: #2c3b53;
-  --theme-surface: #172236;
-  --theme-hover: #21324d;
+  color-scheme:dark;
+  --color-bg:var(--neutral-950); --color-surface:var(--neutral-900); --color-text:var(--neutral-0);
+  --muted:var(--neutral-300); --line:var(--neutral-700);
+  --on-accent:var(--neutral-950);
+  --accent:var(--red-soft); --accent-secondary:var(--yellow);
+  --theme-surface:var(--neutral-850); --theme-hover:var(--neutral-800);
 }
 
 html[data-theme="dark"] .theme-icon-moon {
@@ -80,17 +76,17 @@ html[data-theme="dark"] .theme-icon-sun {
 }
 
 html[data-theme="dark"] ::selection {
-  background: #334775;
-  color: #f6f8ff;
+  background: var(--red-strong);
+  color: var(--neutral-0);
 }
 
 html[data-theme="dark"] .skip-link {
   color: var(--white);
 }
 
-/* Navigation, cards and photo frames use the same raised navy surface. */
+/* Navigation, cards and photo frames use the same raised charcoal surface. */
 html[data-theme="dark"] .site-header {
-  background: rgba(14, 21, 36, .96);
+  background: color-mix(in srgb,var(--neutral-900) 96%,transparent);
   border-color: var(--line);
 }
 
@@ -119,7 +115,7 @@ html[data-theme="dark"] .site-footer {
 }
 
 html[data-theme="dark"] .about-section {
-  background: #111b2d;
+  background: var(--neutral-850);
   border-color: var(--line);
 }
 
@@ -137,36 +133,36 @@ html[data-theme="dark"] .portrait-frame,
 html[data-theme="dark"] .floating-icon,
 html[data-theme="dark"] .visual-sticker,
 html[data-theme="dark"] .contact-form {
-  box-shadow: 0 12px 35px #0000001f;
+  box-shadow: 0 12px 35px color-mix(in srgb,var(--neutral-950) 12.16%,transparent);
 }
 
 html[data-theme="dark"] .project-card:hover,
 html[data-theme="dark"] .skill-card:hover,
 html[data-theme="dark"] .skill-card:focus-visible {
-  border-color: #5372a2;
-  box-shadow: 0 12px 28px #00000029;
+  border-color: var(--red);
+  box-shadow: 0 12px 28px color-mix(in srgb,var(--neutral-950) 16.08%,transparent);
 }
 
 html[data-theme="dark"] .skill-card:nth-child(even):hover {
-  border-color: #8064b6;
+  border-color: var(--yellow);
 }
 
 html[data-theme="dark"] .icon-button:hover,
 html[data-theme="dark"] .button-secondary:hover {
   background: var(--theme-hover);
-  border-color: #5372a2;
-  box-shadow: 0 4px 12px #0000001f;
+  border-color: var(--red);
+  box-shadow: 0 4px 12px color-mix(in srgb,var(--neutral-950) 12.16%,transparent);
 }
 
 html[data-theme="dark"] .button-primary {
-  background: linear-gradient(110deg, #2563eb, #6841cf);
-  color: #fff;
-  box-shadow: 0 5px 16px #00000029;
+  background: linear-gradient(110deg, var(--red), var(--yellow));
+  color:var(--on-gradient);
+  box-shadow: 0 5px 16px color-mix(in srgb,var(--neutral-950) 16.08%,transparent);
 }
 
 html[data-theme="dark"] .button-primary:hover {
-  background: linear-gradient(110deg, #1e56ce, #7550d4);
-  box-shadow: 0 7px 20px #0000003d;
+  background: linear-gradient(110deg, var(--red), var(--yellow));
+  box-shadow: 0 7px 20px color-mix(in srgb,var(--neutral-950) 23.92%,transparent);
 }
 
 /* Explicit colors in refinements.css also need the dark reading palette. */
@@ -216,16 +212,16 @@ html[data-theme="dark"] .lightbox-bottom {
 
 html[data-theme="dark"] .hero-greeting,
 html[data-theme="dark"] .form-field label {
-  color: #cfdaeb;
+  color: var(--red-soft);
 }
 
 html[data-theme="dark"] .preview-count:hover {
-  color: var(--blue);
+  color: var(--accent);
 }
 
 html[data-theme="dark"] .label-dot,
 html[data-theme="dark"] .student-label span {
-  color: #8295b1;
+  color: var(--neutral-500);
 }
 
 html[data-theme="dark"] .mini-label,
@@ -240,28 +236,27 @@ html[data-theme="dark"] .contact-link:hover,
 html[data-theme="dark"] .contact-link:hover > .icon,
 html[data-theme="dark"] .back-to-top:hover,
 html[data-theme="dark"] .back-to-top .icon {
-  color: var(--blue);
+  color: var(--accent);
 }
 
 html[data-theme="dark"] .name-accent::after {
-  border-color: #42689f;
+  border-color: var(--red-strong);
 }
 
 html[data-theme="dark"] .section-index::after,
 html[data-theme="dark"] .small-rule {
-  background: #42608c;
+  background: var(--red-strong);
 }
 
 html[data-theme="dark"] .status-dot {
-  background: #8bb8ff;
+  background: var(--red-soft);
 }
 
 html[data-theme="dark"] .hero-note .status-dot {
-  background: #81c5a4;
+  background: var(--yellow);
 }
 
 /* Filters, tags and small icon tiles retain clear, distinct selected states. */
-html[data-theme="dark"] .project-filters,
 html[data-theme="dark"] .project-carousel,
 html[data-theme="dark"] .hero-portrait,
 html[data-theme="dark"] .lightbox-stage {
@@ -271,54 +266,54 @@ html[data-theme="dark"] .lightbox-stage {
 
 html[data-theme="dark"] .filter-button span,
 html[data-theme="dark"] .technology-tags span {
-  background: #22314a;
-  color: #c0cee3;
+  background: var(--neutral-800);
+  color: var(--red-soft);
 }
 
 html[data-theme="dark"] .filter-button.is-active {
   background: var(--theme-surface);
-  box-shadow: 0 2px 6px #00000033;
+  box-shadow: 0 2px 6px color-mix(in srgb,var(--neutral-950) 20%,transparent);
 }
 
 html[data-theme="dark"] .filter-button.is-active span {
-  background: #263f63;
-  color: #afcfff;
+  background: var(--red-strong);
+  color: var(--red-soft);
 }
 
 html[data-theme="dark"] .about-monogram,
 html[data-theme="dark"] .education-icon,
 html[data-theme="dark"] .skill-icon,
 html[data-theme="dark"] .contact-link-icon {
-  background: #20304c;
-  border-color: #2e4366;
-  color: #a8c8ff;
+  background: var(--neutral-800);
+  border-color: var(--red-strong);
+  color: var(--red-soft);
 }
 
 html[data-theme="dark"] .skill-card:nth-child(even) .skill-icon {
-  background: #2c2443;
-  border-color: #44345f;
-  color: #c9b5ff;
+  background: var(--neutral-800);
+  border-color: var(--yellow-strong);
+  color: var(--yellow);
 }
 
 html[data-theme="dark"] .skill-card:hover .skill-icon,
 html[data-theme="dark"] .skill-card:focus-visible .skill-icon {
-  background: #2c4268;
-  color: #c6ddff;
+  background: var(--red-strong);
+  color: var(--neutral-200);
 }
 
 html[data-theme="dark"] .skill-card:nth-child(even):hover .skill-icon,
 html[data-theme="dark"] .skill-card:nth-child(even):focus-visible .skill-icon {
-  background: #41315e;
-  color: #e1d4ff;
+  background: var(--yellow-strong);
+  color: var(--neutral-200);
 }
 
 html[data-theme="dark"] .form-field label > span:not(.optional-label),
 html[data-theme="dark"] .form-footnote span {
-  color: #f87171;
+  color: var(--red-soft);
 }
 
 html[data-theme="dark"] .contact-signoff .icon {
-  color: var(--violet);
+  color: var(--accent-secondary);
 }
 
 /* Media keeps its original colors; only the surrounding controls are themed. */
@@ -327,10 +322,10 @@ html[data-theme="dark"] .carousel-arrow,
 html[data-theme="dark"] .carousel-dots,
 html[data-theme="dark"] .lightbox-prev,
 html[data-theme="dark"] .lightbox-next {
-  background: rgba(23, 34, 54, .96);
-  border-color: #425574;
-  color: #e9eef8;
-  box-shadow: 0 3px 8px #00000026;
+  background: color-mix(in srgb,var(--neutral-850) 96%,transparent);
+  border-color: var(--red-strong);
+  color: var(--neutral-100);
+  box-shadow: 0 3px 8px color-mix(in srgb,var(--neutral-950) 14.9%,transparent);
 }
 
 html[data-theme="dark"] .carousel-arrow:hover,
@@ -338,15 +333,15 @@ html[data-theme="dark"] .lightbox-prev:hover,
 html[data-theme="dark"] .lightbox-next:hover,
 html[data-theme="dark"] .lightbox-close:hover {
   background: var(--theme-hover);
-  color: var(--blue);
+  color: var(--accent);
 }
 
 html[data-theme="dark"] .carousel-dot span {
-  background: #8798b5;
+  background: var(--neutral-400);
 }
 
 html[data-theme="dark"] .carousel-dot.is-active span {
-  background: #a0c7ff;
+  background: var(--red-soft);
 }
 
 html[data-theme="dark"] .lightbox-close {
@@ -354,47 +349,47 @@ html[data-theme="dark"] .lightbox-close {
 }
 
 html[data-theme="dark"] .lightbox::backdrop {
-  background: #030916cc;
+  background: color-mix(in srgb,var(--neutral-950) 80%,transparent);
 }
 
 /* Forms use dark fields with visible keyboard focus, errors and delivery state. */
 html[data-theme="dark"] .form-field input,
 html[data-theme="dark"] .form-field textarea {
-  background: #101b2e;
-  border-color: #3b4d69;
+  background: var(--neutral-850);
+  border-color: var(--red-strong);
   color: var(--ink);
 }
 
 html[data-theme="dark"] .form-field input::placeholder,
 html[data-theme="dark"] .form-field textarea::placeholder {
-  color: #9aaac3;
+  color: var(--red-soft);
 }
 
 html[data-theme="dark"] .form-field input:focus,
 html[data-theme="dark"] .form-field textarea:focus {
-  background: #14223a;
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px #8bb8ff26;
+  background: var(--neutral-850);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb,var(--red-soft) 14.9%,transparent);
 }
 
 html[data-theme="dark"] .form-field [aria-invalid="true"] {
-  border-color: #f294a8;
+  border-color: var(--red-soft);
 }
 
 html[data-theme="dark"] .field-error {
-  color: #ffb0c0;
+  color: var(--red-soft);
 }
 
 html[data-theme="dark"] .form-status.is-error {
-  background: #38202e;
-  border-color: #714355;
-  color: #ffbdcb;
+  background: var(--neutral-800);
+  border-color: var(--red-strong);
+  color: var(--red-soft);
 }
 
 html[data-theme="dark"] .form-status.is-success {
-  background: #17352d;
-  border-color: #386653;
-  color: #a3e6c5;
+  background: var(--neutral-850);
+  border-color: var(--yellow-strong);
+  color: var(--yellow);
 }
 
 @media (max-width: 899px) {
@@ -403,11 +398,11 @@ html[data-theme="dark"] .form-status.is-success {
   }
 
   html[data-theme="dark"] .navigation {
-    box-shadow: 0 12px 20px #0000002b;
+    box-shadow: 0 12px 20px color-mix(in srgb,var(--neutral-950) 16.86%,transparent);
   }
 
   html[data-theme="dark"] .nav-link.is-active {
-    background: #20304c;
+    background: var(--neutral-800);
   }
 }
 

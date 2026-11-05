@@ -15,7 +15,7 @@
     documentRoot.classList.add("theme-ready");
 
     const themeColor = document.querySelector('meta[name="theme-color"]');
-    themeColor?.setAttribute("content", isDark ? "#0e1524" : "#ffffff");
+    themeColor?.setAttribute("content", isDark ? "#0B0B0F" : "#ffffff");
 
     const themeToggle = document.querySelector("[data-theme-toggle]");
     const actionLabel = isDark ? "Switch to light mode" : "Switch to dark mode";
@@ -55,7 +55,8 @@
       if (version === transitionVersion) clearAnimationState();
     }, 700);
 
-    if (typeof document.startViewTransition !== "function") {
+    // Keep the live portrait layers available for the home page's crossfade.
+    if (document.querySelector("[data-id-scene]") || typeof document.startViewTransition !== "function") {
       applyTheme(desiredTheme);
       return;
     }
