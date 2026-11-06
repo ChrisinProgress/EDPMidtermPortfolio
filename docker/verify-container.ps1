@@ -39,7 +39,13 @@ function Assert-Status([string] $Path, [int[]] $Expected, [string] $Method = 'GE
 
 $rootPage = Assert-Status '' @(200)
 if ($rootPage.Content -notmatch 'id="home-title"') { throw 'The root URL did not render the portfolio.' }
-if ($rootPage.Content -notmatch 'action="https://formsubmit.co/') { throw 'The native contact destination is missing.' }
+if ($rootPage.Content -match 'data-brevo-contact') {
+    if ($rootPage.Content -notmatch 'action="index.php#contact"' -or $rootPage.Content -notmatch 'name="contactToken" value="[a-f0-9]{64}"') {
+        throw 'The Brevo contact destination or session token is missing.'
+    }
+} elseif ($rootPage.Content -notmatch 'action="https://formsubmit.co/') {
+    throw 'The fallback contact destination is missing.'
+}
 $checks++
 
 # Follow the actual rendered assets and project links, then project screenshots
@@ -78,7 +84,7 @@ $null = Assert-Status 'index.php#about' @(200)
 $null = Assert-Status 'project.php?project=not-a-project' @(404)
 $null = Assert-Status 'handlers/contactHandler.php' @(403, 404)
 
-foreach ($path in @('config/appConfig.php', 'data/projectData.php', 'includes/header.php', 'pages/about.php')) {
+foreach ($path in @('config/appConfig.php', 'data/projectData.php', 'includes/header.php', 'includes/contactDelivery.php', 'pages/about.php')) {
     $null = Assert-Status $path @(403)
 }
 foreach ($path in @('.git/config', '.env', 'tools/verifyPortfolio.php', 'docs/contactSetup.md', 'vendor/phpmailer/README.md', 'Dockerfile', 'render.yaml', 'docker/start-portfolio.sh')) {

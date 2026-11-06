@@ -1,11 +1,25 @@
 # Portfolio contact form
 
-The contact form posts directly from the browser to [FormSubmit](https://formsubmit.co/) for delivery to the portfolio Gmail inbox. It sends the entered name, email, selected project brief, message, and required inquiry-processing acknowledgment. The form requests a confirmation email and leaves FormSubmit verification enabled. In a browser with session storage on a public HTTPS site, FormSubmit returns visitors to the contact section after accepting the form.
+The contact form uses Brevo's [Transactional Email API](https://developers.brevo.com/reference/send-transac-email) over HTTPS. The PHP backend sends the owner inquiry first, with the visitor as Reply-To. After Brevo accepts the inquiry, PHP sends a separate acknowledgment to the visitor. The [Brevo Free plan](https://help.brevo.com/hc/en-us/articles/208589409-About-Brevo-s-pricing-plans) includes 300 sends per day across the account. An inquiry with an acknowledgment uses two sends.
 
-## Activate and test
+## Configure Render
 
-1. Open the contact form on the published portfolio and send a clearly labeled test message.
-2. Look for the FormSubmit activation email in the recipient inbox, including Spam. Follow its activation link if requested.
-3. Send another test and verify that the inquiry arrives. Check the email address you entered for the requested confirmation.
+Verify a sender in [Brevo](https://help.brevo.com/hc/en-us/articles/208836149-Create-a-new-sender-From-name-and-From-email). Then set these variables in the Render web service's [Environment tab](https://render.com/docs/configure-environment-variables) and deploy.
 
-No Gmail password or SMTP configuration is needed. If messages do not arrive, check the activation status and spam settings. The portfolio does not store messages in a database. [FormSubmit documentation](https://formsubmit.co/documentation) and [delivery and retention guidance](https://formsubmit.co/help) describe provider behavior.
+| Variable | Value |
+| --- | --- |
+| `BREVO_API_KEY` | A private key created under Brevo SMTP & API → API Keys. |
+| `BREVO_SENDER_EMAIL` | The sender address verified in Brevo. |
+| `BREVO_SENDER_NAME` | Christopher John Cruz |
+| `CONTACT_OWNER_EMAIL` | cruchristopherjohnhoylar@gmail.com |
+
+Brevo may [rewrite a Gmail sender's visible From address](https://help.brevo.com/hc/en-us/articles/14925263522578-Comply-with-Gmail-Yahoo-and-Microsoft-s-requirements-for-email-senders). The owner can still receive inquiries at Gmail. Render's Docker build verifies PHP cURL. If configuration is absent, the site retains the existing FormSubmit route while Brevo is being verified.
+
+## Verify delivery
+
+1. Submit one labeled inquiry from the deployed form using an authorized visitor address.
+2. In Brevo, open Transactional → Logs and filter by the recipients or the tags `portfolio-inquiry` and `portfolio-acknowledgment`. Check both delivery events.
+3. Check both inboxes and their spam folders. Compare the owner subject, visitor reply address, submitted fields, and separate acknowledgment.
+4. If sending fails, check Render Logs for entries starting with `Portfolio contact:`. They distinguish the owner and visitor calls and show HTTP status, cURL error number, or an accepted message ID. API acceptance and inbox delivery are separate results.
+
+The site uses temporary contact-session data to validate form tokens and suppress duplicates. A failed acknowledgment does not cause PHP to resend the owner inquiry.

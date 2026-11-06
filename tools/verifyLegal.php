@@ -45,8 +45,39 @@ foreach (['privacy.php'=>'Privacy Policy','terms.php'=>'Terms of Service','licen
     $check(str_contains($html,'Back to Portfolio'),$page . ': return navigation missing.');
 }
 $privacy=$documents['privacy.php'][2];
-foreach (['https://privacy.gov.ph/','https://privacy.gov.ph/data-subject-rights/','https://privacy.gov.ph/contactus/','https://privacy.gov.ph/implementing-rules-regulations-data-privacy-act-2012/','GDPR','CCPA','CPRA','parent or guardian','FormSubmit','local storage'] as $value) $check(str_contains($privacy,$value),'Privacy content missing ' . $value);
-$check(!str_contains($privacy,'privacy-cookies') && !str_contains($privacy,'cjcPortfolioSession'),'Privacy page should describe the deployed contact flow and theme storage.');
+foreach (['https://privacy.gov.ph/','https://privacy.gov.ph/data-subject-rights/','https://privacy.gov.ph/contactus/','https://privacy.gov.ph/implementing-rules-regulations-data-privacy-act-2012/','GDPR','CCPA','CPRA','parent or guardian','local storage'] as $value) $check(str_contains($privacy,$value),'Privacy content missing ' . $value);
+$check(!str_contains($privacy,'privacy-cookies'),'Privacy page should describe the deployed contact flow and theme storage.');
+$check($documents['terms.php'][1]->query('//section[@id="terms-contact"]//a[@href="privacy.php"]')->length===1,'Contact form terms must link to the Privacy Policy.');
+
+$checkContactDisclosure = static function (string $html, bool $usesBrevo) use ($check): void {
+    if ($usesBrevo) {
+        $check(str_contains($html,'https://www.brevo.com/legal/privacypolicy/'),'Brevo notice is missing the provider’s privacy link.');
+        $check(str_contains($html,'transactional email retention guidance'),'Brevo notice is missing retention guidance.');
+        $check(str_contains($html,'first-party session cookie'),'Brevo notice is missing the contact session cookie.');
+        $check(!str_contains($html,'FormSubmit'),'Brevo notice still refers to FormSubmit.');
+    } else {
+        $check(str_contains($html,'FormSubmit'),'Fallback notice is missing FormSubmit.');
+        $check(!str_contains($html,'Brevo') && !str_contains($html,'first-party session cookie')
+            && !str_contains($html,'cjcPortfolioSession'),'Fallback notice should omit Brevo and its contact session.');
+    }
+};
+$checkContactDisclosure($privacy, contactUsesBrevo());
+$fixture = [
+    'BREVO_API_KEY' => 'legal-check-placeholder',
+    'BREVO_SENDER_EMAIL' => 'sender@example.com',
+    'BREVO_SENDER_NAME' => 'Legal test sender',
+    'CONTACT_OWNER_EMAIL' => 'owner@example.com',
+];
+$savedContactEnvironment = [];
+foreach ($fixture as $name => $value) $savedContactEnvironment[$name] = getenv($name);
+try {
+    putenv('BREVO_API_KEY');
+    $checkContactDisclosure(renderPolicyTestPage('privacy.php'), false);
+    foreach ($fixture as $name => $value) putenv($name . '=' . $value);
+    $checkContactDisclosure(renderPolicyTestPage('privacy.php'), true);
+} finally {
+    foreach ($savedContactEnvironment as $name => $value) putenv($value === false ? $name : $name . '=' . $value);
+}
 $home=$documents['index.php'][2]; $homeXPath=$documents['index.php'][1];
 $check(!str_contains($home,'The Form of Beauty'),'Removed presentation still displayed.');
 $check(!str_contains($home,'Community Engagement'),'Removed expertise still displayed.');

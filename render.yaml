@@ -11,3 +11,11 @@ services:
     envVars:
       - key: PORT
         value: "10000"
+      - key: BREVO_API_KEY
+        sync: false
+      - key: BREVO_SENDER_EMAIL
+        sync: false
+      - key: BREVO_SENDER_NAME
+        value: Christopher John Cruz
+      - key: CONTACT_OWNER_EMAIL
+        value: cruchristopherjohnhoylar@gmail.com

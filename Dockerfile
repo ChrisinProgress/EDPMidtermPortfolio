@@ -11,8 +11,14 @@ RUN set -eux; \
     if ! php -r 'exit(extension_loaded("Zend OPcache") ? 0 : 1);'; then \
         docker-php-ext-install opcache; \
     fi; \
+    if ! php -r 'exit(extension_loaded("curl") ? 0 : 1);'; then \
+        apt-get update; \
+        apt-get install -y --no-install-recommends libcurl4-openssl-dev; \
+        docker-php-ext-install curl; \
+        rm -rf /var/lib/apt/lists/*; \
+    fi; \
     a2enmod headers deflate expires; \
-    php -r 'exit(extension_loaded("Zend OPcache") ? 0 : 1);'
+    php -r 'exit(extension_loaded("Zend OPcache") && extension_loaded("curl") ? 0 : 1);'
 
 COPY docker/php-production.ini /usr/local/etc/php/conf.d/portfolio.ini
 COPY docker/apache-portfolio.conf /etc/apache2/sites-available/000-default.conf

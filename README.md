@@ -1,13 +1,13 @@
 # Christopher John Cruz — Personal Portfolio
 
-A responsive PHP portfolio with red and yellow accents, custom CJC letter outlines inside a double-circle mark, light and dark themes, and dedicated project detail pages. The introduction and About text explain Christopher's IT studies, development/design interests, and learning approach in clear paragraphs. The hero uses a transparent portrait with a pixel-art hover effect; About cycles through three real photographs on click. Built with HTML, CSS, JavaScript, and PHP, with password-free FormSubmit forwarding for contact messages. No framework, database, package installation, or frontend build step is required.
+A responsive PHP portfolio with red and yellow accents, custom CJC letter outlines inside a double-circle mark, light and dark themes, and dedicated project detail pages. The introduction and About text explain Christopher's IT studies, development/design interests, and learning approach in clear paragraphs. The hero uses a transparent portrait with a pixel-art hover effect; About cycles through three real photographs on click. Built with HTML, CSS, JavaScript, and PHP, with Brevo transactional email for contact messages. No framework, database, package installation, or frontend build step is required.
 
 ## Run with XAMPP
 
 1. Keep this folder at `C:\xampp\htdocs\MidtermProjectPortfolio`.
 2. Start **Apache** in the XAMPP Control Panel.
 3. Open [the portfolio](http://localhost/MidtermProjectPortfolio/).
-4. Submit the contact form once, then check `cruchristopherjohnhoylar@gmail.com` for a FormSubmit activation email. Click its activation link and send another test message to confirm forwarding. Check Spam if needed. No Gmail password is required. See [contact setup](docs/contactSetup.md).
+4. Configure the verified Brevo sender and private API key in Render, then test the owner inquiry and visitor acknowledgment. See [contact setup](docs/contactSetup.md).
 
 Alternatively, run this command from the project folder in PowerShell:
 
@@ -19,7 +19,7 @@ Then open [the PHP preview](http://127.0.0.1:8000/). Press Ctrl+C to stop the PH
 
 ## Deploy on Render with Docker
 
-The repository includes a PHP 8.4 Apache `Dockerfile`, an allowlisted `.dockerignore`, production PHP/Apache settings, and a `render.yaml` Blueprint. The startup script binds Apache to `0.0.0.0` using Render's `PORT`. The contact form submits directly to FormSubmit and uses the portfolio’s HTTPS address for its return link.
+The repository includes a PHP 8.4 Apache `Dockerfile`, an allowlisted `.dockerignore`, production PHP/Apache settings, and a `render.yaml` Blueprint. The startup script binds Apache to `0.0.0.0` using Render's `PORT`. When configured, the contact form sends through the PHP backend using Brevo over HTTPS.
 
 Push the updated repository to GitHub, then create a Render **Web Service**, connect the repository, and choose **Docker** as the runtime. Keep the Dockerfile and build context at the repository root. Alternatively, create a Blueprint using `render.yaml`. Connected-branch commits can trigger automatic redeployment. See [the deployment guide](docs/renderDeployment.md) for exact dashboard steps, environment variables, local container commands, and the HTTP verifier.
 
@@ -72,9 +72,10 @@ Docker is not installed in the current workspace environment, so the image build
 | `assets/images/credentials/` | Eight supplied Canva, TESDA, and PLV certificate images |
 | `assets/images/profile/` | Original photographs, pixel versions, and transparent hero cutouts |
 | `assets/images/education/` | Supplied PLV and Malinta National High School seals |
-| `config/appConfig.php` | Session, escaping, CSRF, and the fixed contact relay destination |
-| `pages/contact.php` | Native FormSubmit contact form with required acknowledgment |
-| `docs/contactSetup.md` | FormSubmit activation, forwarding behavior, privacy, and troubleshooting |
+| `config/appConfig.php` | HTML escaping and Brevo environment configuration |
+| `includes/contactDelivery.php` | Contact validation, duplicate prevention, and Brevo requests |
+| `pages/contact.php` | Contact form with required privacy consent |
+| `docs/contactSetup.md` | Brevo configuration, delivery verification, and troubleshooting |
 | `tools/verifyPortfolio.php` | CLI data, asset, and reference checks |
 | `tools/verifyContact.php` | Native contact form and optional local HTTP header checks |
 | `Dockerfile`, `render.yaml`, `docker/` | Production container, Render Blueprint, startup settings, and deployment checks |
@@ -104,8 +105,6 @@ My Studies appears beside the About photo, replacing the former interests cards.
 Studies are integrated within About, without a separate Education heading. The horizontal line places Pamantasan ng Lungsod ng Valenzuela first, with the ongoing BSIT degree (2024–Present), followed by completed STEM studies at Malinta National High School (2022–2024). Both supplied school seals appear beside the course details. The line animates subtly and the current node pulses; it adapts vertically on narrow phones. The footer reads **Thoughtful design. Useful code. Always growing.** Its icon-only links retain the supplied Facebook and Instagram profiles, plus existing GitHub, LinkedIn, and email destinations, with accessible labels and keyboard focus states.
 
 Both themes have ambient background motion, hover/focus feedback, reading progress, and theme-switch transitions. A brief full-page CJC logo curtain entrance plays on page opening; scrolling, tapping, or pressing a key skips it, and a safety timeout prevents it from holding up content. Smooth zoom-and-fade scroll reveals repeat as sections re-enter the viewport, with focus keeping active controls visible. Reduced-motion preferences skip the entrance and disable decorative animation while preserving navigation and controls.
-
-The visible FormSubmit forwarding sentence is omitted from the contact form. This presentation change does not alter the forwarding endpoint or the setup and privacy details documented below.
 
 ## Project gallery images
 
@@ -148,7 +147,7 @@ The gallery uses lazy-loaded WebP thumbnails with the same hover effect as Mater
 
 ## Contact messages
 
-The browser sends the visitor's name, email, message, and acknowledgment directly to FormSubmit for delivery to the portfolio inbox. The form requests a confirmation email. The website has no message database or mail credentials. See [contact setup](docs/contactSetup.md) for activation and delivery checks.
+PHP sends the owner inquiry and visitor acknowledgment separately using Brevo. The private API key comes from the hosting environment. The existing FormSubmit route remains available when Brevo is unconfigured during the migration. See [contact setup](docs/contactSetup.md) for delivery checks.
 
 ## Verification
 
@@ -165,7 +164,7 @@ node --check assets/js/theme.js
 node --check assets/js/motion.js
 ```
 
-The portfolio check covers 12 projects, 56 gallery images, and seven credentials. `tools/verifyLegal.php` checks policy routes and attribution. `tools/verifyContact.php` checks the native form without sending email. A live forwarding test requires FormSubmit activation.
+The portfolio check covers 12 projects, 56 gallery images, and seven credentials. `tools/verifyLegal.php` checks policy routes and attribution. `tools/verifyContact.php` checks the form in both provider modes. `tools/verifyBrevoContact.php` checks validation, email payloads, duplicate prevention, and partial failures using a test transport.
 
 Navigation, project detail links, original-image links, and the contact form remain usable without JavaScript. All tools and credentials remain available; enhanced filter and selection controls are hidden. Smooth transitions respect the visitor's reduced-motion preference.
 
@@ -185,7 +184,7 @@ Materials include the CEIT College Manual, Gubat Chronicles cards and board mats
 
 ## Policy and interface refresh — November 5, 2026
 
-Privacy Policy (`privacy.php`), Terms of Service (`terms.php`), and Licenses & Attribution (`licenses.php`) share `includes/legalPage.php` and use policy text and asset credits from `data/`. The footer links to all three pages, and `legal.php` remains their directory. The notices explain native FormSubmit, local theme storage, photo removal requests, applicable privacy rights, and project-specific reuse terms.
+Privacy Policy (`privacy.php`), Terms of Service (`terms.php`), and Licenses & Attribution (`licenses.php`) share `includes/legalPage.php` and use policy text and asset credits from `data/`. The footer links to all three pages, and `legal.php` remains their directory. The notices explain the active contact provider, local theme storage, photo removal requests, applicable privacy rights, and project-specific reuse terms.
 
 Social links start above the greeting and move to a left dock after that area scrolls away, returning whenever it comes back into view. The transition repeats without a visit limit, and initial motion waits until the logo curtain has finished. Project titles type when their detail page opens. Gallery card titles are static. Arduino IDE is part of Workspace and is the sole technology logo on Vision Aid. The Form of Beauty is removed from displayed Materials. The UI uses centered content, Poppins, red/yellow gradients, compact summary cards, left-aligned feature content, theme-aware selects, and reduced-motion alternatives.
 

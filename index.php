@@ -9,6 +9,27 @@ require_once __DIR__ . '/includes/media.php';
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 
+$contactResult = null;
+$contactValues = [];
+$contactToken = '';
+$contactPost = ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['contactAction'] ?? null) === 'send';
+if ($contactPost || contactUsesBrevo()) {
+    require_once __DIR__ . '/includes/contactDelivery.php';
+    if ($contactPost) {
+        [$status, $contactResult, $contactValues] = submitPortfolioContact($_POST);
+        http_response_code($status);
+        header('Cache-Control: no-store');
+        if (stripos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false) {
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($contactResult, JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR);
+            exit;
+        }
+        $contactToken = $contactResult['nextToken'] ?? (is_string($_POST['contactToken'] ?? null) ? $_POST['contactToken'] : '');
+    } else {
+        $contactToken = contactFormToken();
+    }
+}
+
 $projects = require __DIR__ . '/data/projectData.php';
 $credentials = require __DIR__ . '/data/credentialsData.php';
 $technicalCount = count(array_filter($projects, fn($project) => $project['category'] === 'technical'));

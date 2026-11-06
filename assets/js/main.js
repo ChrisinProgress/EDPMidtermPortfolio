@@ -362,18 +362,92 @@
     scheduleScrollUpdate();
   });
 
-  const contactForm = document.querySelector("[data-native-contact]");
+  const contactForm = document.querySelector("[data-brevo-contact], [data-native-contact]");
   if (!contactForm) return;
   const contactStatus = contactForm.querySelector("[data-form-status]");
   const submitButton = contactForm.querySelector("[data-submit-button]");
-  const statusKey = "portfolio-contact-redirect";
-  const currentUrl = new URL(window.location.href);
   let submitting = false;
   const textFields = [
     { field: contactForm.elements.namedItem("name"), minimum: 1, error: "Enter your name." },
     { field: contactForm.elements.namedItem("message"), minimum: 10, error: "Enter at least 10 characters for your message." },
   ];
   textFields.forEach(({ field }) => field.addEventListener("input", () => field.setCustomValidity("")));
+  const hasInvalidText = () => {
+    const invalid = textFields.find(({ field, minimum }) => field.value.trim().length < minimum);
+    if (!invalid) return false;
+    invalid.field.setCustomValidity(invalid.error);
+    invalid.field.reportValidity();
+    return true;
+  };
+
+  if (contactForm.hasAttribute("data-brevo-contact") && typeof fetch === "function" && typeof AbortController === "function") {
+    const label = contactForm.querySelector("[data-submit-label]");
+    const initialLabel = label.textContent;
+    const token = contactForm.elements.namedItem("contactToken");
+    const sendError = "Unable to send your message. Please try again.";
+    const sendSuccess = "Your message has been submitted successfully! Thank you for reaching out.";
+    const showStatus = (message, state) => {
+      contactStatus.classList.toggle("is-error", state === "error");
+      contactStatus.classList.toggle("is-success", state === "success");
+      contactStatus.textContent = message;
+    };
+
+    contactForm.addEventListener("submit", async event => {
+      if (event.defaultPrevented) return;
+      event.preventDefault();
+      if (submitting || hasInvalidText() || !contactForm.reportValidity()) return;
+
+      const submission = new FormData(contactForm);
+      const request = new AbortController();
+      const timeout = setTimeout(() => request.abort(), 25000);
+      submitting = true;
+      submitButton.disabled = true;
+      contactForm.setAttribute("aria-busy", "true");
+      label.textContent = "Sending…";
+      showStatus("Sending your message…");
+      try {
+        const response = await fetch(contactForm.action, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: submission,
+          credentials: "same-origin",
+          redirect: "error",
+          signal: request.signal,
+        });
+        const result = await response.json();
+        const message = typeof result?.message === "string" ? result.message : "";
+        if (!response.ok || result?.ok !== true) {
+          if (typeof result?.nextToken === "string" && result.nextToken) token.value = result.nextToken;
+          showStatus(message || sendError, "error");
+          return;
+        }
+
+        const current = new FormData(contactForm);
+        if ([...submission].every(([name, value]) => current.get(name) === value)) {
+          for (const name of ["name", "email", "message", "projectBrief", "_honey"]) {
+            contactForm.elements.namedItem(name).value = "";
+          }
+          contactForm.elements.namedItem("privacyConsent").checked = false;
+          contactForm.elements.namedItem("projectBrief").dispatchEvent(new Event("portfolio:select-updated"));
+        }
+        if (typeof result.nextToken === "string" && result.nextToken) token.value = result.nextToken;
+        showStatus(message || sendSuccess, "success");
+      } catch {
+        showStatus(sendError, "error");
+      } finally {
+        clearTimeout(timeout);
+        submitting = false;
+        submitButton.disabled = false;
+        contactForm.removeAttribute("aria-busy");
+        label.textContent = initialLabel;
+      }
+    });
+    return;
+  }
+
+  if (!contactForm.hasAttribute("data-native-contact")) return;
+  const statusKey = "portfolio-contact-redirect";
+  const currentUrl = new URL(window.location.href);
   const takePendingRedirect = () => {
     try {
       const pending = sessionStorage.getItem(statusKey);
@@ -409,11 +483,8 @@
       event.preventDefault();
       return;
     }
-    const invalid = textFields.find(({ field, minimum }) => field.value.trim().length < minimum);
-    if (invalid) {
+    if (hasInvalidText()) {
       event.preventDefault();
-      invalid.field.setCustomValidity(invalid.error);
-      invalid.field.reportValidity();
       return;
     }
     if (location.protocol === "https:" && !["localhost", "127.0.0.1", "[::1]"].includes(location.hostname)) {
