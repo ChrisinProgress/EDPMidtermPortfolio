@@ -230,15 +230,7 @@
   };
 
   if (lightbox) {
-    lightbox.querySelector("[data-lightbox-close]")?.addEventListener("click", closeLightbox);
     lightbox.addEventListener("close", restoreLightboxFocus);
-    lightbox.addEventListener("click", (event) => {
-      if (event.target !== lightbox) return;
-      const bounds = lightbox.getBoundingClientRect();
-      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) {
-        closeLightbox();
-      }
-    });
     lightbox.addEventListener("keydown", (event) => {
       if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         event.preventDefault();

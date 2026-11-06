@@ -301,7 +301,7 @@ html[data-theme="dark"] .contact-form .form-field input:focus,html[data-theme="d
 }
 
 /* Preview actions share one layout: zoom left, title central, close right. */
-.lightbox .lightbox-top{justify-content:flex-start;align-items:center}
+.lightbox .lightbox-top{justify-content:flex-start;align-items:center;position:sticky;top:0;z-index:1;background:var(--white)}
 .lightbox .lightbox-top>div{order:1;flex:1 1 auto;min-width:0}
 .lightbox .lightbox-top h2{overflow-wrap:anywhere}
 .lightbox .lightbox-top .lightbox-close{order:2;flex:0 0 44px;width:44px;height:44px;margin:0;position:static;inset:auto}
@@ -337,17 +337,18 @@ html[data-theme="dark"] .contact-form .form-field input:focus,html[data-theme="d
   box-shadow:0 5px 12px color-mix(in srgb,var(--accent) 20%,transparent);transform:scale(1.05);
  }
 }
-.material-dialog .material-dialog-toolbar>button:active {transform:scale(.94)}
-.material-dialog {--preview-entrance:.35s var(--ease) both}
+.material-dialog .material-dialog-toolbar>button:active,
+.lightbox .lightbox-top>.preview-close:active {transform:scale(.94)}
+[data-preview-dialog] {--preview-entrance:.35s var(--ease) both}
 .material-dialog[open] {animation:preview-appear var(--preview-entrance)}
-.material-dialog[open] .material-preview-close {animation:preview-close-appear var(--preview-entrance)}
+[data-preview-dialog][open] .preview-close {animation:preview-close-appear var(--preview-entrance)}
 @keyframes preview-close-appear {
  from {opacity:0;scale:.88}
  to {opacity:1;scale:1}
 }
 @media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
- .material-preview-close .icon {transition:transform .25s ease}
- .material-preview-close:hover .icon {transform:rotate(90deg)}
+ .preview-close .icon {transition:transform .25s ease}
+ .preview-close:hover .icon {transform:rotate(90deg)}
 }
 .material-dialog.can-zoom .material-image-stage>img {cursor:zoom-in}
 .material-dialog.is-zoomed .material-image-stage>img {cursor:zoom-out}
@@ -438,6 +439,7 @@ html[data-theme="dark"] .contact-form .form-field input:focus,html[data-theme="d
  .lightbox .lightbox-top>.lightbox-close,.artwork-dialog .artwork-dialog-header>[data-artwork-close],
  .material-dialog .material-dialog-toolbar>button {transition:none}
  .lightbox .lightbox-top>.lightbox-close:hover,.artwork-dialog .artwork-dialog-header>[data-artwork-close]:hover,
- .material-dialog .material-dialog-toolbar>button:hover,.material-dialog .material-dialog-toolbar>button:active {transform:none}
- .material-dialog[open],.material-dialog[open] .material-preview-close {animation:none}
+ .material-dialog .material-dialog-toolbar>button:hover,.material-dialog .material-dialog-toolbar>button:active,
+ .lightbox .lightbox-top>.preview-close:active {transform:none}
+ .material-dialog[open],[data-preview-dialog][open] .preview-close {animation:none}
 }

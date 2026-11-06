@@ -4,6 +4,13 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  background: none;
   pointer-events: none;
   opacity: 0;
 }
@@ -13,6 +20,7 @@
 }
 .pointer-decoration.is-visible { opacity: 1; }
 .pointer-decoration * { pointer-events: none; }
+.pointer-decoration::backdrop { background: none; pointer-events: none; }
 .pointer-follower, .pointer-ripple {
   position: absolute;
   top: 0;

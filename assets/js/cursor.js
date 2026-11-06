@@ -19,8 +19,11 @@
   const ripple = overlay.querySelector(".pointer-ripple");
   const ring = ripple.firstElementChild;
   const controls = "a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),[role=button],[data-student-id],[data-id-clip],[data-id-lanyard]";
+  const canUseTopLayer = typeof overlay.showPopover === "function";
+  document.body.append(overlay);
   let x = 0, y = 0, targetX = 0, targetY = 0, lastFrame = 0, frame = 0;
-  let visible = false;
+  let visible = false, pointerPresent = false, selecting = false, hitFrame = 0;
+  let activeDialog;
   let previousTarget, excluded;
   let pressEffect, rippleEffect;
 
@@ -39,6 +42,7 @@
   }
 
   function hide() {
+    if (!visible) return;
     visible = false;
     overlay.classList.remove("is-visible", "is-interactive");
     cancelAnimationFrame(frame);
@@ -47,26 +51,37 @@
     rippleEffect?.cancel();
   }
 
-  window.addEventListener("pointermove", event => {
-    if (!supported.matches || event.pointerType !== "mouse" || !(event.target instanceof Element)) {
+  function liftAbove(dialog) {
+    if (dialog === activeDialog && (!dialog || !canUseTopLayer || overlay.matches(":popover-open"))) return;
+    activeDialog = dialog;
+    if (!canUseTopLayer) return;
+    if (overlay.matches(":popover-open")) overlay.hidePopover();
+    if (dialog) {
+      // A manual popover paints above native dialogs without changing the viewport origin.
+      overlay.setAttribute("popover", "manual");
+      overlay.showPopover();
+    } else {
+      overlay.removeAttribute("popover");
+    }
+  }
+
+  function updateTarget(target) {
+    if (!supported.matches || selecting || !(target instanceof Element)) {
       hide();
       return;
     }
-    const target = event.target;
+    const dialog = target.closest("dialog[open]") || document.querySelector("dialog[open]");
+    liftAbove(dialog);
     if (target !== previousTarget) {
       previousTarget = target;
       const cursor = getComputedStyle(target).cursor;
       excluded = cursor === "text" || cursor === "vertical-text" || cursor.endsWith("resize") ||
         target.closest("textarea,[contenteditable],input:not([type=checkbox],[type=radio],[type=button],[type=submit],[type=range])");
     }
-    if (excluded) {
+    if (excluded || (dialog && !canUseTopLayer)) {
       hide();
       return;
     }
-    const host = target.closest("dialog[open]") || document.body;
-    if (overlay.parentElement !== host) host.append(overlay);
-    targetX = event.clientX;
-    targetY = event.clientY;
     overlay.classList.toggle("is-interactive", !!target.closest(controls) && !target.closest("[inert]"));
     if (!visible) {
       x = targetX;
@@ -78,10 +93,38 @@
       lastFrame = performance.now();
       frame = requestAnimationFrame(follow);
     }
+  }
+
+  function scheduleHitTest() {
+    if (!pointerPresent || hitFrame || !supported.matches) return;
+    hitFrame = requestAnimationFrame(() => {
+      hitFrame = 0;
+      if (pointerPresent) updateTarget(document.elementFromPoint(targetX, targetY));
+    });
+  }
+
+  function leave() {
+    pointerPresent = false;
+    selecting = false;
+    previousTarget = null;
+    hide();
+  }
+
+  window.addEventListener("pointermove", event => {
+    if (event.pointerType !== "mouse" || !supported.matches) {
+      leave();
+      return;
+    }
+    pointerPresent = true;
+    if (selecting && !(event.buttons & 1)) selecting = false;
+    targetX = event.clientX;
+    targetY = event.clientY;
+    updateTarget(event.target);
   }, { passive: true });
 
   window.addEventListener("pointerdown", event => {
-    if (!visible || event.pointerType !== "mouse" || event.button !== 0) return;
+    if (event.pointerType !== "mouse") { leave(); return; }
+    if (!visible || event.button !== 0) return;
     place(ripple, event.clientX, event.clientY);
     pressEffect?.cancel();
     rippleEffect?.cancel();
@@ -93,9 +136,16 @@
     });
   }, { passive: true });
 
-  document.documentElement.addEventListener("pointerleave", hide);
-  window.addEventListener("blur", hide);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) hide(); });
-  document.addEventListener("close", event => { if (event.target === overlay.parentElement) hide(); }, true);
-  supported.addEventListener("change", hide);
+  document.addEventListener("selectstart", () => { selecting = true; hide(); });
+  window.addEventListener("pointerup", () => { if (selecting) { selecting = false; scheduleHitTest(); } });
+  window.addEventListener("scroll", scheduleHitTest, {capture:true, passive:true});
+  window.addEventListener("resize", scheduleHitTest, {passive:true});
+  const dialogObserver = new MutationObserver(scheduleHitTest);
+  document.querySelectorAll("dialog").forEach(dialog => {
+    dialogObserver.observe(dialog, {attributes:true, attributeFilter:["open"]});
+  });
+  document.documentElement.addEventListener("pointerleave", leave);
+  window.addEventListener("blur", leave);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) leave(); });
+  supported.addEventListener("change", leave);
 })();

@@ -20,9 +20,9 @@
  </div></section></div>
  <div id="panel-toolkit" role="tabpanel" aria-labelledby="tab-toolkit" data-about-panel="toolkit"><?php require __DIR__ . '/toolkit.php'; ?></div>
 </div>
-<dialog class="material-dialog" data-material-dialog aria-label="Image preview">
+<dialog class="material-dialog" data-material-dialog data-preview-dialog aria-label="Image preview">
  <div class="material-dialog-toolbar">
-  <button type="button" class="material-preview-close" data-material-close aria-label="Close image preview"><?= renderIcon('close') ?></button>
+  <button type="button" class="material-preview-close preview-close" data-material-close data-preview-dismiss aria-label="Close image preview"><?= renderIcon('close') ?></button>
   <button type="button" class="material-preview-zoom" data-material-zoom aria-label="Zoom in" aria-pressed="false" hidden><?= renderIcon('zoom') ?></button>
  </div>
  <div class="material-image-stage"><img alt="" data-material-full></div>

@@ -6,7 +6,7 @@ $base = [Uri] ($BaseUrl.TrimEnd('/') + '/')
 if ($base.Scheme -notin @('http', 'https')) { throw 'Use an HTTP or HTTPS base URL.' }
 $checks = 0
 
-function Get-Response([string] $Path, [string] $Method = 'GET', [hashtable] $Body = $null) {
+function Get-Response([string] $Path, [string] $Method = 'GET') {
     $arguments = @{
         Uri = [Uri]::new($base, $Path)
         Method = $Method
@@ -14,18 +14,22 @@ function Get-Response([string] $Path, [string] $Method = 'GET', [hashtable] $Bod
         TimeoutSec = 30
         MaximumRedirection = 0
     }
-    if ($null -ne $Body) { $arguments.Body = $Body }
-    try {
-        $response = Invoke-WebRequest @arguments
-        return @{ Status = [int] $response.StatusCode; Content = [string] $response.Content }
-    } catch {
-        if ($null -eq $_.Exception.Response) { throw }
-        return @{ Status = [int] $_.Exception.Response.StatusCode; Content = '' }
+    for ($attempt = 1; $attempt -le 3; $attempt++) {
+        try {
+            $response = Invoke-WebRequest @arguments
+            return @{ Status = [int] $response.StatusCode; Content = [string] $response.Content }
+        } catch {
+            if ($null -ne $_.Exception.Response) {
+                return @{ Status = [int] $_.Exception.Response.StatusCode; Content = '' }
+            }
+            if ($attempt -eq 3) { throw "$Method $Path could not be read. $($_.Exception.Message)" }
+            Start-Sleep -Seconds $attempt
+        }
     }
 }
 
-function Assert-Status([string] $Path, [int[]] $Expected, [string] $Method = 'GET', [hashtable] $Body = $null) {
-    $response = Get-Response $Path $Method $Body
+function Assert-Status([string] $Path, [int[]] $Expected, [string] $Method = 'GET') {
+    $response = Get-Response $Path $Method
     if ($response.Status -notin $Expected) {
         throw "$Method $Path returned $($response.Status), expected $($Expected -join ' or ')."
     }
@@ -33,9 +37,9 @@ function Assert-Status([string] $Path, [int[]] $Expected, [string] $Method = 'GE
     return $response
 }
 
-$home = Assert-Status '' @(200)
-if ($home.Content -notmatch 'id="home-title"') { throw 'The root URL did not render the portfolio.' }
-if ($home.Content -notmatch 'action="https://formsubmit.co/') { throw 'The native contact destination is missing.' }
+$rootPage = Assert-Status '' @(200)
+if ($rootPage.Content -notmatch 'id="home-title"') { throw 'The root URL did not render the portfolio.' }
+if ($rootPage.Content -notmatch 'action="https://formsubmit.co/') { throw 'The native contact destination is missing.' }
 $checks++
 
 # Follow the actual rendered assets and project links, then project screenshots
@@ -53,16 +57,22 @@ function Queue-References([string] $Content, [Uri] $DocumentUrl, [bool] $IsCss =
         if (($isAsset -or $isProject) -and $seen.Add($target.AbsoluteUri)) { $pending.Enqueue($target) }
     }
 }
-Queue-References $home.Content $base
+Queue-References $rootPage.Content $base
 foreach ($path in @('privacy.php', 'terms.php', 'licenses.php', 'legal.php')) {
     $policy = Assert-Status $path @(200)
     Queue-References $policy.Content ([Uri]::new($base, $path))
 }
 while ($pending.Count -gt 0) {
     $target = $pending.Dequeue()
-    $response = Assert-Status $target.AbsoluteUri @(200)
-    if ($target.AbsolutePath.EndsWith('.php')) { Queue-References $response.Content $target }
-    elseif ($target.AbsolutePath.EndsWith('.css')) { Queue-References $response.Content $target $true }
+    if ($target.AbsolutePath.EndsWith('.php')) {
+        $response = Assert-Status $target.AbsoluteUri @(200)
+        Queue-References $response.Content $target
+    } elseif ($target.AbsolutePath.EndsWith('.css')) {
+        $response = Assert-Status $target.AbsoluteUri @(200)
+        Queue-References $response.Content $target $true
+    } else {
+        $null = Assert-Status $target.AbsoluteUri @(200) 'HEAD'
+    }
 }
 $null = Assert-Status 'index.php#about' @(200)
 $null = Assert-Status 'project.php?project=not-a-project' @(404)

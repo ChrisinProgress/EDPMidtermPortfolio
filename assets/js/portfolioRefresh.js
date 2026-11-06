@@ -156,13 +156,57 @@
   };
   img.addEventListener('error',fallback,{once:true});if(img.complete && !img.naturalWidth) fallback();
  });
+ const closingPreviews = new WeakMap();
+ function closePreview(preview) {
+  if (!preview.hasAttribute('open') || closingPreviews.has(preview)) return;
+  const finish = () => {
+   if (!preview.hasAttribute('open')) return;
+   if (typeof preview.close === 'function') preview.close();
+   else {
+    preview.removeAttribute('open');
+    preview.dispatchEvent(new Event('close'));
+   }
+  };
+  if (reduced.matches) {
+   finish();
+   return;
+  }
+  const animation = preview.animate(
+   [{opacity:getComputedStyle(preview).opacity, scale:'1'}, {opacity:0, scale:'.98'}],
+   {duration:260,easing:'ease-in',fill:'forwards'}
+  );
+  closingPreviews.set(preview, animation);
+  animation.finished.then(() => { if (closingPreviews.get(preview) === animation) finish(); }, () => {});
+ }
+ document.addEventListener('click', event => {
+  const preview = event.target.closest('[data-preview-dialog][open]');
+  if (!preview) return;
+  if (event.target.closest('[data-preview-dismiss]')) {
+   closePreview(preview);
+  } else if (event.target === preview) {
+   const bounds = preview.getBoundingClientRect();
+   if (preview.matches('[data-material-dialog]') ||
+       event.clientX < bounds.left || event.clientX > bounds.right ||
+       event.clientY < bounds.top || event.clientY > bounds.bottom) closePreview(preview);
+  }
+ });
+ document.addEventListener('cancel', event => {
+  if (!event.target.matches('[data-preview-dialog]')) return;
+  event.preventDefault();
+  closePreview(event.target);
+ }, true);
+ document.addEventListener('close', event => {
+  closingPreviews.get(event.target)?.cancel();
+  closingPreviews.delete(event.target);
+ }, true);
+
  const dialog = document.querySelector('[data-material-dialog]');
  if (dialog) {
   const image = dialog.querySelector('[data-material-full]');
   const zoom = dialog.querySelector('[data-material-zoom]');
   const close = dialog.querySelector('[data-material-close]');
   const stage = dialog.querySelector('.material-image-stage');
-  let opener, infographic, closing;
+  let opener, infographic;
 
   function setZoom(active) {
    dialog.classList.toggle('is-zoomed', active);
@@ -176,20 +220,7 @@
   }
 
   function toggleZoom() {
-   if (!closing && infographic) setZoom(!dialog.classList.contains('is-zoomed'));
-  }
-
-  function closePreview() {
-   if (!dialog.open || closing) return;
-   if (reduced.matches) {
-    dialog.close();
-    return;
-   }
-   closing = dialog.animate(
-    [{opacity:getComputedStyle(dialog).opacity, scale:'1'}, {opacity:0, scale:'.98'}],
-    {duration:260,easing:'ease-in',fill:'forwards'}
-   );
-   closing.finished.then(() => dialog.close(), () => {});
+   if (!closingPreviews.has(dialog) && infographic) setZoom(!dialog.classList.contains('is-zoomed'));
   }
 
   document.querySelector('[data-about-explorer]')?.addEventListener('click', event => {
@@ -224,9 +255,6 @@
   });
   image.addEventListener('click', toggleZoom);
   zoom.addEventListener('click', toggleZoom);
-  close.addEventListener('click', closePreview);
-  dialog.addEventListener('cancel', event => { event.preventDefault(); closePreview(); });
-  dialog.addEventListener('click', event => { if (event.target === dialog) closePreview(); });
   dialog.addEventListener('keydown', event => {
    if (event.target === image && infographic && (event.key === 'Enter' || event.key === ' ')) {
     event.preventDefault();
@@ -234,8 +262,6 @@
    }
   });
   dialog.addEventListener('close', () => {
-   closing?.cancel();
-   closing = null;
    opener?.focus({preventScroll:true});
   });
  }
