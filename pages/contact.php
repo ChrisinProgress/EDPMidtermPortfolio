@@ -34,7 +34,24 @@
             <div class="form-heading">
                 <h3>Send Me a Message</h3>
             </div>
-            <input type="hidden" name="_subject" value="New portfolio inquiry"><input type="hidden" name="_template" value="table"><input type="hidden" name="_autoresponse" value="Thank you for contacting Christopher John Cruz. Your inquiry has been submitted. A copy is included below. I will review your message and reply to the email address you provided.">
+            <?php
+            $visitorAcknowledgment = <<<'EMAIL'
+            Hello,
+
+            Thank you for reaching out through my portfolio website!
+
+            Your message has been submitted successfully. I appreciate your interest and will get back to you as soon as possible.
+
+            Best regards,
+
+            Christopher John Cruz
+
+            Portfolio Website: https://christopherjohncruz.onrender.com
+            EMAIL;
+            ?>
+            <input type="hidden" name="_subject" value="New Portfolio Inquiry — Christopher John Cruz">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_autoresponse" value="<?= escapeHtml($visitorAcknowledgment) ?>">
             <div class="honeypot" aria-hidden="true">
                 <label for="website">Leave this field empty</label>
                 <input id="website" type="text" name="_honey" tabindex="-1" autocomplete="off">
