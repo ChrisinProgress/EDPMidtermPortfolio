@@ -14,7 +14,7 @@ $projectBriefs = [
     <div class="contact-layout">
         <div class="contact-copy">
             <h2 id="contact-title" data-type-heading>Let's Work<br> <span class="contact-title-accent">Together</span><span class="heading-dot">.</span></h2>
-            <p class="contact-description">Have a project idea, collaboration opportunity, or just want to connect? Feel free to reach out. I'm always open to learning, sharing ideas, and exploring opportunities to grow as an IT student and designer.</p>
+            <p class="contact-description">Have a project idea, collaboration opportunity, or just want to connect? Feel free to reach out. I'm always open to learning, sharing ideas, and exploring opportunities to grow as an IT student.</p>
             <div class="contact-links">
                 <a class="contact-link email-link" href="mailto:cruchristopherjohnhoylar@gmail.com">
                     <span class="contact-link-icon"><?= renderIcon('mail') ?></span>
