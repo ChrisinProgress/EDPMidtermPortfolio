@@ -2,6 +2,7 @@
 .collection-return { display: inline-flex; align-items: center; min-height: 44px; gap: 9px; color: var(--muted); font-size: 12px; }
 .collection-return .icon { width: 17px; height: 17px; color: var(--accent); }
 .collection-return:hover { color: var(--accent); }
+body.project-detail-page > .hero-socials.is-floating { display: none; }
 .detail-heading { max-width: 900px; padding-block: 36px 32px; }
 .detail-heading h1 { font-size: clamp(32px, 4.4vw, 58px); letter-spacing: -.045em; line-height: 1.15; margin: 18px 0; }
 .detail-heading > p:last-child { color: var(--muted); font-size: 16px; max-width: 65ch; }

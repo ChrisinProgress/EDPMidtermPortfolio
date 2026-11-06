@@ -44,6 +44,7 @@ $check($xpath->query($form . '[@action="https://formsubmit.co/cruchristopherjohn
 foreach (['name', 'email', 'message', 'privacyConsent'] as $name) {
     $check($xpath->query($form . '//*[@name="' . $name . '" and @required]')->length === 1, 'Missing required field ' . $name . '.');
 }
+$check($xpath->query($form . '//select[@name="projectBrief" and not(@required)]')->length === 1, 'The optional project brief must be included in the submitted data.');
 $check($xpath->query($form . '//*[@name="_autoresponse" and @type="hidden"]')->length === 1, 'The confirmation request is missing.');
 $check($xpath->query($form . '//*[@name="_honey" and @tabindex="-1"]')->length === 1, 'The honeypot is missing or keyboard-focusable.');
 $check($xpath->query($form . '//a[@href="privacy.php"]')->length === 1, 'The privacy link is missing.');

@@ -175,6 +175,7 @@ foreach ($sourcePaths as $sourcePath) {
         $referencePath = preg_split('/[?#]/', $referencePath, 2)[0];
         $check(is_file($referenceBasePath . '/' . $referencePath), basename($sourcePath) . ': missing local reference ' . $referencePath);
     }
+    if (pathinfo($sourcePath, PATHINFO_EXTENSION) !== 'css') continue;
     preg_match_all('~(?<![a-zA-Z0-9_])url\(\s*[\'"]?([^\)\'"\s]+)~i', $source, $cssReferences);
     foreach ($cssReferences[1] as $referencePath) {
         if (!preg_match('~^(?:[a-z][a-z0-9+.-]*:|//|#)~i', $referencePath)) {

@@ -19,7 +19,7 @@ Then open [the PHP preview](http://127.0.0.1:8000/). Press Ctrl+C to stop the PH
 
 ## Deploy on Render with Docker
 
-The repository includes a PHP 8.4 Apache `Dockerfile`, an allowlisted `.dockerignore`, production PHP/Apache settings, and a `render.yaml` Blueprint. The startup script binds Apache to `0.0.0.0` using Render's `PORT`. Render's assigned HTTPS URL is used automatically by the contact relay, with an optional custom-domain override.
+The repository includes a PHP 8.4 Apache `Dockerfile`, an allowlisted `.dockerignore`, production PHP/Apache settings, and a `render.yaml` Blueprint. The startup script binds Apache to `0.0.0.0` using Render's `PORT`. The contact form submits directly to FormSubmit and uses the portfolio’s HTTPS address for its return link.
 
 Push the updated repository to GitHub, then create a Render **Web Service**, connect the repository, and choose **Docker** as the runtime. Keep the Dockerfile and build context at the repository root. Alternatively, create a Blueprint using `render.yaml`. Connected-branch commits can trigger automatic redeployment. See [the deployment guide](docs/renderDeployment.md) for exact dashboard steps, environment variables, local container commands, and the HTTP verifier.
 
@@ -144,7 +144,7 @@ The Credentials section contains seven certificates, with Canva Essentials first
 
 Seven certificates appear in the manually browsed Credentials gallery. Each shows its title, issuer, date, and description. The gallery supports touch scrolling, keyboard navigation, and previous/next buttons.
 
-The gallery uses lazy-loaded WebP previews. Hovering over a certificate image gently enlarges it within its frame on devices with a fine pointer.
+The gallery uses lazy-loaded WebP thumbnails with the same hover effect as Materials. Selecting a certificate opens its full image in the shared preview with a close button.
 
 ## Contact messages
 

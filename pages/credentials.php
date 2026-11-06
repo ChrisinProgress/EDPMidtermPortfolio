@@ -8,14 +8,14 @@
                 <div class="credential-panel">
                 <?php $hasCertificate = !empty($credential['image']['src']) && is_file(__DIR__ . '/../' . $credential['image']['src']); if ($hasCertificate): ?>
                 <?php
-                $previewPath = substr($credential['image']['src'], 0, -4) . '-preview.webp';
+                $previewPath = $credential['image']['preview'] ?? $credential['image']['src'];
                 if (!is_file(__DIR__ . '/../' . $previewPath)) {
                     $previewPath = $credential['image']['src'];
                 }
                 ?>
-                <div class="credential-preview">
+                <a class="media-slot" data-media-preview href="<?= escapeHtml($credential['image']['src']) ?>" aria-label="View <?= escapeHtml($credential['title']) ?> certificate" aria-haspopup="dialog">
                     <img src="<?= escapeHtml($previewPath) ?>" alt="<?= escapeHtml($credential['image']['alt']) ?>" width="<?= $credential['image']['width'] ?>" height="<?= $credential['image']['height'] ?>" loading="lazy" decoding="async">
-                </div>
+                </a>
                 <?php else: ?><?= renderMedia('', $credential['title'], 'Certificate Preview Unavailable') ?><?php endif; ?>
                 <div class="credential-content">
                     <div class="credential-meta">

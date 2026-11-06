@@ -18,9 +18,9 @@
             </div>
             <div class="about-copy">
                 <span class="about-copy-watermark" aria-hidden="true"><?= renderBrandLogo('watermark') ?></span>
-                <h3>Built with purpose.<br>Designed for people.</h3>
-                <p>I'm Christopher John Cruz, an Information Technology student at Pamantasan ng Lungsod ng Valenzuela. I bring web development, UI/UX, and graphic design together to create useful, approachable digital experiences.</p>
-                <p>Through academic and creative projects, I enjoy turning ideas into working experiences, testing the details, and improving them with a team.</p>
+                <h3>Building Ideas.<br>Creating Experiences.</h3>
+                <p>I'm Christopher John Cruz, an Information Technology student at Pamantasan ng Lungsod ng Valenzuela. I like building websites, designing UI/UX and graphics, and testing software to make sure everything looks good and works smoothly.</p>
+                <p>Outside of tech, I love watching anime and movies, playing mobile games, biking, and occasionally traveling to explore new places. Whether I'm working on a project or enjoying my hobbies, I'm always up for learning something new and trying out different ideas.</p>
                 <?php require __DIR__ . '/../includes/education.php'; ?>
             </div>
         </div>

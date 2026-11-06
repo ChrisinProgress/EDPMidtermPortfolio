@@ -39,7 +39,7 @@
                 <label for="website">Leave this field empty</label>
                 <input id="website" type="text" name="_honey" tabindex="-1" autocomplete="off">
             </div>
-            <div class="form-field"><label for="project-brief">Start with a project brief (optional)</label><select id="project-brief" data-project-brief><option value="">Write my own message</option><option value="website">Website or web system</option><option value="design">UI/UX or graphic design</option><option value="collaboration">Collaboration</option></select><small>Choosing a topic adds a starting point to an empty message.</small></div><div class="form-row">
+            <div class="form-field"><label for="project-brief">Start with a project brief (optional)</label><select id="project-brief" name="projectBrief" data-project-brief><option value="">Write my own message</option><option value="Website or web system" data-brief="website">Website or web system</option><option value="UI/UX or graphic design" data-brief="design">UI/UX or graphic design</option><option value="Collaboration" data-brief="collaboration">Collaboration</option></select><small>Choosing a topic adds a starting point to an empty message.</small></div><div class="form-row">
                 <div class="form-field">
                     <label for="contact-name">Your Name <span aria-hidden="true">*</span></label>
                     <input id="contact-name" name="name" type="text" placeholder="How should I call you?" required maxlength="100" autocomplete="name" aria-describedby="name-error">

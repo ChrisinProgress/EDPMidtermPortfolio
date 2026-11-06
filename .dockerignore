@@ -16,7 +16,6 @@
 !data/**
 !includes/
 !includes/**
-includes/contactMailer.php
 !pages/
 !pages/**
 !docker/

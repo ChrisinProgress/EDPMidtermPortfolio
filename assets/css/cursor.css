@@ -1,0 +1,60 @@
+.pointer-decoration {
+  --cursor-color: #f59e0b;
+  --cursor-secondary: #d97706;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+}
+[data-theme="dark"] .pointer-decoration {
+  --cursor-color: #dc2626;
+  --cursor-secondary: #991b1b;
+}
+.pointer-decoration.is-visible { opacity: 1; }
+.pointer-decoration * { pointer-events: none; }
+.pointer-follower, .pointer-ripple {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.pointer-halo, .pointer-ripple-ring {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+}
+.pointer-halo { transition: scale .3s ease; }
+.pointer-decoration.is-interactive .pointer-halo { scale: 1.3; }
+.pointer-press, .pointer-face, .pointer-face svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+.pointer-press { position: relative; }
+.pointer-face {
+  position: absolute;
+  inset: 0;
+  transition: opacity .4s ease;
+}
+.theme-view-transition.theme-changing .pointer-face { transition: opacity .4s ease !important; }
+.pointer-face--gold { color: #f59e0b; filter: drop-shadow(0 0 3px #d9770680); }
+.pointer-face--red { color: #dc2626; opacity: 0; filter: drop-shadow(0 0 3px #991b1baa); }
+[data-theme="dark"] .pointer-face--gold { opacity: 0; }
+[data-theme="dark"] .pointer-face--red { opacity: 1; }
+.pointer-decoration.is-visible.is-interactive .pointer-face--gold svg { animation: pointer-spin 2s linear infinite; }
+[data-theme="dark"] .pointer-decoration.is-visible.is-interactive .pointer-face--red svg { animation: pointer-spin 1.5s linear infinite; }
+[data-theme="dark"] .pointer-decoration.is-visible.is-interactive .pointer-face--gold svg { animation: none; }
+.pointer-decoration.is-visible.is-interactive .pointer-halo { animation: pointer-pulse 3s ease-in-out infinite; }
+.pointer-ripple-ring {
+  border: 1px solid var(--cursor-color);
+  box-shadow: 0 0 7px var(--cursor-secondary);
+  opacity: 0;
+}
+@keyframes pointer-spin { to { rotate: 360deg; } }
+@keyframes pointer-pulse { 50% { filter: brightness(1.3); } }
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .pointer-decoration { display: none; }
+}

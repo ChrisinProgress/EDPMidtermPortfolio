@@ -3,6 +3,13 @@
   "use strict";
   const root = document.documentElement;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const url = new URL(location.href);
+  if (url.searchParams.has("portfolio-return")) {
+    url.searchParams.delete("portfolio-return");
+    history.replaceState(history.state, "", url);
+    return;
+  }
+  if (url.hash === "#contact" && url.searchParams.has("contact-return")) return;
   if (reducedMotion.matches) return;
   const started = performance.now();
   let complete = false;

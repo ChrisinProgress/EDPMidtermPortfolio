@@ -71,6 +71,7 @@
   const updateScrollState = () => {
     siteHeader?.classList.toggle("is-scrolled", window.scrollY > 12);
     if (!sections.length) return;
+    const inProject = document.body.classList.contains("project-detail-page");
 
     const headerHeight = siteHeader?.getBoundingClientRect().height || 0;
     const marker = headerHeight + 100;
@@ -85,7 +86,7 @@
     }
 
     navLinks.forEach((link) => {
-      const isActive = link.getAttribute("href") === `#${activeSection.id}`;
+      const isActive = link.getAttribute("href") === (inProject ? "#projects" : `#${activeSection.id}`);
       link.classList.toggle("is-active", isActive);
       if (isActive) link.setAttribute("aria-current", "location");
       else link.removeAttribute("aria-current");
@@ -249,7 +250,7 @@
     });
   }
 
-  document.querySelectorAll("[data-carousel]").forEach((element) => {
+  function initializeCarousel(element) {
     const slides = Array.from(element.querySelectorAll("[data-slide]"));
     if (!slides.length) return;
     const dots = Array.from(element.querySelectorAll("[data-carousel-dot]"));
@@ -336,123 +337,74 @@
       carousel.setIndex(slideIndex);
       if (openLightbox(carousel, preview)) event.preventDefault();
     });
+  }
+  document.querySelectorAll("[data-carousel]").forEach(initializeCarousel);
+  document.addEventListener("portfolio:project-mounted", event => {
+    event.target.querySelectorAll("[data-carousel]").forEach(initializeCarousel);
+    scheduleScrollUpdate();
+  });
+  document.addEventListener("portfolio:project-unmounting", () => {
+    closeLightbox();
+    scheduleScrollUpdate();
   });
 
-  const contactForm = document.querySelector("[data-contact-form]");
-  if (!contactForm || typeof window.fetch !== "function" || typeof window.FormData !== "function") return;
-
-  const formStatus = contactForm.querySelector("[data-form-status]");
+  const contactForm = document.querySelector("[data-native-contact]");
+  if (!contactForm) return;
+  const contactStatus = contactForm.querySelector("[data-form-status]");
   const submitButton = contactForm.querySelector("[data-submit-button]");
-  const submitLabel = submitButton?.querySelector("[data-submit-label]");
-  const defaultSubmitLabel = submitLabel?.textContent || "Send message";
-  const fieldNames = ["name", "email", "message"];
-  let isSubmitting = false;
-  contactForm.noValidate = true;
+  const statusKey = "portfolio-contact-return";
+  const currentUrl = new URL(window.location.href);
+  let submitting = false;
+  const textFields = [
+    { field: contactForm.elements.namedItem("name"), minimum: 1, error: "Enter your name." },
+    { field: contactForm.elements.namedItem("message"), minimum: 10, error: "Enter at least 10 characters for your message." },
+  ];
+  textFields.forEach(({ field }) => field.addEventListener("input", () => field.setCustomValidity("")));
+  if (currentUrl.searchParams.has("contact-return") && currentUrl.hash === "#contact") {
+    try {
+      if (sessionStorage.getItem(statusKey) === "pending") {
+        sessionStorage.removeItem(statusKey);
+        contactStatus.textContent = "FormSubmit accepted your inquiry.";
+      }
+    } catch {}
+    currentUrl.searchParams.delete("contact-return");
+    history.replaceState(history.state, "", currentUrl);
+  }
 
-  const getField = (name) => contactForm.elements.namedItem(name);
-  const setFieldError = (name, message) => {
-    const field = getField(name);
-    const error = contactForm.querySelector(`[data-field-error='${name}']`);
-    if (field) field.setAttribute("aria-invalid", message ? "true" : "false");
-    if (error) error.textContent = message;
-  };
-
-  const setFormStatus = (message, type = "") => {
-    if (!formStatus) return;
-    formStatus.textContent = message;
-    formStatus.classList.toggle("is-success", type === "success");
-    formStatus.classList.toggle("is-error", type === "error");
-  };
-
-  const setSubmitting = (isBusy) => {
-    isSubmitting = isBusy;
-    contactForm.setAttribute("aria-busy", String(isBusy));
-    if (submitButton) submitButton.disabled = isBusy;
-    if (submitLabel) submitLabel.textContent = isBusy ? "Sending…" : defaultSubmitLabel;
-  };
-
-  const focusFirstError = () => {
-    const firstInvalidField = fieldNames.map(getField).find((field) => field?.getAttribute("aria-invalid") === "true");
-    if (!firstInvalidField) return;
-    firstInvalidField.focus({ preventScroll: true });
-    firstInvalidField.closest(".form-field")?.scrollIntoView({ block: "center", behavior: "instant" });
-  };
-
-  fieldNames.forEach((name) => {
-    getField(name)?.addEventListener("input", () => setFieldError(name, ""));
-  });
-
-  contactForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (isSubmitting) return;
-
-    fieldNames.forEach((name) => setFieldError(name, ""));
-    setFormStatus("");
-    const values = Object.fromEntries(fieldNames.map((name) => [name, String(getField(name)?.value || "").trim()]));
-    const errors = {};
-
-    if (!values.name) errors.name = "Please enter your name.";
-    else if (values.name.length > 100) errors.name = "Please keep your name to 100 characters or fewer.";
-    if (!values.email) errors.email = "Please enter your email address.";
-    else if (values.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) errors.email = "Please enter a valid email address.";
-    if (!values.message) errors.message = "Please enter a message.";
-    else if (values.message.length < 10) errors.message = "Please write a message of at least 10 characters.";
-    else if (values.message.length > 5000) errors.message = "Please keep your message to 5,000 characters or fewer.";
-
-    if (Object.keys(errors).length) {
-      Object.entries(errors).forEach(([name, message]) => setFieldError(name, message));
-      setFormStatus("Please check the highlighted fields and try again.", "error");
-      focusFirstError();
+  contactForm.addEventListener("submit", event => {
+    if (event.defaultPrevented || submitting) {
+      event.preventDefault();
       return;
     }
-
-    const formData = new FormData(contactForm);
-    Object.entries(values).forEach(([name, value]) => formData.set(name, value));
-    setSubmitting(true);
-    setFormStatus("Sending your message…");
-
-    try {
-      const response = await fetch(contactForm.action, {
-        method: contactForm.method.toUpperCase() || "POST",
-        body: formData,
-        headers: { Accept: "application/json" },
-        credentials: "same-origin",
-      });
-      let result;
-      try {
-        result = await response.json();
-      } catch {
-        throw new Error("We couldn’t confirm that your message was sent. Please try again later.");
-      }
-
-      if (!result || typeof result !== "object") {
-        throw new Error("We couldn’t confirm that your message was sent. Please try again later.");
-      }
-
-      if (!response.ok || result.success !== true) {
-        if (result.errors && typeof result.errors === "object") {
-          fieldNames.forEach((name) => {
-            const error = result.errors[name];
-            if (typeof error === "string") setFieldError(name, error);
-            else if (Array.isArray(error) && typeof error[0] === "string") setFieldError(name, error[0]);
-          });
-        }
-        setFormStatus(typeof result.message === "string" ? result.message : "Your message could not be sent. Please try again later.", "error");
-        focusFirstError();
-        return;
-      }
-
-      const csrfField = getField("csrfToken");
-      const csrfToken = typeof result.csrfToken === "string" ? result.csrfToken : csrfField?.value;
-      contactForm.reset();
-      if (csrfField && csrfToken !== undefined) csrfField.value = csrfToken;
-      fieldNames.forEach((name) => setFieldError(name, ""));
-      setFormStatus(typeof result.message === "string" ? result.message : "Thank you! Your message has been sent.", "success");
-    } catch (error) {
-      const message = error instanceof TypeError ? "We couldn’t reach the server to confirm delivery. Please check your connection and try again." : error.message;
-      setFormStatus(message || "We couldn’t confirm that your message was sent. Please try again later.", "error");
-    } finally {
-      setSubmitting(false);
+    const invalid = textFields.find(({ field, minimum }) => field.value.trim().length < minimum);
+    if (invalid) {
+      event.preventDefault();
+      invalid.field.setCustomValidity(invalid.error);
+      invalid.field.reportValidity();
+      return;
     }
+    if (location.protocol === "https:" && !["localhost", "127.0.0.1", "[::1]"].includes(location.hostname)) {
+      try {
+        sessionStorage.setItem(statusKey, "pending");
+        const next = new URL("index.php?contact-return=1#contact", location.href);
+        const redirect = document.createElement("input");
+        redirect.type = "hidden";
+        redirect.name = "_next";
+        redirect.value = next.href;
+        contactForm.append(redirect);
+      } catch {} // FormSubmit supplies its own confirmation page when storage is unavailable.
+    }
+    submitting = true;
+    submitButton.disabled = true;
+    contactForm.setAttribute("aria-busy", "true");
+    contactStatus.textContent = "Opening FormSubmit to verify your inquiry…";
+  });
+  window.addEventListener("pageshow", event => {
+    if (!event.persisted) return;
+    submitting = false;
+    submitButton.disabled = false;
+    contactForm.elements.namedItem("_next")?.remove();
+    contactForm.removeAttribute("aria-busy");
+    contactStatus.textContent = "";
   });
 })();

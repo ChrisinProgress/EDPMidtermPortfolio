@@ -201,7 +201,15 @@
    infographic = Boolean(link.closest('.material-card--infographic'));
    dialog.classList.toggle('can-zoom', infographic);
    dialog.setAttribute('aria-label', link.dataset.previewTitle || preview.alt || 'Image preview');
-   image.src = link.href;
+   const source = link.href;
+   image.src = preview.currentSrc || preview.src;
+   if (image.src !== source) {
+    const original = new Image();
+    original.src = source;
+    original.decode().then(() => {
+     if (dialog.open && opener === link) image.src = source;
+    }, () => {}); // The fitted thumbnail remains usable if the original fails.
+   }
    image.alt = preview.alt;
    zoom.hidden = !infographic;
    if (infographic) {
@@ -278,8 +286,7 @@
   aboutControls.hidden=false;update();
  }
  // Each View Project page types its heading once using the hero's timing.
- const detailTitle = document.querySelector('.detail-heading [data-project-title]');
- if (detailTitle) {
+ function typeProjectTitle(detailTitle) {
   const title = detailTitle.textContent;
   detailTitle.setAttribute('aria-label', title);
   const visual = document.createElement('span');
@@ -330,9 +337,22 @@
     cancelTyping = typeCharacters(title.length, renderTitle, finishTitle);
    }, typingLeadIn);
   });
-  window.addEventListener('pagehide', finishTitle, {once:true});
-  reduced.addEventListener('change', event => { if (event.matches) finishTitle(); });
+  const lifecycle = new AbortController();
+  const finishOnReducedMotion = event => { if (event.matches) finishTitle(); };
+  const dispose = () => {
+   finishTitle();
+   lifecycle.abort();
+  };
+  window.addEventListener('pagehide', dispose, {once:true, signal:lifecycle.signal});
+  reduced.addEventListener('change', finishOnReducedMotion, {signal:lifecycle.signal});
+  detailTitle.closest('main').addEventListener('portfolio:project-unmounting', dispose, {once:true});
  }
+ const detailTitle = document.querySelector('.detail-heading [data-project-title]');
+ if (detailTitle) typeProjectTitle(detailTitle);
+ document.addEventListener('portfolio:project-mounted', event => {
+  const heading = event.target.querySelector('[data-project-title]');
+  if (heading) typeProjectTitle(heading);
+ });
  const feature=document.querySelector('.feature-showcase');
  if(feature){
   const updateFeature=()=>{const r=feature.getBoundingClientRect();const visible=Math.max(0,Math.min(r.bottom,innerHeight)-Math.max(r.top,0))/Math.min(r.height,innerHeight);feature.style.setProperty('--feature-presence',reduced.matches?1:Math.min(1,visible/0.72));};
@@ -353,7 +373,7 @@
    if(position>=state.length)finishHeading(state);
   },55);
  }),{threshold:.25});
- document.querySelectorAll('[data-type-heading]').forEach(heading=>{
+ function registerHeading(heading) {
   if(heading.closest('dialog'))return;
   heading.setAttribute('aria-label',heading.textContent.trim());
   const wrapper=document.createElement('span');wrapper.setAttribute('aria-hidden','true');while(heading.firstChild)wrapper.append(heading.firstChild);heading.append(wrapper);
@@ -361,12 +381,43 @@
   while(node=walker.nextNode())nodes.push({node,text:node.textContent});
   const caret=document.createElement('span');caret.className='typing-cursor heading-typing-cursor';caret.setAttribute('aria-hidden','true');heading.append(caret);
   headingStates.set(heading,{heading,nodes,length:nodes.reduce((n,t)=>n+t.text.length,0),timer:0,running:false});
- });
+ }
+ document.querySelectorAll('[data-type-heading]').forEach(registerHeading);
  afterIntro(()=>headingStates.forEach(state=>headingObserver.observe(state.heading)));
  reduced.addEventListener('change',()=>{if(reduced.matches)headingStates.forEach(finishHeading);});
  // Highlight policy contents without adding another animation or moving focus.
- const policyLinks=[...document.querySelectorAll('.policy-index a[href^="#"]')];
- if(policyLinks.length){const sections=policyLinks.map(a=>document.querySelector(a.hash)).filter(Boolean);const observer=new IntersectionObserver(entries=>{const visible=entries.find(e=>e.isIntersecting);if(visible)policyLinks.forEach(a=>{if(a.hash==='#'+visible.target.id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});},{rootMargin:'-15% 0px -65% 0px'});sections.forEach(section=>observer.observe(section));}
+ function observePolicySections(page) {
+  const links = [...page.querySelectorAll('.policy-index a[href^="#"]')];
+  if (!links.length) return;
+  const observer = new IntersectionObserver(entries => {
+   const visible = entries.find(entry => entry.isIntersecting);
+   if (visible) links.forEach(link => {
+    if (link.hash === '#' + visible.target.id) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+   });
+  }, {rootMargin:'-15% 0px -65% 0px'});
+  links.forEach(link => {
+   const section = page.querySelector(link.hash);
+   if (section) observer.observe(section);
+  });
+  page.addEventListener('portfolio:policy-unmounting', () => observer.disconnect(), {once:true});
+ }
+ const initialPolicy = document.querySelector('main.policy-page');
+ if (initialPolicy) observePolicySections(initialPolicy);
+ document.addEventListener('portfolio:policy-mounted', event => {
+  const page = event.target;
+  const heading = page.querySelector('[data-type-heading]');
+  if (heading) {
+   registerHeading(heading);
+   headingObserver.observe(heading);
+   page.addEventListener('portfolio:policy-unmounting', () => {
+    headingObserver.unobserve(heading);
+    finishHeading(headingStates.get(heading));
+    headingStates.delete(heading);
+   }, {once:true});
+  }
+  observePolicySections(page);
+ });
  // Image-only artwork rows, moving in opposite directions.
  const artwork=document.querySelector('[data-artwork-showcase]');
  if(artwork){

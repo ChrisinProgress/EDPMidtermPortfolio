@@ -12,6 +12,7 @@
     const flip = scene.querySelector('[data-id-flip]');
     const photo = scene.querySelector('[data-id-photo]');
     let frame = 0;
+    let anchorY = motion.offsetTop;
     let pose = { x: 0, y: 0, sway: 0 };
     let gesture;
     let interacted = false;
@@ -19,10 +20,19 @@
     let hovering = false;
     let pixelSelected = false;
     let photoPointerType;
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+    function boundSwing(angle, x, { left, right, height }) {
+      const degrees = 180 / Math.PI;
+      const clockwise = Math.atan2(x - left, height) * degrees;
+      const counterclockwise = Math.atan2(right - x, height) * degrees;
+      return clamp(angle, -Math.min(7, counterclockwise), Math.min(7, clockwise));
+    }
 
     function setPose(x = 0, y = 0, sway = 0) {
+      y = Math.max(14 - anchorY, y);
       pose = { x, y, sway };
-      const vertical = Math.max(8, motion.offsetTop + y);
+      const vertical = anchorY + y;
       motion.style.setProperty('--id-x', x + 'px');
       motion.style.setProperty('--id-y', y + 'px');
       motion.style.setProperty('--id-sway', sway + 'deg');
@@ -34,6 +44,11 @@
       scene.style.setProperty('--id-lace-size', Math.hypot(x, vertical) + 'px');
       scene.style.setProperty('--id-lace-angle', -Math.atan2(x, vertical) + 'rad');
     }
+
+    new ResizeObserver(() => {
+      anchorY = motion.offsetTop;
+      setPose(pose.x, pose.y, pose.sway);
+    }).observe(scene);
 
     function animatePose(duration, render, finish = setPose) {
       cancelAnimationFrame(frame);
@@ -54,16 +69,24 @@
       });
     }
 
-    function retract() {
+    function retract({ vx, vy, lastMove, limits }) {
       if (reduced.matches) {
         setPose();
         return;
       }
       const released = pose;
-      animatePose(740, progress => {
-        const spring = Math.exp(-6 * progress) * Math.cos(9 * progress) * (1 - progress);
-        setPose(released.x * spring, released.y * spring, released.sway * spring);
-      }, () => sway(Math.min(10, 2 + Math.hypot(released.x, released.y) / 12), 2100));
+      const momentum = Math.exp(-Math.max(0, performance.now() - lastMove) / 90);
+      // Evaluate an underdamped spring from the release position and velocity.
+      const spring = (position, velocity, time, damping, frequency) =>
+        Math.exp(-damping * time) * (position * Math.cos(frequency * time)
+          + (velocity + damping * position) / frequency * Math.sin(frequency * time));
+      animatePose(2200, progress => {
+        const time = progress * 2.2;
+        const x = clamp(spring(released.x, vx * momentum, time, 6, 13), limits.left, limits.right);
+        const y = clamp(spring(released.y, vy * momentum, time, 6, 13), limits.up, limits.down);
+        const swing = spring(released.sway, -vx * momentum * .16, time, 2.5, 10);
+        setPose(x, y, boundSwing(swing, x, limits));
+      });
     }
 
     function enter() {
@@ -89,44 +112,71 @@
       }
     });
 
-    motion.addEventListener('pointerdown', event => {
+    scene.addEventListener('pointerdown', event => {
       if (gesture || !event.isPrimary || event.button !== 0) return;
       suppressClick = false;
-      if (event.target.closest('[data-id-flip]')) return;
-      if (event.pointerType !== 'mouse' && !clip.contains(event.target)) return;
+      if (event.target.closest('button, a, input') ||
+          !event.target.closest('[data-student-id], [data-id-clip], [data-id-lanyard]')) return;
       interacted = true;
-      gesture = { pointer: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
+      const bounds = scene.getBoundingClientRect();
+      const inset = (bounds.width - motion.offsetWidth) / 2;
+      gesture = {
+        pointer: event.pointerId, x: event.clientX, y: event.clientY, moved: false,
+        vx: 0, vy: 0, lastMove: performance.now(),
+        limits: {
+          left: -clamp(bounds.left + inset - 10, 0, 80),
+          right: clamp(document.documentElement.clientWidth - bounds.right + inset - 10, 0, 80),
+          up: 14 - anchorY,
+          down: 112,
+          height: motion.offsetHeight,
+        },
+      };
     });
     window.addEventListener('pointermove', event => {
       if (gesture?.pointer !== event.pointerId) return;
       const dx = event.clientX - gesture.x;
       const dy = event.clientY - gesture.y;
       if (!gesture.moved) {
-        if (Math.hypot(dx, dy) < 7) return;
+        if (Math.hypot(dx, dy) < 8) return;
         gesture.moved = true;
         gesture.start = pose;
         cancelAnimationFrame(frame);
-        motion.setPointerCapture(event.pointerId);
-        motion.classList.add('is-dragging');
+        scene.setPointerCapture(event.pointerId);
+        scene.classList.add('is-dragging');
       }
-      const bounds = scene.getBoundingClientRect();
-      const limit = Math.max(9, Math.min(68, bounds.left + 4, window.innerWidth - bounds.right + 4));
-      const x = Math.max(-limit, Math.min(limit, gesture.start.x + dx * .68));
-      const y = Math.max(-23, Math.min(105, gesture.start.y + dy * .72));
-      setPose(x, y, x * .09);
+      const { start, limits } = gesture;
+      const resist = (origin, distance, min, max) => {
+        const room = Math.max(1, distance < 0 ? origin - min : max - origin);
+        return clamp(origin + distance / (1 + Math.abs(distance) / room), min, max);
+      };
+      const x = resist(start.x, dx, limits.left, limits.right);
+      const y = resist(start.y, dy, limits.up, limits.down);
+      const now = performance.now();
+      const elapsed = Math.max(8, now - gesture.lastMove) / 1000;
+      gesture.vx = clamp((x - pose.x) / elapsed, -550, 550);
+      gesture.vy = clamp((y - pose.y) / elapsed, -550, 550);
+      gesture.lastMove = now;
+      setPose(x, y, boundSwing(-x * .1, x, limits));
     });
     function release(event) {
-      if (gesture?.pointer !== event.pointerId) return;
-      const { moved } = gesture;
+      if (!gesture || ('pointerId' in event && gesture.pointer !== event.pointerId)) return;
+      const released = gesture;
       gesture = undefined;
-      if (!moved) return;
-      motion.classList.remove('is-dragging');
+      if (!released.moved) return;
+      if (scene.hasPointerCapture(released.pointer)) scene.releasePointerCapture(released.pointer);
+      scene.classList.remove('is-dragging');
       suppressClick = true;
-      retract();
+      retract(released);
     }
     window.addEventListener('pointerup', release);
     window.addEventListener('pointercancel', release);
-    motion.addEventListener('lostpointercapture', release);
+    scene.addEventListener('lostpointercapture', release);
+    window.addEventListener('blur', release);
+    window.addEventListener('pagehide', event => {
+      release(event);
+      cancelAnimationFrame(frame);
+      setPose();
+    });
 
     function updatePhoto() {
       photo.classList.toggle('is-pixel', hovering || pixelSelected);
@@ -170,7 +220,7 @@
   brief?.addEventListener('change', () => {
     if (!message) return;
     if (!message.value.trim() || message.value === previousTemplate) {
-      message.value = templates[brief.value] || '';
+      message.value = templates[brief.selectedOptions[0]?.dataset.brief] || '';
       previousTemplate = message.value;
     }
   });

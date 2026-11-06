@@ -12,6 +12,7 @@ return [
         'description' => 'Completed one hour of training in Canva essentials.',
         'image' => [
             'src' => 'assets/images/credentials/canva-essentials-certificate.png',
+            'preview' => 'assets/images/credentials/canvaEssentialsPreview.webp',
             'alt' => 'Canva Design School Certificate of Completion in Canva Essentials awarded to Christopher John Cruz on October 22, 2026.',
             'width' => 7028,
             'height' => 4969,
@@ -27,6 +28,7 @@ return [
         'description' => 'Completed 45 minutes of graphic design training.',
         'image' => [
             'src' => 'assets/images/credentials/canva-graphic-design-essentials-certificate.png',
+            'preview' => 'assets/images/credentials/canvaGraphicDesignPreview.webp',
             'alt' => 'Canva Design School Certificate of Completion in Graphic Design Essentials awarded to Christopher John Cruz on October 22, 2026.',
             'width' => 7028,
             'height' => 4969,
@@ -42,6 +44,7 @@ return [
         'description' => 'Completed 90 minutes of AI training for students.',
         'image' => [
             'src' => 'assets/images/credentials/canva-ai-skills-for-students-certificate.png',
+            'preview' => 'assets/images/credentials/canvaAiSkillsPreview.webp',
             'alt' => 'Canva Design School Certificate of Completion in AI Skills for Students awarded to Christopher John Cruz on October 22, 2026.',
             'width' => 7028,
             'height' => 4969,
@@ -57,6 +60,7 @@ return [
         'description' => 'Completed the AI Essentials 2026 course.',
         'image' => [
             'src' => 'assets/images/credentials/canva-ai-essentials-2026-certificate.png',
+            'preview' => 'assets/images/credentials/canvaAiEssentialsPreview.webp',
             'alt' => 'Canva Design School Certificate of Completion in AI Essentials 2026 awarded to Christopher John Cruz on October 22, 2026.',
             'width' => 7028,
             'height' => 4969,
@@ -72,6 +76,7 @@ return [
         'description' => 'Completed one hour of training in working with AI.',
         'image' => [
             'src' => 'assets/images/credentials/canva-work-smarter-with-ai-certificate.png',
+            'preview' => 'assets/images/credentials/canvaWorkSmarterPreview.webp',
             'alt' => 'Canva Design School Certificate of Completion in Work Smarter with AI awarded to Christopher John Cruz on October 22, 2026.',
             'width' => 7028,
             'height' => 4969,
@@ -87,6 +92,7 @@ return [
         'description' => 'Completed a course in essential digital skills and computer use.',
         'image' => [
             'src' => 'assets/images/credentials/tesda-microsoft-digital-literacy-certificate.png',
+            'preview' => 'assets/images/credentials/tesdaDigitalLiteracyPreview.webp',
             'alt' => 'TESDA Certificate of Completion in Microsoft Digital Literacy awarded to Christopher John Hoylar Cruz on June 4, 2025.',
             'width' => 1510,
             'height' => 867,
@@ -102,6 +108,7 @@ return [
         'description' => 'Attended a seminar on identity and access management.',
         'image' => [
             'src' => 'assets/images/credentials/plv-identity-access-management-seminar-certificate.png',
+            'preview' => 'assets/images/credentials/plvIdentityAccessPreview.webp',
             'alt' => 'PLV Certificate of Participation for Christopher John Hoylar Cruz in the Unlocking Security: The Power of Identity & Access Management seminar on April 24, 2025.',
             'width' => 3402,
             'height' => 2397,

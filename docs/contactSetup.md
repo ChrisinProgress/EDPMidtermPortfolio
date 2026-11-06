@@ -1,6 +1,6 @@
 # Portfolio contact form
 
-The contact form posts directly from the browser to [FormSubmit](https://formsubmit.co/) for delivery to the portfolio Gmail inbox. It sends the entered name, email, message, and required inquiry-processing acknowledgment. The optional project brief only pre-fills the message. The form requests a confirmation email and allows FormSubmit to verify submissions.
+The contact form posts directly from the browser to [FormSubmit](https://formsubmit.co/) for delivery to the portfolio Gmail inbox. It sends the entered name, email, selected project brief, message, and required inquiry-processing acknowledgment. The form requests a confirmation email and leaves FormSubmit verification enabled. In a browser with session storage on a public HTTPS site, FormSubmit returns visitors to the contact section after accepting the form.
 
 ## Activate and test
 

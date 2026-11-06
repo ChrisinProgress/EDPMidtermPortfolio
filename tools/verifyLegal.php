@@ -40,7 +40,7 @@ foreach ($documents as $page => [$doc,$xpath,$html]) {
 foreach (['privacy.php'=>'Privacy Policy','terms.php'=>'Terms of Service','licenses.php'=>'Licenses & Attribution'] as $page=>$title) {
     [$doc,$xpath,$html]=$documents[$page];
     $check($xpath->query('//main//h1[@data-type-heading]')->length === 1,$page . ': one typing title expected.');
-    $check(str_contains($html,'datetime="2026-11-05"'),$page . ': updated date missing.');
+    $check(str_contains($html,'datetime="2026-11-06"'),$page . ': updated date missing.');
     $check($xpath->query('//nav[@aria-label="Legal pages"]//a[@aria-current="page"]')->length === 1,$page . ': current page link missing.');
     $check(str_contains($html,'Back to Portfolio'),$page . ': return navigation missing.');
 }
