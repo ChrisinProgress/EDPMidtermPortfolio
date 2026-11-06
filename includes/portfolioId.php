@@ -17,7 +17,7 @@
                 </button>
                 <strong class="id-name">Christopher John Cruz</strong>
                 <span class="id-course">BS INFORMATION TECHNOLOGY · PLV</span>
-                <span class="id-number">STUDENT NO. <strong>24-333*</strong></span>
+                <span class="id-number">STUDENT NO. <strong>24-33**</strong></span>
                 <span class="id-bottom">PORTFOLIO ID</span>
             </div>
             <div class="id-face id-back" data-id-back aria-hidden="true" inert>

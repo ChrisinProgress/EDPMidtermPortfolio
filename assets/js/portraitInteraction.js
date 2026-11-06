@@ -10,6 +10,7 @@
     const front = scene.querySelector('[data-id-front]');
     const back = scene.querySelector('[data-id-back]');
     const flip = scene.querySelector('[data-id-flip]');
+    const flipIcon = flip.querySelector('.icon');
     const photo = scene.querySelector('[data-id-photo]');
     let frame = 0;
     let anchorY = motion.offsetTop;
@@ -20,6 +21,7 @@
     let hovering = false;
     let pixelSelected = false;
     let photoPointerType;
+    let flipEffect;
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
     function boundSwing(angle, x, { left, right, height }) {
@@ -106,6 +108,7 @@
       document.addEventListener('portfolio:intro-ready', enter, { once: true });
     } else enter();
     reduced.addEventListener('change', () => {
+      if (reduced.matches) flipEffect?.cancel();
       if (reduced.matches && !gesture) {
         cancelAnimationFrame(frame);
         setPose();
@@ -200,6 +203,7 @@
     });
     motion.addEventListener('click', event => {
       if ((suppressClick && event.detail) || event.target.closest('[data-id-photo], [data-id-clip]')) return;
+      if (flipEffect?.playState === 'running') return;
       const flipped = card.classList.toggle('is-flipped');
       if (flipped && front.contains(document.activeElement)) flip.focus({ preventScroll: true });
       front.inert = flipped;
@@ -207,6 +211,19 @@
       front.setAttribute('aria-hidden', String(flipped));
       back.setAttribute('aria-hidden', String(!flipped));
       flip.setAttribute('aria-pressed', String(flipped));
+      if (event.target.closest('[data-id-flip]') && !reduced.matches) {
+        const style = getComputedStyle(motion);
+        const from = flipped ? 0 : 180;
+        const to = flipped ? 180 : 0;
+        flipEffect = flipIcon.animate([
+          { transform: 'rotate(' + from + 'deg) scale(1)', filter: 'none' },
+          { transform: 'rotate(' + (from + (to - from) * .24) + 'deg) scale(.9)', filter: 'drop-shadow(0 0 4px var(--red))', offset: .24 },
+          { transform: 'rotate(' + to + 'deg) scale(1)', filter: 'none' },
+        ], {
+          duration: parseFloat(style.getPropertyValue('--id-flip-duration')),
+          easing: style.getPropertyValue('--id-flip-ease').trim(),
+        });
+      }
     });
   }
   const brief = document.querySelector('[data-project-brief]');

@@ -37,5 +37,4 @@ html { scrollbar-gutter: stable; }
 body,button,input,textarea,select,option{font-family:"Poppins",sans-serif}
 .student-id .id-front .cjc-logo{--brand-ink:var(--neutral-950);color:var(--neutral-950);width:44px}
 .student-id .id-back .cjc-logo{--brand-ink:var(--neutral-0);color:var(--neutral-0);width:64px}
-.student-id{transition-duration:.45s}
 .motion-ready [data-reveal]{transition-delay:0s!important}

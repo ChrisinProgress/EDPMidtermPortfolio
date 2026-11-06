@@ -38,6 +38,8 @@
 }
 html[data-theme="dark"] .id-lace-clouds { opacity: 1; }
 .id-motion {
+  --id-flip-duration: 600ms;
+  --id-flip-ease: cubic-bezier(.2,.7,.2,1);
   position: relative;
   width: min(330px, 100%);
   perspective: 1200px;
@@ -70,7 +72,7 @@ html[data-theme="dark"] .id-lace-clouds { opacity: 1; }
   color: var(--neutral-850);
   cursor: grab;
   transform-style: preserve-3d;
-  transition: transform .7s cubic-bezier(.2,.7,.2,1);
+  transition: transform var(--id-flip-duration) var(--id-flip-ease);
   text-align: left;
 }
 .student-id.is-flipped{transform:rotateY(180deg)}
@@ -89,11 +91,12 @@ html[data-theme="dark"] .id-lace-clouds { opacity: 1; }
   color: var(--neutral-800);
   background: transparent;
   cursor: pointer;
-  transition: background .25s ease, color .25s ease;
+  transition: color .25s ease;
 }
 .id-flip .icon { width: 16px; height: 16px; }
 .id-flip[aria-pressed="true"] { color: var(--neutral-0); }
-.id-flip:hover, .id-flip:focus-visible { background: var(--red-soft); color: var(--neutral-950); }
+.id-flip[aria-pressed="true"] .icon { transform: rotate(180deg); }
+.id-flip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .id-face{position:absolute;inset:0;display:flex;flex-direction:column;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--neutral-300);border-radius:20px;padding:22px;background:linear-gradient(145deg,var(--neutral-0),var(--neutral-100));box-shadow:0 22px 48px color-mix(in srgb,var(--neutral-800) 14.9%,transparent);overflow:hidden}
 .id-heading{display:flex;justify-content:space-between;align-items:center;font-size:22px;font-weight:800;line-height:1.05;letter-spacing:-1px}
 .id-heading .brand-logo{width:44px;height:44px;color:var(--neutral-850)}
