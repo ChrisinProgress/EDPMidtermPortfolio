@@ -7,12 +7,28 @@
   const menuToggle = document.querySelector("[data-menu-toggle]");
   const navigation = document.querySelector("[data-navigation]");
   const navLinks = Array.from(document.querySelectorAll("[data-nav-link]"));
-  const sections = navLinks.map((link) => {
-    if (link.getAttribute("href").startsWith("#")) return document.getElementById(link.hash.slice(1));
-    return null;
-  }).filter(Boolean);
+  const sections = navLinks.map(link => document.getElementById(link.hash.slice(1))).filter(Boolean);
   const mobileMenu = window.matchMedia("(max-width: 899px)");
   let menuOpen = false;
+  let sectionIntent, intentTimer;
+
+  function clearSectionIntent() {
+    clearTimeout(intentTimer);
+    sectionIntent = null;
+  }
+
+  function trackSectionIntent() {
+    clearSectionIntent();
+    const section = sections.find(item => "#" + item.id === location.hash && item.getClientRects().length);
+    if (section) {
+      sectionIntent = section;
+      intentTimer = setTimeout(() => {
+        clearSectionIntent();
+        scheduleScrollUpdate();
+      }, 1000);
+    }
+    scheduleScrollUpdate();
+  }
 
   const setMenuOpen = (isOpen) => {
     if (!menuToggle || !navigation) return;
@@ -70,23 +86,23 @@
 
   const updateScrollState = () => {
     siteHeader?.classList.toggle("is-scrolled", window.scrollY > 12);
-    if (!sections.length) return;
-    const inProject = document.body.classList.contains("project-detail-page");
-
-    const headerHeight = siteHeader?.getBoundingClientRect().height || 0;
-    const marker = headerHeight + 100;
-    let activeSection = sections[0];
-
-    sections.forEach((section) => {
-      if (section.getBoundingClientRect().top <= marker) activeSection = section;
-    });
-
-    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) {
-      activeSection = sections[sections.length - 1];
+    let activeHash = "";
+    if (document.body.classList.contains("project-detail-page")) {
+      activeHash = "#projects";
+    } else if (document.body.classList.contains("portfolio-page") && sections.length) {
+      const marker = (siteHeader?.getBoundingClientRect().height || 0) + 100;
+      let activeSection = sections[0];
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= marker) activeSection = section;
+      }
+      if (window.scrollY > marker && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) {
+        activeSection = sections[sections.length - 1];
+      }
+      activeHash = "#" + (sectionIntent || activeSection).id;
     }
 
     navLinks.forEach((link) => {
-      const isActive = link.getAttribute("href") === (inProject ? "#projects" : `#${activeSection.id}`);
+      const isActive = link.hash === activeHash;
       link.classList.toggle("is-active", isActive);
       if (isActive) link.setAttribute("aria-current", "location");
       else link.removeAttribute("aria-current");
@@ -105,7 +121,13 @@
 
   window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
   window.addEventListener("resize", scheduleScrollUpdate);
+  window.addEventListener("hashchange", trackSectionIntent);
+  document.addEventListener("portfolio:view-changed", trackSectionIntent);
+  for (const name of ["wheel", "touchstart"]) {
+    window.addEventListener(name, () => { clearSectionIntent(); scheduleScrollUpdate(); }, { passive: true });
+  }
   window.addEventListener("load", scheduleScrollUpdate, { once: true });
+  trackSectionIntent();
   updateScrollState();
 
   const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
@@ -392,7 +414,8 @@
     contactStatus.textContent = "Opening FormSubmit to verify your inquiry…";
   });
   window.addEventListener("pageshow", event => {
-    if (!event.persisted) return;
+    if (!event.persisted || !submitting) return;
+    try { sessionStorage.removeItem(statusKey); } catch {}
     submitting = false;
     submitButton.disabled = false;
     contactForm.elements.namedItem("_next")?.remove();

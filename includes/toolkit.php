@@ -13,7 +13,7 @@ $toolkitFilterLabels = ['all' => 'All'] + $toolkitCategories;
  <div class="section-shell toolkit-shell">
   <h2 id="toolkit-title" class="sr-only">Tools</h2>
   <div class="toolkit-filter-row" data-toolkit-filter-controls hidden>
-   <label class="toolkit-sort" for="toolkit-category"><span aria-hidden="true"><?= renderIcon('layers') ?></span><span class="sr-only">Browse tools by category</span><select id="toolkit-category" aria-label="Browse tools by category" data-toolkit-select aria-controls="toolkit-tools"><?php foreach ($toolkitFilterLabels as $categoryKey=>$categoryName): ?><option value="<?= escapeHtml($categoryKey) ?>"><?= escapeHtml($categoryName === 'All' ? 'All tools' : $categoryName) ?></option><?php endforeach; ?></select></label>
+   <div class="toolkit-sort"><span aria-hidden="true"><?= renderIcon('layers') ?></span><select id="toolkit-category" aria-label="Browse tools by category" data-toolkit-select aria-controls="toolkit-tools"><?php foreach ($toolkitFilterLabels as $categoryKey=>$categoryName): ?><option value="<?= escapeHtml($categoryKey) ?>"><?= escapeHtml($categoryName === 'All' ? 'All tools' : $categoryName) ?></option><?php endforeach; ?></select></div>
    <?= renderSliderControls('tools') ?>
   </div>
   <p class="sr-only" data-toolkit-results role="status" aria-live="polite" aria-atomic="true">All tools</p>

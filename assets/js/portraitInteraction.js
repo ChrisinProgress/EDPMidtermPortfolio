@@ -239,6 +239,7 @@
     if (!message.value.trim() || message.value === previousTemplate) {
       message.value = templates[brief.selectedOptions[0]?.dataset.brief] || '';
       previousTemplate = message.value;
+      message.dispatchEvent(new Event('input', { bubbles: true }));
     }
   });
 })();

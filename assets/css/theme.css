@@ -330,8 +330,7 @@ html[data-theme="dark"] .lightbox-next {
 
 html[data-theme="dark"] .carousel-arrow:hover,
 html[data-theme="dark"] .lightbox-prev:hover,
-html[data-theme="dark"] .lightbox-next:hover,
-html[data-theme="dark"] .lightbox-close:hover {
+html[data-theme="dark"] .lightbox-next:hover {
   background: var(--theme-hover);
   color: var(--accent);
 }
@@ -342,10 +341,6 @@ html[data-theme="dark"] .carousel-dot span {
 
 html[data-theme="dark"] .carousel-dot.is-active span {
   background: var(--red-soft);
-}
-
-html[data-theme="dark"] .lightbox-close {
-  background: var(--soft);
 }
 
 html[data-theme="dark"] .lightbox::backdrop {

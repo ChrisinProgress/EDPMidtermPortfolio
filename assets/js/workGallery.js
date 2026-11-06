@@ -81,6 +81,7 @@
       }
     });
     choice.value = id;
+    choice.dispatchEvent(new Event("portfolio:select-updated"));
     position.textContent = String(index + 1).padStart(2, "0") + " / " + String(collection.length).padStart(2, "0");
     status.textContent = collection[index].querySelector("h3").textContent + ". Project " + (index + 1) + " of " + collection.length + ".";
     currentAnimation?.cancel();
@@ -108,7 +109,7 @@
   choice.addEventListener("change", () => showProject(choice.value));
   filters.forEach(filter => filter.addEventListener("click", () => applyCategory(filter.dataset.filter)));
   gallery.addEventListener("keydown", event => {
-    if (event.target.closest("a, select, [data-project-flip], [data-project-unflip]")) return;
+    if (event.defaultPrevented || event.target.closest("a, select, [role=combobox], [data-project-flip], [data-project-unflip]")) return;
     const index = collection.findIndex(card => card.dataset.projectId === selected);
     let targetIndex;
     if (event.key === "ArrowRight") targetIndex = (index + 1) % collection.length;

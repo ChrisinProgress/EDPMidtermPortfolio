@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="assets/css/page-entrance.css?v=<?= filemtime(__DIR__ . '/../assets/css/page-entrance.css') ?>">
     <link rel="stylesheet" href="assets/css/interface-polish.css?v=<?= filemtime(__DIR__ . '/../assets/css/interface-polish.css') ?>">
     <link rel="stylesheet" href="assets/css/portfolio-refresh.css?v=<?= filemtime(__DIR__ . '/../assets/css/portfolio-refresh.css') ?>">
+    <link rel="stylesheet" href="assets/css/dropdowns.css?v=<?= filemtime(__DIR__ . '/../assets/css/dropdowns.css') ?>">
     <link rel="stylesheet" href="assets/css/cursor.css?v=<?= filemtime(__DIR__ . '/../assets/css/cursor.css') ?>">
     <script src="assets/js/portfolioRefresh.js?v=<?= filemtime(__DIR__ . '/../assets/js/portfolioRefresh.js') ?>" defer></script>
     <script src="assets/js/main.js?v=<?= filemtime(__DIR__ . '/../assets/js/main.js') ?>" defer></script>
@@ -38,6 +39,7 @@
     <script src="assets/js/workGallery.js?v=<?= filemtime(__DIR__ . '/../assets/js/workGallery.js') ?>" defer></script>
     <script src="assets/js/pageNavigation.js?v=<?= filemtime(__DIR__ . '/../assets/js/pageNavigation.js') ?>" defer></script>
     <script src="assets/js/toolkitTabs.js?v=<?= filemtime(__DIR__ . '/../assets/js/toolkitTabs.js') ?>" defer></script>
+    <script src="assets/js/dropdowns.js?v=<?= filemtime(__DIR__ . '/../assets/js/dropdowns.js') ?>" defer></script>
     <script src="assets/js/motion.js?v=<?= filemtime(__DIR__ . '/../assets/js/motion.js') ?>" defer></script>
     <script src="assets/js/cursor.js?v=<?= filemtime(__DIR__ . '/../assets/js/cursor.js') ?>" defer></script>
 </head>

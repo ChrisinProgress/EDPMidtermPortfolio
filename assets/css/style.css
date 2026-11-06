@@ -1773,8 +1773,13 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  padding-bottom: 18px;
+  gap: 16px;
+  padding-bottom: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  /* Keep the scrolling image behind the toolbar on the same modal surface. */
+  background-color: inherit;
 }
 
 .lightbox-top .eyebrow {
@@ -1786,17 +1791,9 @@ button {
 .lightbox h2 {
   font-size: 20px;
   letter-spacing: -.5px;
-  margin-top: 5px;
-}
-
-.lightbox-close {
-  background: var(--neutral-0);
-  border-radius: 8px;
-}
-
-.lightbox-close .icon {
-  width: 19px;
-  height: 19px;
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .lightbox-stage {
@@ -2826,20 +2823,14 @@ button {
     border-radius: 12px;
   }
   .lightbox-top {
-    padding-bottom: 14px;
-    gap: 10px;
+    gap: 12px;
   }
   .lightbox h2 {
     font-size: 16px;
-    max-width: 240px;
     line-height: 1.4;
   }
   .lightbox-top .eyebrow {
     font-size: 7px;
-  }
-  .lightbox-close {
-    min-width: 38px;
-    min-height: 38px;
   }
   .lightbox-prev,.lightbox-next {
     min-width: 35px;

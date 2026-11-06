@@ -7,6 +7,7 @@
   if(!pending()){callback();return;}
   const observer=new MutationObserver(()=>{if(!pending()){observer.disconnect();callback();}});
   observer.observe(root,{attributes:true,attributeFilter:['class']});
+  return () => observer.disconnect();
  };
  const tabs = [...document.querySelectorAll('[data-about-tab]')];
  const panels = [...document.querySelectorAll('[data-about-panel]')];
@@ -57,13 +58,16 @@
   revealHash();
  }
  const typingLeadIn = 290;
- const reveal = (element, duration, delay = 0, distance = 10) => {
-  if (element && !reduced.matches) element.animate(
-   [{ opacity: 0, translate: '0 ' + distance + 'px' }, { opacity: 1, translate: '0 0' }],
+ const sectionTypingInterval = 55;
+ const projectTypingInterval = 60;
+ const reveal = (element, duration, delay = 0, distance = 10, scale = 1) => {
+  if (element && !reduced.matches) return element.animate(
+   [{ opacity: 0, translate: '0 ' + distance + 'px', ...(scale !== 1 && { scale }) },
+    { opacity: 1, translate: '0 0', ...(scale !== 1 && { scale: 1 }) }],
    { duration, delay, easing: 'cubic-bezier(.22,.8,.25,1)', fill: 'backwards' }
   );
  };
- function typeCharacters(length, render, complete) {
+ function typeCharacters(length, render, complete, interval = 60) {
   let count = 0;
   const timer = setInterval(() => {
    render(++count);
@@ -71,7 +75,7 @@
     clearInterval(timer);
     complete();
    }
-  }, 60);
+  }, interval);
   return () => clearInterval(timer);
  }
  afterIntro(() => {
@@ -157,7 +161,7 @@
   img.addEventListener('error',fallback,{once:true});if(img.complete && !img.naturalWidth) fallback();
  });
  const closingPreviews = new WeakMap();
- function closePreview(preview) {
+ function closePreview(preview, button) {
   if (!preview.hasAttribute('open') || closingPreviews.has(preview)) return;
   const finish = () => {
    if (!preview.hasAttribute('open')) return;
@@ -171,21 +175,37 @@
    finish();
    return;
   }
+  const duration = 260;
+  const appearance = getComputedStyle(preview);
   const animation = preview.animate(
-   [{opacity:getComputedStyle(preview).opacity, scale:'1'}, {opacity:0, scale:'.98'}],
-   {duration:260,easing:'ease-in',fill:'forwards'}
+   [{opacity:appearance.opacity, scale:'1', transform:appearance.transform}, {opacity:0, scale:'.98', transform:appearance.transform}],
+   {duration,easing:'ease-in',fill:'forwards'}
   );
-  closingPreviews.set(preview, animation);
-  animation.finished.then(() => { if (closingPreviews.get(preview) === animation) finish(); }, () => {});
+  const effects = [animation];
+  if (button) {
+   const transform = getComputedStyle(button).transform;
+   effects.push(button.animate(
+    [{transform}, {transform:'scale(.94)', offset:.26}, {transform}],
+    {duration,easing:'ease',fill:'forwards'}
+   ));
+   const icon = button.querySelector('.icon');
+   if (icon) effects.push(icon.animate(
+    [{transform:getComputedStyle(icon).transform}, {transform:'rotate(90deg)'}],
+    {duration,easing:'ease',fill:'forwards'}
+   ));
+  }
+  closingPreviews.set(preview, effects);
+  animation.finished.then(() => { if (closingPreviews.get(preview) === effects) finish(); }, () => {});
  }
  document.addEventListener('click', event => {
   const preview = event.target.closest('[data-preview-dialog][open]');
   if (!preview) return;
-  if (event.target.closest('[data-preview-dismiss]')) {
-   closePreview(preview);
+  const button = event.target.closest('[data-preview-dismiss]');
+  if (button) {
+   closePreview(preview, button);
   } else if (event.target === preview) {
    const bounds = preview.getBoundingClientRect();
-   if (preview.matches('[data-material-dialog]') ||
+   if (preview.matches('[data-material-dialog], [data-artwork-dialog]') ||
        event.clientX < bounds.left || event.clientX > bounds.right ||
        event.clientY < bounds.top || event.clientY > bounds.bottom) closePreview(preview);
   }
@@ -196,7 +216,7 @@
   closePreview(event.target);
  }, true);
  document.addEventListener('close', event => {
-  closingPreviews.get(event.target)?.cancel();
+  closingPreviews.get(event.target)?.forEach(animation => animation.cancel());
   closingPreviews.delete(event.target);
  }, true);
 
@@ -311,8 +331,10 @@
   aboutControls.closest('[data-about-explorer]').addEventListener('abouttabchange', () => requestAnimationFrame(update));
   aboutControls.hidden=false;update();
  }
- // Each View Project page types its heading once using the hero's timing.
- function typeProjectTitle(detailTitle) {
+ // Play the same sequence for a direct project URL or an in-page project visit.
+ function animateProject(page) {
+  const detailTitle = page.querySelector('[data-project-title]');
+  if (!detailTitle) return;
   const title = detailTitle.textContent;
   detailTitle.setAttribute('aria-label', title);
   const visual = document.createElement('span');
@@ -331,7 +353,7 @@
    return { value, prefix, suffix };
   });
   const projectCaret = document.createElement('span');
-  projectCaret.className = 'typing-cursor project-typing-caret';
+  projectCaret.className = 'typing-cursor heading-typing-cursor project-typing-caret';
   projectCaret.setAttribute('aria-hidden', 'true');
 
   function renderTitle(count) {
@@ -346,39 +368,67 @@
    if (caretAfter.nextSibling !== projectCaret) caretAfter.after(projectCaret);
   }
 
-  let startTimer, cancelTyping, finished = false;
+  const lifecycle = new AbortController();
+  const entrance = [], afterTitle = [];
+  let startTimer, cancelTyping, cancelIntro, finished = false, skipEntrance = false;
   function finishTitle() {
    if (finished) return;
    finished = true;
    clearTimeout(startTimer);
    cancelTyping?.();
    renderTitle(title.length);
+   if (!skipEntrance) afterTitle.forEach(animation => animation.play());
   }
 
-  if (reduced.matches) finishTitle();
-  else afterIntro(() => {
+  function finishEntrance() {
+   skipEntrance = true;
+   cancelIntro?.();
+   finishTitle();
+   entrance.forEach(animation => animation.cancel());
+   lifecycle.abort();
+  }
+  function startEntrance() {
    if (finished) return;
+   if (reduced.matches) { finishEntrance(); return; }
+   const find = selector => page.querySelector(selector);
+   const queue = (selector, duration, delay, stagger = 0, scale = 1) => {
+    page.querySelectorAll(selector).forEach((element, index) => {
+     const animation = reveal(element, duration, delay + index * stagger, scale === 1 ? 12 : 0, scale);
+     animation.pause();
+     animation.currentTime = 0;
+     entrance.push(animation);
+     afterTitle.push(animation);
+    });
+   };
+   const stagger = 65;
+   entrance.push(reveal(page, 300), reveal(find('.collection-return'), 300, 40),
+    reveal(find('.detail-project-type'), 300, 60));
+   queue('[data-project-description]', 350, 0);
+   queue('.detail-meta > div:first-child > dt', 300, 190);
+   queue('.detail-technologies > span', 250, 255, stagger);
+   queue('.detail-resource-actions .button', 250, 280, stagger);
+   queue('.detail-gallery-heading', 300, 360);
+   queue('.detail-meta > div:nth-child(2)', 250, 360);
+   queue('.detail-stage', 400, 425, 0, .98);
+   queue('.detail-screen-item', 250, 490, stagger);
+   queue('.detail-return-button', 300, 620 + Math.max(0, page.querySelectorAll('.detail-screen-item').length - 1) * stagger);
    renderTitle(0);
    startTimer = setTimeout(() => {
-    cancelTyping = typeCharacters(title.length, renderTitle, finishTitle);
-   }, typingLeadIn);
-  });
-  const lifecycle = new AbortController();
-  const finishOnReducedMotion = event => { if (event.matches) finishTitle(); };
-  const dispose = () => {
-   finishTitle();
-   lifecycle.abort();
-  };
-  window.addEventListener('pagehide', dispose, {once:true, signal:lifecycle.signal});
-  reduced.addEventListener('change', finishOnReducedMotion, {signal:lifecycle.signal});
-  detailTitle.closest('main').addEventListener('portfolio:project-unmounting', dispose, {once:true});
+    cancelTyping = typeCharacters(title.length, renderTitle, finishTitle, projectTypingInterval);
+   }, 150);
+  }
+  if (reduced.matches) { finishEntrance(); return; }
+  const options = {signal:lifecycle.signal};
+  window.addEventListener('pagehide', finishEntrance, options);
+  reduced.addEventListener('change', event => { if (event.matches) finishEntrance(); }, options);
+  page.addEventListener('portfolio:project-unmounting', finishEntrance, options);
+  page.addEventListener('focusin', event => { if (event.target !== page) finishEntrance(); }, options);
+  page.addEventListener('pointerdown', event => { if (event.target.closest('a,button')) finishEntrance(); }, options);
+  cancelIntro = afterIntro(startEntrance);
  }
- const detailTitle = document.querySelector('.detail-heading [data-project-title]');
- if (detailTitle) typeProjectTitle(detailTitle);
- document.addEventListener('portfolio:project-mounted', event => {
-  const heading = event.target.querySelector('[data-project-title]');
-  if (heading) typeProjectTitle(heading);
- });
+ const initialProject = document.querySelector('main.project-detail');
+ if (initialProject) animateProject(initialProject);
+ document.addEventListener('portfolio:project-mounted', event => animateProject(event.target));
  const feature=document.querySelector('.feature-showcase');
  if(feature){
   const updateFeature=()=>{const r=feature.getBoundingClientRect();const visible=Math.max(0,Math.min(r.bottom,innerHeight)-Math.max(r.top,0))/Math.min(r.height,innerHeight);feature.style.setProperty('--feature-presence',reduced.matches?1:Math.min(1,visible/0.72));};
@@ -387,17 +437,16 @@
  }
  // Repeat the heading typing effect whenever a section comes into view.
  const headingStates=new Map();
- const finishHeading=state=>{clearInterval(state.timer);state.nodes.forEach(n=>n.node.textContent=n.text);state.heading.style.minHeight='';state.running=false;};
+ const finishHeading=state=>{state.cancelTyping?.();state.nodes.forEach(n=>n.node.textContent=n.text);state.heading.style.minHeight='';state.running=false;};
  const headingObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
   const state=headingStates.get(entry.target);if(!state)return;
   if(!entry.isIntersecting||reduced.matches){finishHeading(state);return;}
   if(state.running)return;
   state.heading.style.minHeight=state.heading.getBoundingClientRect().height+'px';
-  state.nodes.forEach(n=>n.node.textContent='');let position=0;state.running=true;
-  state.timer=setInterval(()=>{
-   let left=++position;state.nodes.forEach(n=>{n.node.textContent=n.text.slice(0,Math.max(0,left));left-=n.text.length;});
-   if(position>=state.length)finishHeading(state);
-  },55);
+  state.nodes.forEach(n=>n.node.textContent='');state.running=true;
+  state.cancelTyping=typeCharacters(state.length,position=>{
+   let left=position;state.nodes.forEach(n=>{n.node.textContent=n.text.slice(0,Math.max(0,left));left-=n.text.length;});
+  },()=>finishHeading(state),sectionTypingInterval);
  }),{threshold:.25});
  function registerHeading(heading) {
   if(heading.closest('dialog'))return;
@@ -406,7 +455,7 @@
   const walker=document.createTreeWalker(wrapper,NodeFilter.SHOW_TEXT);const nodes=[];let node;
   while(node=walker.nextNode())nodes.push({node,text:node.textContent});
   const caret=document.createElement('span');caret.className='typing-cursor heading-typing-cursor';caret.setAttribute('aria-hidden','true');heading.append(caret);
-  headingStates.set(heading,{heading,nodes,length:nodes.reduce((n,t)=>n+t.text.length,0),timer:0,running:false});
+  headingStates.set(heading,{heading,nodes,length:nodes.reduce((n,t)=>n+t.text.length,0),running:false});
  }
  document.querySelectorAll('[data-type-heading]').forEach(registerHeading);
  afterIntro(()=>headingStates.forEach(state=>headingObserver.observe(state.heading)));
@@ -470,8 +519,6 @@
    const a=e.target.closest('[data-artwork]');if(!a||e.ctrlKey||e.metaKey||e.shiftKey)return;
    e.preventDefault();origin=a;const img=preview.querySelector('[data-artwork-full]');img.src=a.href;img.alt=a.querySelector('img').alt;artwork.classList.add('is-previewing');preview.showModal();
   });
-  preview.querySelector('[data-artwork-close]').addEventListener('click',()=>preview.close());
-  preview.addEventListener('click',e=>{if(e.target===preview)preview.close();});
   preview.addEventListener('close',()=>{
    artwork.classList.remove('is-previewing');
    if(origin?.closest('[data-artwork-repeat]')){const href=origin.getAttribute('href');origin=[...artwork.querySelectorAll('[data-artwork-sequence] a')].find(a=>a.getAttribute('href')===href);}

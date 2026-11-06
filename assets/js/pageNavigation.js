@@ -10,12 +10,14 @@
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const pages = new Map();
   const gallery = base.querySelector("[data-work-gallery]");
-  let current, opener, request, transition, requestedSection;
+  let current, opener, request, requestedUrl, transition;
   let revision = 0;
   let returning = false;
 
   function cancelNavigation() {
     request?.abort();
+    request = null;
+    requestedUrl = null;
     transition?.cancel();
     return ++revision;
   }
@@ -68,14 +70,16 @@
   }
 
   async function openPage(url, kind, push, scrollY) {
-    const navigation = cancelNavigation();
     const key = url.origin + url.pathname + url.search;
+    if (push && key === requestedUrl) return;
+    const navigation = cancelNavigation();
     if (current?.url === key) {
       positionView(current.main, url, scrollY);
       return;
     }
     const controller = new AbortController();
     request = controller;
+    requestedUrl = key;
     const active = current?.main || base;
     active.setAttribute("aria-busy", "true");
     try {
@@ -109,11 +113,16 @@
       main.tabIndex = -1;
       main.focus({ preventScroll: true });
       notifyView(current, "mounted");
-      fadeIn(main, kind === "project" ? 400 : 180);
+      document.dispatchEvent(new Event("portfolio:view-changed"));
+      if (kind !== "project") fadeIn(main, 180);
     } catch (error) {
       if (navigation === revision && error.name !== "AbortError") window.location.assign(url);
     } finally {
-      active.removeAttribute("aria-busy");
+      if (controller === request) {
+        request = null;
+        requestedUrl = null;
+      }
+      if (!request || active !== (current?.main || base)) active.removeAttribute("aria-busy");
     }
   }
 
@@ -123,7 +132,7 @@
     const project = current.kind === "project";
     if (project && !reduced.matches) {
       transition = current.main.animate([{ opacity: 1 }, { opacity: 0, translate: "0 8px" }], {
-        duration: 330, easing: "ease-in", fill: "forwards",
+        duration: 240, easing: "ease-out", fill: "forwards",
       });
       await transition.finished.catch(() => {});
     }
@@ -133,18 +142,21 @@
     document.title = baseTitle;
     base.id = "main-content";
     base.hidden = false;
-    if (requestedSection) {
-      const target = requestedSection;
-      requestedSection = null;
-      history.replaceState(history.state, "", "#" + target.id);
-      target.scrollIntoView({ block: "start", behavior: "instant" });
-      window.dispatchEvent(new HashChangeEvent("hashchange"));
-    } else {
-      window.scrollTo({ top: scrollY ?? 0, behavior: "instant" });
+    const url = new URL(location.href);
+    positionView(base, url, scrollY);
+    if (scrollY !== undefined) {
       const card = opener?.closest("[data-project-card]");
       const focus = card && !card.classList.contains("is-flipped") ? card.querySelector("[data-project-flip]") : opener;
       focus?.focus({ preventScroll: true });
+    } else {
+      const target = url.hash && document.getElementById(url.hash.slice(1));
+      if (target && base.contains(target)) {
+        target.tabIndex = -1;
+        target.focus({ preventScroll: true });
+      }
     }
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    document.dispatchEvent(new Event("portfolio:view-changed"));
     fadeIn(project && gallery ? gallery : base, project ? 380 : 180);
   }
 
@@ -163,10 +175,12 @@
       return;
     }
     const backLink = link.matches(".policy-return, .collection-return, .detail-end .button");
-    const target = href.startsWith("#") ? document.getElementById(href.slice(1)) : null;
+    const target = url.hash && document.getElementById(url.hash.slice(1));
+    const isPortfolioLink = url.origin === location.origin && new URL(".", url).pathname === directory &&
+      (url.pathname === directory + "index.php" || url.pathname === directory);
     const state = routeState();
     const depth = state?.portfolioDepth || 0;
-    if (current && depth && target && current.main.contains(target) && href !== "#main-content") {
+    if (current && depth && href.startsWith("#") && target && current.main.contains(target) && href !== "#main-content") {
       event.preventDefault();
       if (url.href !== location.href) {
         history.replaceState({ ...state, viewScrollY: window.scrollY }, "");
@@ -175,13 +189,19 @@
       positionView(current.main, url);
       return;
     }
-    if (current && depth && baseKind === "portfolio" && (backLink || (target && base.contains(target)))) {
+    const goesToBaseSection = (isPortfolioLink || href.startsWith("#")) && target && base.contains(target);
+    if (current && depth && baseKind === "portfolio" && ((backLink && isPortfolioLink) || goesToBaseSection)) {
       event.preventDefault();
       if (returning) return;
-      returning = true;
-      requestedSection = backLink ? null : target;
-      history.go(-depth);
-    } else if (link.matches(".policy-return")) {
+      if (backLink) {
+        returning = true;
+        history.go(-depth);
+      } else {
+        history.replaceState({ ...state, viewScrollY: window.scrollY }, "");
+        history.pushState({ portfolioSession: session, portfolioDepth: 0 }, "", new URL(url.hash, new URL(directory, location.origin)));
+        showBase();
+      }
+    } else if (baseKind !== "portfolio" && isPortfolioLink && (backLink || url.hash)) {
       event.preventDefault();
       url.searchParams.set("portfolio-return", "1");
       window.location.assign(url);
@@ -192,7 +212,6 @@
     returning = false;
     const state = routeState();
     if (state?.portfolioDepth) {
-      requestedSection = null;
       const url = new URL(location.href);
       openPage(url, routeKind(url), false, state.viewScrollY);
     } else {

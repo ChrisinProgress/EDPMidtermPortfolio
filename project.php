@@ -27,12 +27,12 @@ require __DIR__ . '/includes/header.php';
         <div class="detail-heading"><p class="eyebrow">WORK GALLERY</p><h1>Project not found<span class="heading-dot">.</span></h1><p>This project isn't in the collection. Choose a project from the portfolio to explore its images.</p></div>
     <?php else: ?>
         <header class="detail-overview">
-            <div class="detail-heading" data-reveal>
+            <div class="detail-heading">
                 <p class="detail-project-type"><?= escapeHtml($selectedProject['projectType'] ?? ($selectedProject['category'] === 'technical' ? 'Technical Project' : 'Digital Design Project')) ?></p>
                 <h1 data-project-title><?= escapeHtml($selectedProject['title']) ?><span class="heading-dot">.</span></h1>
-                <p><?= escapeHtml($selectedProject['description']) ?></p>
+                <p data-project-description><?= escapeHtml($selectedProject['description']) ?></p>
             </div>
-            <aside class="detail-sidebar" aria-label="Project information" data-reveal>
+            <aside class="detail-sidebar" aria-label="Project information">
                 <dl class="detail-meta">
                     <div><dt class="detail-meta-label">Built with</dt><dd class="detail-technologies">
                         <?php foreach ($selectedProject['technologies'] as $technology): $technologyIconPath = getTechnologyIconPath($technology); ?>
@@ -70,12 +70,10 @@ require __DIR__ . '/includes/header.php';
                         <img src="<?= escapeHtml($projectImage['src']) ?>" alt="" width="180" height="105" loading="lazy">
                         <span><small><?= str_pad((string) ($imageIndex + 1), 2, '0', STR_PAD_LEFT) ?></small><?= escapeHtml($projectImage['label']) ?></span>
                     </button>
-                    <?php if ($imageIndex === count($selectedProject['images']) - 1): ?>
-                        <div class="detail-end"><a class="button button-secondary" href="index.php#projects"><?= renderIcon('arrowLeft') ?><span>Back to Gallery</span></a></div>
-                    <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
+            <div class="detail-end"><a class="button button-secondary detail-return-button" href="index.php#projects"><?= renderIcon('arrowLeft') ?><span>Back to Gallery</span></a></div>
             <p class="sr-only" data-carousel-status role="status" aria-live="polite">Image 1 of <?= count($selectedProject['images']) ?></p>
             <noscript><ul class="detail-fallback-links"><?php foreach ($selectedProject['images'] as $projectImage): ?><li><a href="<?= escapeHtml($projectImage['src']) ?>"><?= escapeHtml($projectImage['label']) ?></a></li><?php endforeach; ?></ul></noscript>
         </section>

@@ -18,7 +18,7 @@
   const press = overlay.querySelector(".pointer-press");
   const ripple = overlay.querySelector(".pointer-ripple");
   const ring = ripple.firstElementChild;
-  const controls = "a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),[role=button],[data-student-id],[data-id-clip],[data-id-lanyard]";
+  const controls = "a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),[role=button],[role=option]:not([aria-disabled=true]),[data-student-id],[data-id-clip],[data-id-lanyard]";
   const canUseTopLayer = typeof overlay.showPopover === "function";
   document.body.append(overlay);
   let x = 0, y = 0, targetX = 0, targetY = 0, lastFrame = 0, frame = 0;
@@ -140,6 +140,7 @@
   window.addEventListener("pointerup", () => { if (selecting) { selecting = false; scheduleHitTest(); } });
   window.addEventListener("scroll", scheduleHitTest, {capture:true, passive:true});
   window.addEventListener("resize", scheduleHitTest, {passive:true});
+  document.addEventListener("portfolio:dropdown-changed", scheduleHitTest);
   const dialogObserver = new MutationObserver(scheduleHitTest);
   document.querySelectorAll("dialog").forEach(dialog => {
     dialogObserver.observe(dialog, {attributes:true, attributeFilter:["open"]});

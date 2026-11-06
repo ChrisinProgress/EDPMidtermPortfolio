@@ -8,5 +8,5 @@
   <?php endforeach; ?></div></div>
  </div>
  <?php endforeach; ?>
- <dialog class="artwork-dialog" data-artwork-dialog aria-label="Artwork preview"><div class="artwork-dialog-header"><button type="button" data-artwork-close aria-label="Close artwork preview"><?= renderIcon('close') ?></button></div><img alt="" data-artwork-full></dialog>
+ <dialog class="artwork-dialog" data-artwork-dialog data-preview-dialog aria-label="Artwork preview"><div class="artwork-dialog-header"><button class="preview-close" type="button" data-preview-dismiss aria-label="Close artwork preview"><?= renderIcon('close') ?></button></div><img alt="" data-artwork-full></dialog>
 </section>

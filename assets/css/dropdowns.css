@@ -1,0 +1,72 @@
+.portfolio-select-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+  text-align: start;
+  color: var(--ink);
+  cursor: pointer;
+}
+.portfolio-select-trigger > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.portfolio-select-trigger::after {
+  content: "";
+  flex: 0 0 6px;
+  height: 6px;
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  rotate: 45deg;
+  margin: -3px 2px 0 0;
+}
+.toolkit-sort .portfolio-select-trigger {
+  width: 100%; min-height: 50px; padding: 10px 0; border: 0;
+  background: var(--white); font: 500 13px var(--font);
+}
+.toolkit-sort .portfolio-select-trigger:focus-visible { outline: 0; }
+.gallery-chooser .portfolio-select-trigger {
+  width: min(100%, 300px); min-height: 44px; padding: 10px 16px;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--soft); font-size: 12px;
+}
+.contact-form .portfolio-select-trigger {
+  width: 100%; padding: 14px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--soft); font: inherit;
+}
+.portfolio-select-list {
+  position: fixed;
+  z-index: 1000;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--neutral-950) 20%, transparent);
+  font-size: var(--type-ui, 13px);
+  user-select: none;
+}
+.portfolio-select-list [role="option"] {
+  position: relative;
+  padding: 8px 28px 8px 10px;
+  border-radius: 7px;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition: background-color .16s var(--ease), color .16s var(--ease);
+}
+.portfolio-select-list [role="option"][aria-selected="true"] { color: var(--accent); font-weight: 600; }
+.portfolio-select-list [role="option"][aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 50% 12px auto auto;
+  width: 8px;
+  height: 4px;
+  border: solid currentColor;
+  border-width: 0 0 2px 2px;
+  transform: translateY(-65%) rotate(-45deg);
+}
+.portfolio-select-list .is-highlighted { background-color: var(--soft); outline: 1px solid var(--line); outline-offset: -1px; }
+.portfolio-select-list [role="option"]:active { background-color: color-mix(in srgb, var(--accent) 18%, var(--white)); }
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-select-list [role="option"] { transition: none; }
+}
