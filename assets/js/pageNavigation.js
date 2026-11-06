@@ -126,17 +126,10 @@
     }
   }
 
-  async function showBase(scrollY) {
-    const navigation = cancelNavigation();
+  function showBase(scrollY) {
+    cancelNavigation();
     if (!current) return;
     const project = current.kind === "project";
-    if (project && !reduced.matches) {
-      transition = current.main.animate([{ opacity: 1 }, { opacity: 0, translate: "0 8px" }], {
-        duration: 240, easing: "ease-out", fill: "forwards",
-      });
-      await transition.finished.catch(() => {});
-    }
-    if (navigation !== revision) return;
     removeCurrent();
     setPageClass(baseKind);
     document.title = baseTitle;
@@ -157,7 +150,7 @@
     }
     window.dispatchEvent(new HashChangeEvent("hashchange"));
     document.dispatchEvent(new Event("portfolio:view-changed"));
-    fadeIn(project && gallery ? gallery : base, project ? 380 : 180);
+    fadeIn(project && gallery ? gallery : base, project ? 160 : 180);
   }
 
   document.addEventListener("click", event => {

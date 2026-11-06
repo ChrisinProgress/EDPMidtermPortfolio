@@ -59,12 +59,12 @@
  }
  const typingLeadIn = 290;
  const sectionTypingInterval = 55;
- const projectTypingInterval = 60;
- const reveal = (element, duration, delay = 0, distance = 10, scale = 1) => {
+ const projectTypingInterval = 40;
+ const reveal = (element, duration, delay = 0, distance = 10, scale = 1, easing = 'cubic-bezier(.22,.8,.25,1)') => {
   if (element && !reduced.matches) return element.animate(
    [{ opacity: 0, translate: '0 ' + distance + 'px', ...(scale !== 1 && { scale }) },
     { opacity: 1, translate: '0 0', ...(scale !== 1 && { scale: 1 }) }],
-   { duration, delay, easing: 'cubic-bezier(.22,.8,.25,1)', fill: 'backwards' }
+   { duration, delay, easing, fill: 'backwards' }
   );
  };
  function typeCharacters(length, render, complete, interval = 60) {
@@ -369,20 +369,16 @@
   }
 
   const lifecycle = new AbortController();
-  const entrance = [], afterTitle = [];
-  let startTimer, cancelTyping, cancelIntro, finished = false, skipEntrance = false;
+  const entrance = [];
+  let cancelTyping, finished = false;
   function finishTitle() {
    if (finished) return;
    finished = true;
-   clearTimeout(startTimer);
    cancelTyping?.();
    renderTitle(title.length);
-   if (!skipEntrance) afterTitle.forEach(animation => animation.play());
   }
 
   function finishEntrance() {
-   skipEntrance = true;
-   cancelIntro?.();
    finishTitle();
    entrance.forEach(animation => animation.cancel());
    lifecycle.abort();
@@ -390,32 +386,29 @@
   function startEntrance() {
    if (finished) return;
    if (reduced.matches) { finishEntrance(); return; }
-   const find = selector => page.querySelector(selector);
+   const play = (element, duration, delay, scale = 1) => {
+    const animation = reveal(element, duration, delay, scale === 1 ? 8 : 0, scale, 'ease-out');
+    if (animation) entrance.push(animation);
+   };
    const queue = (selector, duration, delay, stagger = 0, scale = 1) => {
     page.querySelectorAll(selector).forEach((element, index) => {
-     const animation = reveal(element, duration, delay + index * stagger, scale === 1 ? 12 : 0, scale);
-     animation.pause();
-     animation.currentTime = 0;
-     entrance.push(animation);
-     afterTitle.push(animation);
+     play(element, duration, delay + index * stagger, scale);
     });
    };
-   const stagger = 65;
-   entrance.push(reveal(page, 300), reveal(find('.collection-return'), 300, 40),
-    reveal(find('.detail-project-type'), 300, 60));
-   queue('[data-project-description]', 350, 0);
-   queue('.detail-meta > div:first-child > dt', 300, 190);
-   queue('.detail-technologies > span', 250, 255, stagger);
-   queue('.detail-resource-actions .button', 250, 280, stagger);
-   queue('.detail-gallery-heading', 300, 360);
-   queue('.detail-meta > div:nth-child(2)', 250, 360);
-   queue('.detail-stage', 400, 425, 0, .98);
-   queue('.detail-screen-item', 250, 490, stagger);
-   queue('.detail-return-button', 300, 620 + Math.max(0, page.querySelectorAll('.detail-screen-item').length - 1) * stagger);
-   renderTitle(0);
-   startTimer = setTimeout(() => {
-    cancelTyping = typeCharacters(title.length, renderTitle, finishTitle, projectTypingInterval);
-   }, 150);
+   const stagger = 40;
+   play(page, 200, 0);
+   queue('.collection-return, .detail-project-type', 200, 0);
+   queue('[data-project-description]', 250, 35);
+   queue('.detail-meta > div:first-child > dt', 200, 50);
+   queue('.detail-technologies > span', 200, 75, stagger);
+   queue('.detail-resource-actions .button', 200, 75, stagger);
+   queue('.detail-gallery-heading, .detail-meta > div:nth-child(2)', 200, 85);
+   queue('.detail-stage', 300, 105, 0, .98);
+   queue('.detail-screen-item', 200, 145, stagger);
+   queue('.detail-return-button', 200, 165);
+   renderTitle(1);
+   if (title.length > 1) cancelTyping = typeCharacters(title.length - 1, count => renderTitle(count + 1), finishTitle, projectTypingInterval);
+   else finishTitle();
   }
   if (reduced.matches) { finishEntrance(); return; }
   const options = {signal:lifecycle.signal};
@@ -424,7 +417,7 @@
   page.addEventListener('portfolio:project-unmounting', finishEntrance, options);
   page.addEventListener('focusin', event => { if (event.target !== page) finishEntrance(); }, options);
   page.addEventListener('pointerdown', event => { if (event.target.closest('a,button')) finishEntrance(); }, options);
-  cancelIntro = afterIntro(startEntrance);
+  startEntrance();
  }
  const initialProject = document.querySelector('main.project-detail');
  if (initialProject) animateProject(initialProject);

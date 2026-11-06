@@ -366,7 +366,7 @@
   if (!contactForm) return;
   const contactStatus = contactForm.querySelector("[data-form-status]");
   const submitButton = contactForm.querySelector("[data-submit-button]");
-  const statusKey = "portfolio-contact-return";
+  const statusKey = "portfolio-contact-redirect";
   const currentUrl = new URL(window.location.href);
   let submitting = false;
   const textFields = [
@@ -374,16 +374,35 @@
     { field: contactForm.elements.namedItem("message"), minimum: 10, error: "Enter at least 10 characters for your message." },
   ];
   textFields.forEach(({ field }) => field.addEventListener("input", () => field.setCustomValidity("")));
-  if (currentUrl.searchParams.has("contact-return") && currentUrl.hash === "#contact") {
+  const takePendingRedirect = () => {
     try {
-      if (sessionStorage.getItem(statusKey) === "pending") {
-        sessionStorage.removeItem(statusKey);
-        contactStatus.textContent = "FormSubmit accepted your inquiry.";
-      }
-    } catch {}
+      const pending = sessionStorage.getItem(statusKey);
+      sessionStorage.removeItem(statusKey);
+      return pending;
+    } catch { return null; }
+  };
+  const unconfirmed = "FormSubmit did not confirm your inquiry. You can try again or use the email link.";
+  if (currentUrl.searchParams.has("contact-return") && currentUrl.hash === "#contact") {
+    const pending = takePendingRedirect();
+    if (pending && currentUrl.searchParams.get("contact-return") === pending) {
+      contactStatus.textContent = "FormSubmit returned you to the portfolio. Email delivery is not confirmed.";
+    }
     currentUrl.searchParams.delete("contact-return");
     history.replaceState(history.state, "", currentUrl);
+  } else if (performance.getEntriesByType("navigation")[0]?.type === "back_forward" && takePendingRedirect()) {
+    contactStatus.textContent = unconfirmed;
   }
+
+  const setProviderField = (name, value) => {
+    let field = contactForm.elements.namedItem(name);
+    if (!field) {
+      field = document.createElement("input");
+      field.type = "hidden";
+      field.name = name;
+      contactForm.append(field);
+    }
+    field.value = value;
+  };
 
   contactForm.addEventListener("submit", event => {
     if (event.defaultPrevented || submitting) {
@@ -398,14 +417,13 @@
       return;
     }
     if (location.protocol === "https:" && !["localhost", "127.0.0.1", "[::1]"].includes(location.hostname)) {
+      const next = new URL("index.php#contact", location.href);
+      setProviderField("_url", next.href);
       try {
-        sessionStorage.setItem(statusKey, "pending");
-        const next = new URL("index.php?contact-return=1#contact", location.href);
-        const redirect = document.createElement("input");
-        redirect.type = "hidden";
-        redirect.name = "_next";
-        redirect.value = next.href;
-        contactForm.append(redirect);
+        const token = crypto.randomUUID();
+        sessionStorage.setItem(statusKey, token);
+        next.searchParams.set("contact-return", token);
+        setProviderField("_next", next.href);
       } catch {} // FormSubmit supplies its own confirmation page when storage is unavailable.
     }
     submitting = true;
@@ -415,11 +433,10 @@
   });
   window.addEventListener("pageshow", event => {
     if (!event.persisted || !submitting) return;
-    try { sessionStorage.removeItem(statusKey); } catch {}
     submitting = false;
     submitButton.disabled = false;
     contactForm.elements.namedItem("_next")?.remove();
     contactForm.removeAttribute("aria-busy");
-    contactStatus.textContent = "";
+    contactStatus.textContent = takePendingRedirect() ? unconfirmed : "";
   });
 })();

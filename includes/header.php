@@ -10,7 +10,9 @@
     <link rel="preload" as="image" href="<?= escapeHtml($portraitPath) ?>" fetchpriority="<?= $portraitKind === 'formal' ? 'high' : 'low' ?>">
     <?php endforeach; ?>
     <script src="assets/js/theme.js?v=<?= filemtime(__DIR__ . '/../assets/js/theme.js') ?>"></script>
+    <?php if (empty($isProjectDetail)): ?>
     <script src="assets/js/pageEntrance.js?v=<?= filemtime(__DIR__ . '/../assets/js/pageEntrance.js') ?>"></script>
+    <?php endif; ?>
     <title><?= escapeHtml($pageTitle ?? 'Christopher John Cruz — Developer & Designer') ?></title>
     <link rel="icon" href="assets/icons/brand/cjc-monogram.svg?v=<?= filemtime(__DIR__ . '/../assets/icons/brand/cjc-monogram.svg') ?>" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/fonts.css">
