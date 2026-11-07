@@ -13,7 +13,8 @@ $contactResult = null;
 $contactValues = [];
 $contactToken = '';
 $contactPost = ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['contactAction'] ?? null) === 'send';
-if ($contactPost || contactUsesBrevo()) {
+$contactReady = brevoContactConfig() !== null;
+if ($contactPost || $contactReady) {
     require_once __DIR__ . '/includes/contactDelivery.php';
     if ($contactPost) {
         [$status, $contactResult, $contactValues] = submitPortfolioContact($_POST);
@@ -24,7 +25,11 @@ if ($contactPost || contactUsesBrevo()) {
             echo json_encode($contactResult, JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR);
             exit;
         }
-        $contactToken = $contactResult['nextToken'] ?? (is_string($_POST['contactToken'] ?? null) ? $_POST['contactToken'] : '');
+        if ($contactReady && $status !== 503) {
+            $submittedToken = $_POST['contactToken'] ?? '';
+            $contactToken = $contactResult['nextToken'] ??
+                (is_string($submittedToken) && preg_match('/^[a-f0-9]{64}$/', $submittedToken) ? $submittedToken : '');
+        }
     } else {
         $contactToken = contactFormToken();
     }

@@ -39,12 +39,12 @@ function Assert-Status([string] $Path, [int[]] $Expected, [string] $Method = 'GE
 
 $rootPage = Assert-Status '' @(200)
 if ($rootPage.Content -notmatch 'id="home-title"') { throw 'The root URL did not render the portfolio.' }
-if ($rootPage.Content -match 'data-brevo-contact') {
-    if ($rootPage.Content -notmatch 'action="index.php#contact"' -or $rootPage.Content -notmatch 'name="contactToken" value="[a-f0-9]{64}"') {
-        throw 'The Brevo contact destination or session token is missing.'
-    }
-} elseif ($rootPage.Content -notmatch 'action="https://formsubmit.co/') {
-    throw 'The fallback contact destination is missing.'
+if ($rootPage.Content -notmatch 'data-brevo-contact' -or $rootPage.Content -notmatch 'action="index.php#contact"') {
+    throw 'The contact form must post to the local PHP endpoint.'
+}
+if ($rootPage.Content -notmatch 'name="contactToken" value="[a-f0-9]{64}"' -and
+    ($rootPage.Content -notmatch 'name="contactToken" value=""' -or $rootPage.Content -notmatch 'data-submit-button[^>]*disabled')) {
+    throw 'Expected a contact session token or an explicitly unavailable form.'
 }
 $checks++
 

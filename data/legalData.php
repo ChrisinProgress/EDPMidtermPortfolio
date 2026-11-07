@@ -3,31 +3,20 @@ declare(strict_types=1);
 
 $external = static fn(string $url, string $label): string => '<a href="' . escapeHtml($url) . '" target="_blank" rel="noopener noreferrer">' . escapeHtml($label) . '<span class="sr-only"> (opens in a new tab)</span></a>';
 
-$usesBrevo = contactUsesBrevo();
-$contactPrivacy = $usesBrevo
-    ? '<p>The contact form collects your name, email address, message, privacy consent, and any project brief you choose. I use that information to respond to your inquiry. My server uses HTTPS to send the inquiry and its submission time through Brevo’s transactional email service to my Gmail inbox. After Brevo accepts the inquiry for sending, the site requests a separate acknowledgment to the email address you entered. The acknowledgment does not include your inquiry.</p>'
-        . '<p>The portfolio has no message database. Copies may remain in email inboxes, and Brevo may keep delivery logs and message previews according to its account settings and retention rules. See the '
-        . $external('https://www.brevo.com/legal/privacypolicy/', 'Brevo Privacy Policy') . ' and '
-        . $external('https://help.brevo.com/hc/en-us/articles/4415743225746-Configure-a-custom-retention-period-for-your-transactional-logs-and-email-previews', 'Brevo’s transactional email retention guidance')
-        . '. Use the email link below for questions or requests about your inquiry data.</p>'
-    : '<p>The contact form sends your name, email, message, privacy agreement, and any project brief you select to '
-        . $external('https://formsubmit.co/', 'FormSubmit')
-        . ' for delivery to my Gmail inbox. I use those details to respond to your inquiry. FormSubmit may use Google reCAPTCHA for verification and can use your email for replies and the requested confirmation.</p><p>The portfolio has no message database. See the '
-        . $external('https://formsubmit.co/privacy.pdf', 'FormSubmit privacy notice') . ', '
-        . $external('https://formsubmit.co/help', 'FormSubmit retention guidance') . ', and '
-        . $external('https://policies.google.com/privacy', 'Google Privacy Policy') . '.</p>';
-$sitePrivacy = '<p>The site uses HTTPS and ' . $external('https://render.com/privacy', 'Render hosting')
+$contactPrivacy = '<p>The contact form collects your name, email address, message, privacy consent, and any project brief you choose. I use that information to respond to your inquiry. My server sends the inquiry and its submission time over HTTPS through Brevo’s transactional email service to my Gmail inbox. After Brevo accepts the inquiry for sending, the site requests a separate acknowledgment to the email address you entered. The acknowledgment does not include your inquiry. If the form is unavailable, you can use the direct email link.</p>'
+    . '<p>The portfolio has no message database. Copies may remain in email inboxes, and Brevo may keep delivery logs and message previews according to its account settings and retention rules. See the '
+    . $external('https://www.brevo.com/legal/privacypolicy/', 'Brevo Privacy Policy') . ' and '
+    . $external('https://help.brevo.com/hc/en-us/articles/4415743225746-Configure-a-custom-retention-period-for-your-transactional-logs-and-email-previews', 'Brevo’s transactional email retention guidance')
+    . '. Use the email link below for questions or requests about your inquiry data.</p>';
+$sitePrivacy = '<p>The published portfolio uses HTTPS and ' . $external('https://render.com/privacy', 'Render hosting')
     . '. The server can log IP addresses and other request details. Your browser saves your theme choice in local storage.'
-    . ($usesBrevo
-        ? ' The portfolio sets a first-party session cookie for contact form security, duplicate prevention, and rate limits. The server temporarily keeps request identifiers, protected checks to detect duplicate submissions, timestamps, and submission status. It does not keep the original form values in the session.'
-        : ' Session storage can hold a temporary contact status flag with no form data.')
+    . ' When the contact form is available, the portfolio sets a first-party session cookie for contact form security, duplicate prevention, and rate limits. The server temporarily keeps request identifiers, protected checks to detect duplicate submissions, timestamps, and submission status. It does not keep the original form values in the session.'
     . ' The decorative cursor runs in your browser and sends no pointer data. The portfolio does not load analytics or advertising trackers.</p>'
-    . '<p>Hosting, contact, and email providers may process data outside the Philippines. External sites have their own policies.'
-    . ($usesBrevo ? '' : ' FormSubmit verification can involve browser storage on its own page.') . '</p>';
+    . '<p>Hosting and email providers may process data outside the Philippines. External sites have their own policies.</p>';
 
 return [
     'privacy' => [
-        'title' => 'Privacy Policy', 'file' => 'privacy.php',
+        'title' => 'Privacy Policy', 'file' => 'privacy.php', 'updated' => '2026-11-07',
         'summary' => 'How this portfolio handles inquiries, visitor information, and photographs.',
         'sections' => [
             ['id' => 'privacy-contact', 'title' => 'Contact inquiries', 'html' => $contactPrivacy],

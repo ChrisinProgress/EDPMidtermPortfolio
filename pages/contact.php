@@ -1,7 +1,8 @@
 <?php
-$usesBrevo = contactUsesBrevo();
+$contactToken ??= '';
+$contactAvailable = $contactToken !== '';
 $contactValues ??= [];
-$contactStatus = $contactResult['message'] ?? '';
+$contactStatus = $contactResult['message'] ?? ($contactAvailable ? '' : 'The contact form is temporarily unavailable. Please use the email link.');
 $contactStatusClass = $contactStatus === '' ? '' : (!empty($contactResult['ok']) ? ' is-success' : ' is-error');
 $projectBriefs = [
     ['', '', 'Write my own message'],
@@ -42,33 +43,12 @@ $projectBriefs = [
                 </a>
             </div>
         </div>
-        <form class="contact-form" id="contact-form" <?= $usesBrevo ? 'data-brevo-contact' : 'data-native-contact' ?> action="<?= $usesBrevo ? 'index.php#contact' : 'https://formsubmit.co/cruchristopherjohnhoylar@gmail.com' ?>" method="post">
+        <form class="contact-form" id="contact-form" data-brevo-contact action="index.php#contact" method="post">
             <div class="form-heading">
                 <h3>Send Me a Message</h3>
             </div>
-            <?php if ($usesBrevo): ?>
             <input type="hidden" name="contactAction" value="send">
-            <input type="hidden" name="contactToken" value="<?= escapeHtml($contactResult['nextToken'] ?? $contactToken) ?>">
-            <?php else: ?>
-            <?php
-            $visitorAcknowledgment = <<<'EMAIL'
-            Hello,
-
-            Thank you for reaching out through my portfolio website!
-
-            Your message has been submitted successfully. I appreciate your interest and will get back to you as soon as possible.
-
-            Best regards,
-
-            Christopher John Cruz
-
-            Portfolio Website: https://christopherjohncruz.onrender.com
-            EMAIL;
-            ?>
-            <input type="hidden" name="_subject" value="New Portfolio Inquiry — Christopher John Cruz">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_autoresponse" value="<?= escapeHtml($visitorAcknowledgment) ?>">
-            <?php endif; ?>
+            <input type="hidden" name="contactToken" value="<?= escapeHtml($contactToken) ?>">
             <div class="honeypot" aria-hidden="true">
                 <label for="website">Leave this field empty</label>
                 <input id="website" type="text" name="_honey" tabindex="-1" autocomplete="off">
@@ -101,7 +81,7 @@ $projectBriefs = [
             </div>
             <label class="contact-consent"><input type="checkbox" name="privacyConsent" value="Agreed to inquiry processing"<?= ($contactValues['privacyConsent'] ?? '') === 'Agreed to inquiry processing' ? ' checked' : '' ?> required><span>I agree to the use of my name, email, and message to respond to this inquiry, as described in the <a href="privacy.php">Privacy Policy</a>.</span></label>
             <p class="form-status<?= $contactStatusClass ?>" data-form-status role="status" aria-live="polite" aria-atomic="true"><?= escapeHtml($contactStatus) ?></p>
-            <button class="button button-primary submit-button" type="submit" data-submit-button>
+            <button class="button button-primary submit-button" type="submit" data-submit-button<?= $contactAvailable ? '' : ' disabled' ?>>
                 <span data-submit-label>Send Message</span>
                 <?= renderIcon('send') ?>
             </button>

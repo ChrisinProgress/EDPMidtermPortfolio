@@ -19,7 +19,7 @@ require __DIR__ . '/header.php';
     <header class="policy-heading">
         <h1 data-type-heading><?= escapeHtml($policy['title']) ?><span class="heading-dot">.</span></h1>
         <p><?= escapeHtml($policy['summary']) ?></p>
-        <span class="policy-updated">Last Updated <time datetime="2026-11-06">November 6, 2026</time></span>
+        <span class="policy-updated">Last Updated <time datetime="<?= escapeHtml($policy['updated'] ?? '2026-11-06') ?>"><?= escapeHtml((new DateTimeImmutable($policy['updated'] ?? '2026-11-06'))->format('F j, Y')) ?></time></span>
     </header>
     <nav class="policy-tabs" aria-label="Legal pages">
         <?php foreach ($policies as $key => $entry): ?><a href="<?= escapeHtml($entry['file']) ?>" <?= $key === $legalPage ? 'aria-current="page"' : '' ?>><?= escapeHtml($entry['title']) ?></a><?php endforeach; ?>

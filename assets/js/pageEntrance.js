@@ -9,7 +9,6 @@
     history.replaceState(history.state, "", url);
     return;
   }
-  if (url.hash === "#contact" && url.searchParams.has("contact-return")) return;
   if (reducedMotion.matches) return;
   const started = performance.now();
   let complete = false;

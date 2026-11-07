@@ -20,8 +20,3 @@ function brevoContactConfig(): ?array
 
     return ['key' => $key, 'sender' => $sender, 'name' => $name, 'owner' => $owner];
 }
-
-function contactUsesBrevo(): bool
-{
-    return brevoContactConfig() !== null;
-}

@@ -362,7 +362,7 @@
     scheduleScrollUpdate();
   });
 
-  const contactForm = document.querySelector("[data-brevo-contact], [data-native-contact]");
+  const contactForm = document.querySelector("[data-brevo-contact]");
   if (!contactForm) return;
   const contactStatus = contactForm.querySelector("[data-form-status]");
   const submitButton = contactForm.querySelector("[data-submit-button]");
@@ -380,7 +380,7 @@
     return true;
   };
 
-  if (contactForm.hasAttribute("data-brevo-contact") && typeof fetch === "function" && typeof AbortController === "function") {
+  if (typeof fetch === "function" && typeof AbortController === "function") {
     const label = contactForm.querySelector("[data-submit-label]");
     const initialLabel = label.textContent;
     const token = contactForm.elements.namedItem("contactToken");
@@ -395,7 +395,7 @@
     contactForm.addEventListener("submit", async event => {
       if (event.defaultPrevented) return;
       event.preventDefault();
-      if (submitting || hasInvalidText() || !contactForm.reportValidity()) return;
+      if (submitting || !token.value || hasInvalidText() || !contactForm.reportValidity()) return;
 
       const submission = new FormData(contactForm);
       const request = new AbortController();
@@ -442,72 +442,5 @@
         label.textContent = initialLabel;
       }
     });
-    return;
   }
-
-  if (!contactForm.hasAttribute("data-native-contact")) return;
-  const statusKey = "portfolio-contact-redirect";
-  const currentUrl = new URL(window.location.href);
-  const takePendingRedirect = () => {
-    try {
-      const pending = sessionStorage.getItem(statusKey);
-      sessionStorage.removeItem(statusKey);
-      return pending;
-    } catch { return null; }
-  };
-  const unconfirmed = "FormSubmit did not confirm your inquiry. You can try again or use the email link.";
-  if (currentUrl.searchParams.has("contact-return") && currentUrl.hash === "#contact") {
-    const pending = takePendingRedirect();
-    if (pending && currentUrl.searchParams.get("contact-return") === pending) {
-      contactStatus.textContent = "FormSubmit returned you to the portfolio. Email delivery is not confirmed.";
-    }
-    currentUrl.searchParams.delete("contact-return");
-    history.replaceState(history.state, "", currentUrl);
-  } else if (performance.getEntriesByType("navigation")[0]?.type === "back_forward" && takePendingRedirect()) {
-    contactStatus.textContent = unconfirmed;
-  }
-
-  const setProviderField = (name, value) => {
-    let field = contactForm.elements.namedItem(name);
-    if (!field) {
-      field = document.createElement("input");
-      field.type = "hidden";
-      field.name = name;
-      contactForm.append(field);
-    }
-    field.value = value;
-  };
-
-  contactForm.addEventListener("submit", event => {
-    if (event.defaultPrevented || submitting) {
-      event.preventDefault();
-      return;
-    }
-    if (hasInvalidText()) {
-      event.preventDefault();
-      return;
-    }
-    if (location.protocol === "https:" && !["localhost", "127.0.0.1", "[::1]"].includes(location.hostname)) {
-      const next = new URL("index.php#contact", location.href);
-      setProviderField("_url", next.href);
-      try {
-        const token = crypto.randomUUID();
-        sessionStorage.setItem(statusKey, token);
-        next.searchParams.set("contact-return", token);
-        setProviderField("_next", next.href);
-      } catch {} // FormSubmit supplies its own confirmation page when storage is unavailable.
-    }
-    submitting = true;
-    submitButton.disabled = true;
-    contactForm.setAttribute("aria-busy", "true");
-    contactStatus.textContent = "Opening FormSubmit to verify your inquiry…";
-  });
-  window.addEventListener("pageshow", event => {
-    if (!event.persisted || !submitting) return;
-    submitting = false;
-    submitButton.disabled = false;
-    contactForm.elements.namedItem("_next")?.remove();
-    contactForm.removeAttribute("aria-busy");
-    contactStatus.textContent = takePendingRedirect() ? unconfirmed : "";
-  });
 })();

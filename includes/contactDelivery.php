@@ -150,7 +150,7 @@ function submitPortfolioContact(array $input, ?callable $send = null): array
     [$valid, $values] = portfolioContactFields($input);
     $config = brevoContactConfig();
     if ($config === null || !startContactSession()) {
-        return [503, ['ok' => false, 'message' => CONTACT_SEND_ERROR], $values];
+        return [503, ['ok' => false, 'message' => 'The contact form is temporarily unavailable. Please use the email link.'], $values];
     }
     try {
         $now = time();

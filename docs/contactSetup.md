@@ -13,7 +13,11 @@ Verify a sender in [Brevo](https://help.brevo.com/hc/en-us/articles/208836149-Cr
 | `BREVO_SENDER_NAME` | Christopher John Cruz |
 | `CONTACT_OWNER_EMAIL` | cruchristopherjohnhoylar@gmail.com |
 
-Brevo may [rewrite a Gmail sender's visible From address](https://help.brevo.com/hc/en-us/articles/14925263522578-Comply-with-Gmail-Yahoo-and-Microsoft-s-requirements-for-email-senders). The owner can still receive inquiries at Gmail. Render's Docker build verifies PHP cURL. If configuration is absent, the site retains the existing FormSubmit route while Brevo is being verified.
+Brevo may [rewrite a Gmail sender's visible From address](https://help.brevo.com/hc/en-us/articles/14925263522578-Comply-with-Gmail-Yahoo-and-Microsoft-s-requirements-for-email-senders). The owner can still receive inquiries at Gmail. Render's Docker build verifies PHP cURL. If credentials are missing, the form is unavailable and the direct email link remains visible.
+
+## Configure localhost in XAMPP
+
+Set the same four variables for Apache in a private config outside the website directory. On this machine the include is C:/xampp/apache/conf/extra/portfolio-brevo.local.conf. Use a private Brevo API key and the verified sender address, then restart Apache. Never commit the key to this repository.
 
 ## Verify delivery
 

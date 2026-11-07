@@ -6,7 +6,7 @@ if (PHP_SAPI !== 'cli') {
     exit;
 }
 
-// Optional local URL checks the rendered form and the fallback response headers.
+// Optional local URL checks the rendered form and the contact session response headers.
 $checks = 0;
 $check = static function (bool $condition, string $message) use (&$checks): void {
     $checks++;
@@ -29,13 +29,13 @@ if ($preview) {
     $pages = ['preview' => $previewHtml];
 } else {
     $settings = [
-        'fallback' => ['BREVO_API_KEY' => '', 'BREVO_SENDER_EMAIL' => '', 'BREVO_SENDER_NAME' => '', 'CONTACT_OWNER_EMAIL' => ''],
-        'brevo' => ['BREVO_API_KEY' => $fixtureKey, 'BREVO_SENDER_EMAIL' => 'sender@example.test',
+        'unconfigured' => ['BREVO_API_KEY' => '', 'BREVO_SENDER_EMAIL' => '', 'BREVO_SENDER_NAME' => '', 'CONTACT_OWNER_EMAIL' => ''],
+        'configured' => ['BREVO_API_KEY' => $fixtureKey, 'BREVO_SENDER_EMAIL' => 'sender@example.test',
             'BREVO_SENDER_NAME' => 'Test Sender', 'CONTACT_OWNER_EMAIL' => 'owner@example.test'],
     ];
     $pages = [];
     foreach ($settings as $mode => $overrides) {
-        // Fresh processes isolate provider configuration. Both requests are GETs.
+        // Fresh processes isolate credential configuration. Both requests are GETs.
         $command = [PHP_BINARY, '-d', 'session.save_path=' . sys_get_temp_dir(),
             '-r', '$_SERVER["REQUEST_METHOD"] = "GET"; require $argv[1];',
             dirname(__DIR__) . '/index.php'];
@@ -59,30 +59,25 @@ foreach ($pages as $mode => $html) {
     $form = '//form[@id="contact-form"]';
     $check($xpath->query($form)->length === 1 && $xpath->query($form . '[@method="post"]')->length === 1,
         'Expected one native POST contact form.');
-    $brevo = $xpath->query($form . '[@data-brevo-contact]')->length === 1;
+    $check($xpath->query($form . '[@action="index.php#contact" and @data-brevo-contact]')->length === 1,
+        'The contact form must submit to the local PHP backend.');
+    $check($xpath->query($form . '//*[@name="contactAction" and @value="send" and @type="hidden"]')->length === 1,
+        'The local contact action is missing.');
+    $tokens = $xpath->query($form . '//*[@name="contactToken" and @type="hidden"]');
+    $check($tokens->length === 1, 'The local contact token field is missing.');
+    $token = $tokens->item(0)->getAttribute('value');
+    $configured = $token !== '';
     if (!$preview) {
-        $check($brevo === ($mode === 'brevo'), "Unexpected contact provider in the $mode fixture.");
+        $check($configured === ($mode === 'configured'), "Unexpected contact availability in the $mode fixture.");
     }
-    if ($brevo) {
-        $check($xpath->query($form . '[@action="index.php#contact" and not(@data-native-contact)]')->length === 1,
-            'Brevo mode must submit to the local PHP backend.');
-        $check($xpath->query($form . '//*[@name="contactAction" and @value="send" and @type="hidden"]')->length === 1,
-            'The local contact action is missing.');
-        $check($xpath->query($form . '//*[@name="contactToken" and string-length(@value) > 0 and @type="hidden"]')->length === 1,
-            'The local contact token is missing.');
-        $check($xpath->query($form . '//*[@name="_autoresponse" or @name="_subject" or @name="_next"]')->length === 0,
-            'Brevo mode must not expose FormSubmit settings.');
-        $check(!str_contains($html, $fixtureKey), 'The API key must never appear in HTML.');
-    } else {
-        $check($xpath->query($form . '[@data-native-contact and @action="https://formsubmit.co/cruchristopherjohnhoylar@gmail.com"]')->length === 1,
-            'The FormSubmit fallback destination must match the portfolio inbox.');
-        $check($xpath->query($form . '//*[@name="_autoresponse" and @type="hidden"]')->length === 1,
-            'The fallback acknowledgment request is missing.');
-        $check($xpath->query($form . '//*[@name="contactAction" or @name="contactToken"]')->length === 0,
-            'Local contact fields must not be sent to the fallback provider.');
-        if ($preview) {
-            $check(preg_grep('/^Set-Cookie:/i', $http_response_header ?? []) === [], 'Fallback public home set a cookie.');
-        }
+    $check(!$configured || preg_match('/^[a-f0-9]{64}$/', $token) === 1, 'Invalid contact session token.');
+    $check($xpath->query($form . '//*[@data-submit-button and @disabled]')->length === ($configured ? 0 : 1),
+        'The send button must reflect contact availability.');
+    $check($xpath->query($form . '//*[@name="_autoresponse" or @name="_subject" or @name="_next"]')->length === 0,
+        'The form must not expose third-party submission settings.');
+    $check(!str_contains($html, $fixtureKey), 'The API key must never appear in HTML.');
+    if ($preview && !$configured) {
+        $check(preg_grep('/^Set-Cookie:/i', $http_response_header ?? []) === [], 'Unconfigured public home set a cookie.');
     }
     foreach (['name', 'email', 'message', 'privacyConsent'] as $name) {
         $check($xpath->query($form . '//*[@name="' . $name . '" and @required]')->length === 1, 'Missing required field ' . $name . '.');
